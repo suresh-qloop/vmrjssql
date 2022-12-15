@@ -6,15 +6,29 @@ const db = require("./config");
 module.exports = class Model {
   //mysql config
 
-  static fetchAll(table, field = "*") {
-    return db.execute(`SELECT ${field} FROM ${table}`);
+  static fetchAll(table, field = "*", order) {
+    return db.execute(`SELECT ${field} FROM ${table} ORDER BY ${order}`);
   }
 
-  static getOne(table, field = "*", id) {
-    return db.execute(`SELECT ${field} FROM ${table} WHERE id = ${id}`);
+  static getOne(table, field = "*", con) {
+    return db.execute(`SELECT ${field} FROM ${table} WHERE ${con}`);
   }
 
   static addData(table, field = "*", value) {
     return db.execute(`INSERT INTO ${table} ${field} VALUES ${value}`);
+  }
+
+  static editData(table, obj, id) {
+    return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
+  }
+
+  // status change
+  static softDelete(table, obj, id) {
+    return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
+  }
+
+  // permanent delete
+  static hardDelete(table, id) {
+    return db.execute(`DELETE FROM ${table} WHERE id = ${id}`);
   }
 };
