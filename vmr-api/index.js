@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
-const adminRoutes = require("./routers/admin");
-const errorController = require("./controllers/error");
+const adminRoutes = require("./routers/user");
+const categoryRoutes = require("./routers/category");
+const reportRoutes = require("./routers/report");
 
 const app = express();
 /**
@@ -21,9 +22,16 @@ app.use(helmet());
 app.get("/", (req, res) => {
   res.send("home");
 });
-app.use("/admin", adminRoutes);
-app.use(errorController.get404);
-app.use(errorController.get500);
+app.use("/user", adminRoutes);
+app.use("/category", categoryRoutes);
+app.use("/report", reportRoutes);
+
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`running at http://localhost:${port} `));

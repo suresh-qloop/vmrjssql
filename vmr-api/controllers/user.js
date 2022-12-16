@@ -2,6 +2,9 @@ const Admin = require("../models/Model");
 const md5 = require("md5");
 const moment = require("moment/moment");
 const { toUpperCase } = require("../utils/utils");
+const SECRET = process.env.SECRET;
+const jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
 
 exports.AllUser = async (req, res, next) => {
   try {
@@ -35,12 +38,23 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.addUser = async (req, res, next) => {
-  const first_name = toUpperCase(req.body.firstName);
-  const last_name = toUpperCase(req.body.lastName);
+  await check("first_name").notEmpty().run(req);
+  await check("last_name").notEmpty().run(req);
+  await check("email").notEmpty().run(req);
+  await check("password").notEmpty().run(req);
+  await check("role").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
+  const first_name = toUpperCase(req.body.first_name);
+  const last_name = toUpperCase(req.body.last_name);
   const email = req.body.email;
   const password = md5(req.body.password);
   const role = req.body.role;
-  var created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
@@ -69,7 +83,18 @@ exports.addUser = async (req, res, next) => {
 };
 
 exports.editUser = async (req, res, next) => {
-  console.log(req.body);
+  await check("first_name").notEmpty().run(req);
+  await check("last_name").notEmpty().run(req);
+  if (!(req.body.password === "")) {
+    await check("password").notEmpty().isLength({ min: 6 }).run(req);
+  }
+  await check("role").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
   const id = req.params.id;
   const first_name = toUpperCase(req.body.first_name);
   const last_name = toUpperCase(req.body.last_name);
@@ -104,7 +129,7 @@ exports.editUser = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const [user] = await Admin.hardDelete("users", id);
+    const [user] = await Admin.hardDelete("users", `id=${id}`);
     res.status(200).json({
       message: "success",
     });
@@ -115,7 +140,72 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
+exports.login = async (req, res, next) => {
+  await check("email").notEmpty().run(req);
+  await check("password").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
+  const email = req.body.email;
+  const password = req.body.password;
+  var last_login = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let loadedUser;
+
+  try {
+    const [user] = await Admin.getOne("users", "*", `email='${email}'`);
+
+    if (user.length < 0) {
+      return res.status(500).json({ error: "User not found." });
+    }
+
+    loadedUser = await user[0];
+
+    const md5password = md5(password);
+    if (md5password !== loadedUser.password) {
+      return res.status(401).json({
+        error: "Wrong password",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        email: loadedUser.email,
+        userId: loadedUser.id,
+      },
+      SECRET,
+      { expiresIn: "24h" }
+    );
+
+    const obj = `last_login="${last_login}"`;
+
+    const [lastLogin] = await Admin.editData("users", obj, loadedUser.id);
+
+    res.status(200).json({
+      token: token,
+      userId: loadedUser.id,
+      role: loadedUser.role,
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
 exports.changeUserPassword = async (req, res, next) => {
+  await check("oldPassword").notEmpty().run(req);
+  await check("newPassword").notEmpty().run(req);
+  await check("confirmPassword").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
   const confirmPassword = req.body.confirmPassword;
@@ -148,6 +238,14 @@ exports.changeUserPassword = async (req, res, next) => {
 };
 
 exports.resetUserPassword = async (req, res, next) => {
+  await check("newPassword").notEmpty().run(req);
+  await check("confirmPassword").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
   const id = req.params.id;
   const newPassword = req.body.newPassword;
   const confirmPassword = req.body.confirmPassword;
