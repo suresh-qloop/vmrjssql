@@ -103,7 +103,6 @@ exports.editUser = async (req, res, next) => {
 
   try {
     if (password === "") {
-      console.log("without");
       const obj = `first_name="${first_name}",last_name="${last_name}",role="${role}"`;
 
       const [user] = await Admin.editData("users", obj, id);
@@ -111,7 +110,6 @@ exports.editUser = async (req, res, next) => {
         message: "success",
       });
     } else {
-      console.log("with");
       const obj2 = `first_name="${first_name}",last_name="${last_name}",password="${password}",role="${role}"`;
 
       const [user2] = await Admin.editData("users", obj2, id);
@@ -148,7 +146,6 @@ exports.login = async (req, res, next) => {
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
-
   const email = req.body.email;
   const password = req.body.password;
   var last_login = moment(new Date()).format("YYYY-MM-D H:MM:SS");

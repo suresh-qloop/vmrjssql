@@ -105,7 +105,7 @@ exports.addReport = async (req, res, next) => {
     const value = `("${product_name}", "${alias}", "${category_id}", "${product_description}", "${product_specification}", "${is_set_toc}","${price}","${corporate_price}","${upto10}","${data_pack_price}","${is_active}","${meta_name}","${meta_keywords}","${meta_desc}","${slug}","${publisher_name}","${share_with_reseller}","${created}", "${created}")`;
 
     const [report] = await Report.addData("products", field, value);
-    console.log(report);
+    // console.log(report);
     // const report_no = `VMR1121${report.insertId}`;
     // const [product_no] = await Report.editData("products",,report)
 
@@ -237,8 +237,7 @@ exports.addReportFaqs = async (req, res, next) => {
 
   try {
     obj = `product_faq ='${faqs}'`;
-    console.log(obj);
-    const [faqs] = await Report.editData("products", obj, id);
+    const [faq] = await Report.editData("products", obj, id);
 
     res.status(201).json({
       message: "success",
@@ -250,27 +249,32 @@ exports.addReportFaqs = async (req, res, next) => {
   }
 };
 
-// exports.searchReport = async (req, res, next) => {
-//   console.log(req);
-//   let name = req.query.name;
-//   let price = req.query.price;
-//   let status = req.query.status;
-//   let reseller = req.query.reseller;
-//   let category_id = req.query.category_id;
+exports.searchReport = async (req, res, next) => {
+  const name = req.query.name;
+  const price = req.query.price;
+  const status = req.query.status;
+  let reseller;
+  if (req.query.reseller === "true") {
+    reseller = 1;
+  } else {
+    reseller = 0;
+  }
+  // const reseller = req.query.reseller;
+  const category_id = req.query.category_id;
 
-//   try {
-//     const [reports] = await Report.findReport(
-//       name,
-//       price,
-//       status,
-//       reseller,
-//       category_id
-//     );
+  try {
+    const [reports] = await Report.findReport(
+      name,
+      price,
+      status,
+      reseller,
+      category_id
+    );
 
-//     res.status(201).json(reports);
-//   } catch (err) {
-//     return res.status(500).json({
-//       error: err.message,
-//     });
-//   }
-// };
+    res.status(201).json(reports);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};

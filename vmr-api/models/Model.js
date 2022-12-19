@@ -22,13 +22,11 @@ module.exports = class Model {
   }
 
   static editData(table, obj, id) {
-    console.log(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
     return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
   }
 
   // status change
   static softDelete(table, obj, id) {
-    console.log(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
     return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
   }
 
@@ -44,10 +42,8 @@ module.exports = class Model {
   }
 
   static findReport(name, price, status, reseller, category_id) {
-    console.log(name);
-
     return db.execute(
-      `SELECT * FROM products WHERE product_name LIKE '${name}%' AND price LIKE '${price}%' AND is_active LIKE '${status}%' AND share_with_reseller LIKE '${reseller}%' AND category_id LIKE '${category_id}%'`
+      `SELECT id,product_name,publisher_name,meta_name,meta_desc,meta_keywords,price,is_active FROM products WHERE product_name LIKE '${name}%' AND price LIKE '${price}%' AND is_active LIKE '${status}%' AND share_with_reseller LIKE '${reseller}%' AND category_id LIKE '${category_id}%'`
     );
   }
 };
