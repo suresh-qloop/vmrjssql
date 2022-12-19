@@ -10,6 +10,7 @@ const upload = multer();
 router.get("/", authPage([1]), reportRoute.AllReports);
 router.get("/search", authPage([1]), reportRoute.searchReport);
 router.get("/:id", authPage([1]), reportRoute.getReport);
+router.get("/view/:id", authPage([1]), reportRoute.getViewReport);
 router.post("/", upload.none(), authPage([1]), reportRoute.addReport);
 router.put("/:id", upload.none(), authPage([1]), reportRoute.editReport);
 router.delete("/:id", authPage([1]), reportRoute.deleteReport);

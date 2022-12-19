@@ -48,19 +48,19 @@ exports.getCategory = async (req, res, next) => {
 };
 
 exports.addCategory = async (req, res, next) => {
-  await check("name").notEmpty().run(req);
+  await check("category_name").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
 
-  const name = toUpperCase(req.body.name);
+  const category_name = toUpperCase(req.body.category_name);
 
   let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
-    const value = `("${name}", "2", "2","${created}", "${created}")`;
+    const value = `("${category_name}", "2", "2","${created}", "${created}")`;
     const [category] = await Category.addData(
       "categories",
       "(category_name,parent_category_id,level,created,modified)",
@@ -78,7 +78,7 @@ exports.addCategory = async (req, res, next) => {
 };
 
 exports.editCategory = async (req, res, next) => {
-  await check("name").notEmpty().run(req);
+  await check("category_name").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -86,10 +86,10 @@ exports.editCategory = async (req, res, next) => {
   }
 
   const id = req.params.id;
-  const name = toUpperCase(req.body.name);
+  const category_name = toUpperCase(req.body.category_name);
 
   try {
-    const obj = `category_name="${name}"`;
+    const obj = `category_name="${category_name}"`;
 
     const [category] = await Category.editData("categories", obj, id);
 
@@ -186,19 +186,19 @@ exports.AllChildCategory = async (req, res, next) => {
 };
 
 exports.addChildCategory = async (req, res, next) => {
-  await check("name").notEmpty().run(req);
+  await check("category_name").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
   const parent_category_id = req.params.id;
-  const name = toUpperCase(req.body.name);
+  const category_name = toUpperCase(req.body.category_name);
 
   let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
-    const value = `("${name}", "${parent_category_id}", "3","${created}", "${created}")`;
+    const value = `("${category_name}", "${parent_category_id}", "3","${created}", "${created}")`;
     const [category] = await Category.addData(
       "categories",
       "(category_name,parent_category_id,level,created,modified)",

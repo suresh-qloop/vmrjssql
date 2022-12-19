@@ -12,8 +12,9 @@ const app = express();
  */
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 //enable cros
-app.use(cors({ origin: ["http://localhost:8080"], credentials: true }));
+app.use(cors({ origin: ["http://192.168.56.1:8080"], credentials: true }));
 app.use(helmet());
 
 /**

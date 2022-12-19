@@ -141,7 +141,7 @@ exports.deleteUser = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   await check("email").notEmpty().run(req);
   await check("password").notEmpty().run(req);
-
+  console.log(req);
   const result = validationResult(req);
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
