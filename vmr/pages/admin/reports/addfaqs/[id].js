@@ -15,7 +15,6 @@ const AddFaq = () => {
   const router = useRouter();
   const { id } = router.query;
   const [faqs, setFaqs] = useState([]);
-  console.log(faqs);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -53,10 +52,15 @@ const AddFaq = () => {
     }
 
     setFaqs(faqs);
+    let result = faqs.reduce(
+      (r, { question, answer }) => ((r[question] = answer), r),
+      {}
+    );
+    console.log(result);
     await axios
       .post(
         `${process.env.NEXT_PUBLIC_NEXT_API}/report/faq/${id}`,
-        { faqs },
+        { faqs: result },
         {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
@@ -100,27 +104,17 @@ const AddFaq = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data.product_faq !== null) {
-            setFaqs(JSON.parse(res.data.product_faq));
+            // setFaqs(res.data.product_faq)
+            const obj = JSON.parse(res.data.product_faq);
+
+            let output = Object.entries(obj).map(([question, answer]) => ({
+              question,
+              answer,
+            }));
+            setFaqs(output);
             setLoading(false);
           } else {
-            let q1 = `What is ${removeLastWord(res.data.alias)} Size?`;
-            let q2 = `What is the projected ${removeLastWord(
-              res.data.alias
-            )} growth under the study period?`;
-            let q3 = `Which region holds the highest ${removeLastWord(
-              res.data.alias
-            )} share ?`;
-            let q4 = `What is the ${removeLastWord(
-              res.data.alias
-            )} segmentation covered in the report?`;
-            let q5 = `Who are the leading ${removeLastWord(
-              res.data.alias
-            )} manufacturers profiled in the report?`;
-
-            let obj = { [q1]: "", [q2]: "", [q3]: "", [q4]: "", [q5]: "" };
-            console.log(obj);
             setFaqs([
               {
                 question: `What is ${removeLastWord(res.data.alias)} Size?`,

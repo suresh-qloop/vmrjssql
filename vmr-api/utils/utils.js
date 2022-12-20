@@ -1,3 +1,5 @@
+const path = require("path");
+const fs = require("fs");
 exports.toUpperCase = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
@@ -11,4 +13,12 @@ exports.cleanString = (value) => {
     .toLowerCase();
 
   return result;
+};
+
+exports.clearImage = (file) => {
+  console.log(file);
+  let filePath = path.join(__dirname, "../", "uploads", "logos", file);
+  console.log(filePath);
+  fs.unlink(filePath, (err) => console.log(err));
+  return;
 };

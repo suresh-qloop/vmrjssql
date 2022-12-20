@@ -248,7 +248,7 @@ exports.reportStatus = async (req, res, next) => {
 
 exports.addReportFaqs = async (req, res, next) => {
   const id = req.params.id;
-  const faqs = JSON.stringify(req.body);
+  const faqs = JSON.stringify(req.body.faqs);
 
   try {
     obj = `product_faq ='${faqs}'`;
