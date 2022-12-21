@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import EditTestimonialForm from "../../../../components/Admin/Testimonial/TestimonialForm";
+import EditTestimonialForm from "../../../../components/Admin/EditForm/Testimonial";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 

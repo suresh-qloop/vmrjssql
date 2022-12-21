@@ -86,6 +86,14 @@ const Menu = () => {
                 )}
                 {isAdmin && (
                   <li className="nav-item">
+                    <Link href="/admin/articles" className="nav-link">
+                      <i className="nav-icon fas fa-newspaper mr-2"></i>
+                      <p>Articles</p>
+                    </Link>
+                  </li>
+                )}
+                {isAdmin && (
+                  <li className="nav-item">
                     <Link href="/admin/testimonials" className="nav-link">
                       <i className="nav-icon fas fa-quote-left mr-2"></i>
                       <p>Testimonials</p>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import EditReportForm from "../../../../components/Admin/EditForm/Category";
+import EditArticleForm from "../../../../components/Admin/EditForm/Article";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-const EditCategory = () => {
-  const [catData, setCatData] = useState(null);
+const EditArticle = () => {
+  const [articleData, setArticleData] = useState(null);
   const { status, data } = useSession();
 
   const router = useRouter();
@@ -22,14 +22,13 @@ const EditCategory = () => {
   const getEditData = async () => {
     if (!(status === "loading")) {
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/${id}`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/article/${id}`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
         })
         .then((res) => {
-          setCatData(res.data);
-          console.log(res.data);
+          setArticleData(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -40,8 +39,8 @@ const EditCategory = () => {
     }
   };
 
-  return catData ? (
-    <EditReportForm preLoadedValues={catData} />
+  return articleData ? (
+    <EditArticleForm preLoadedValues={articleData} />
   ) : (
     <div className="text-center m-5 p-5">
       <div className="spinner-border text-primary" role="status">
@@ -51,4 +50,4 @@ const EditCategory = () => {
   );
 };
 
-export default EditCategory;
+export default EditArticle;

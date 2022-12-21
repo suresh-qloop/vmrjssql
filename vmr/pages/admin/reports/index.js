@@ -586,6 +586,15 @@ const ReportList = () => {
             </div>
           </div>
         </section>
+        <Link
+          id="back-to-top"
+          href="#"
+          className="btn btn-primary back-to-top"
+          role="button"
+          aria-label="Scroll to top"
+        >
+          <i class="fas fa-chevron-up"></i>
+        </Link>
       </div>
       <Footer />
     </div>

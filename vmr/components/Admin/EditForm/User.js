@@ -9,7 +9,7 @@ import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
 
-export const UserForm = ({ preLoadedValues }) => {
+const User = ({ preLoadedValues }) => {
   const { data } = useSession();
   const router = useRouter();
   const { id } = router.query;
@@ -40,7 +40,7 @@ export const UserForm = ({ preLoadedValues }) => {
   };
 
   return (
-    <div>
+    <div className="wrapper">
       <Header />
       <Menu />
       <div className="content-wrapper">
@@ -238,3 +238,5 @@ export const UserForm = ({ preLoadedValues }) => {
     </div>
   );
 };
+
+export default User;

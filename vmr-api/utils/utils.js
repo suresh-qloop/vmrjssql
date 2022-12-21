@@ -16,9 +16,7 @@ exports.cleanString = (value) => {
 };
 
 exports.clearImage = (file) => {
-  console.log(file);
   let filePath = path.join(__dirname, "../", "uploads", "logos", file);
-  console.log(filePath);
   fs.unlink(filePath, (err) => console.log(err));
   return;
 };

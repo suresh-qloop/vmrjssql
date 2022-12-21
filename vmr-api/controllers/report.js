@@ -81,7 +81,7 @@ exports.addReport = async (req, res, next) => {
   await check("meta_name").notEmpty().run(req);
   await check("meta_keywords").notEmpty().run(req);
   await check("meta_desc").notEmpty().run(req);
-  console.log(req);
+
   const result = validationResult(req);
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
@@ -128,9 +128,14 @@ exports.addReport = async (req, res, next) => {
     const value = `('${product_name}', '${alias}', '${category_id}', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${modified}','${is_upcoming}','${share_with_reseller}')`;
 
     const [report] = await Report.addData("products", field, value);
-    // console.log(report);
-    // const report_no = `VMR1121${report.insertId}`;
-    // const [product_no] = await Report.editData("products",,report)
+    const lastReportId = report.insertId.toString();
+    const maskedNumber = lastReportId.padStart(4, "0");
+    const obj = `product_no='VMR1121${maskedNumber}'`;
+    const [product_no] = await Report.editData(
+      "products",
+      obj,
+      report.insertId
+    );
 
     res.status(200).json({
       message: "success",

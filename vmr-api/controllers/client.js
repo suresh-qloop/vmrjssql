@@ -24,7 +24,7 @@ exports.getClient = async (req, res, next) => {
   try {
     const [client] = await Client.getOne(
       "our_clients",
-      "id,client_name,link,is_active",
+      "id,client_name,logo,link,is_active",
       `id=${id}`
     );
     res.status(200).json(client[0]);
@@ -36,7 +36,6 @@ exports.getClient = async (req, res, next) => {
 };
 
 exports.addClient = async (req, res, next) => {
-  console.log(req);
   await check("client_name").notEmpty().run(req);
   await check("link").notEmpty().run(req);
 
@@ -46,30 +45,32 @@ exports.addClient = async (req, res, next) => {
   }
 
   const client_name = toUpperCase(req.body.client_name);
-  const link = toUpperCase(req.body.link);
+  const link = req.body.link;
   const logo = req.files.logo[0].filename;
 
   let modified = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
-    if (
-      req.files.image[0].mimetype === "image/jpg" ||
-      req.files.image[0].mimetype === "image/jpeg" ||
-      req.files.image[0].mimetype === "image/png"
-    ) {
-      const value = `("${client_name}","${logo}", "${link}","${modified}")`;
-      const [client] = await Client.addData(
-        "our_clients",
-        "(client_name,logo,link,modified)",
-        value
-      );
-      res.status(200).json({
-        message: "success",
-      });
-    } else {
-      return res.status(400).json({
-        message: "Please Select image File",
-      });
+    if (req.files.logo) {
+      if (
+        req.files.logo[0].mimetype === "image/jpg" ||
+        req.files.logo[0].mimetype === "image/jpeg" ||
+        req.files.logo[0].mimetype === "image/png"
+      ) {
+        const value = `("${client_name}","${logo}", "${link}","${modified}")`;
+        const [client] = await Client.addData(
+          "our_clients",
+          "(client_name,logo,link,modified)",
+          value
+        );
+        res.status(200).json({
+          message: "success",
+        });
+      } else {
+        return res.status(400).json({
+          message: "Please Select image File",
+        });
+      }
     }
   } catch (err) {
     return res.status(500).json({
@@ -86,10 +87,9 @@ exports.editClient = async (req, res, next) => {
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
-
   const id = req.params.id;
   const client_name = toUpperCase(req.body.client_name);
-  const link = toUpperCase(req.body.link);
+  const link = req.body.link;
 
   let modified = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 

@@ -18,7 +18,7 @@ const JoditEditor = dynamic(importJodit, {
   ssr: false,
 });
 
-const EditReportForm = ({ preLoadedValues }) => {
+const Report = ({ preLoadedValues }) => {
   const { status, data } = useSession();
   const router = useRouter();
   const { id } = router.query;
@@ -516,7 +516,7 @@ const EditReportForm = ({ preLoadedValues }) => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="d-none">
+                          {/* <div className="d-none">
                             <Controller
                               render={() => (
                                 <>
@@ -568,7 +568,7 @@ const EditReportForm = ({ preLoadedValues }) => {
                               control={control}
                               defaultValue={preLoadedValues.category_id}
                             />
-                          </div>
+                          </div> */}
                           <div className="form-group ">
                             <Controller
                               render={() => (
@@ -583,9 +583,9 @@ const EditReportForm = ({ preLoadedValues }) => {
                                     <select
                                       as="select"
                                       className={`form-control ${
-                                        errors.category ? "is-invalid" : ""
+                                        errors.category_id ? "is-invalid" : ""
                                       }`}
-                                      defaultValue={preLoadedValues.category_id}
+                                      // defaultValue={preLoadedValues.category_id}
                                       // value={preLoadedValues.category}
                                       id="category_id"
                                       {...register("category_id", {
@@ -601,6 +601,10 @@ const EditReportForm = ({ preLoadedValues }) => {
                                             <option
                                               key={curElem.id}
                                               value={curElem.id}
+                                              selected={
+                                                curElem.id ==
+                                                preLoadedValues.category_id
+                                              }
                                               className="optionGroup"
                                             >
                                               {curElem.name}
@@ -609,6 +613,10 @@ const EditReportForm = ({ preLoadedValues }) => {
                                               return (
                                                 <option
                                                   key={Elem.id}
+                                                  selected={
+                                                    Elem.id ==
+                                                    preLoadedValues.category_id
+                                                  }
                                                   className="optionChild"
                                                   value={Elem.id}
                                                 >
@@ -774,4 +782,4 @@ const EditReportForm = ({ preLoadedValues }) => {
   );
 };
 
-export default EditReportForm;
+export default Report;

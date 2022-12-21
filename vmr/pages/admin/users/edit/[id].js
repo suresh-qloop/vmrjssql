@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { UserForm } from "../../../../components/Admin/Users/EditUserForm";
+import EditUserForm from "../../../../components/Admin/EditForm/User";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -40,7 +40,7 @@ const EditUser = () => {
   };
 
   return userData ? (
-    <UserForm preLoadedValues={userData} />
+    <EditUserForm preLoadedValues={userData} />
   ) : (
     <div className="text-center m-5 p-5">
       <div className="spinner-border text-primary" role="status">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import EditReportForm from "../../../../components/Admin/Reports/EditReportForm";
+import EditReportForm from "../../../../components/Admin/EditForm/Report";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 

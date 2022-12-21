@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import DataTable from "react-data-table-component";
 import jsPDF from "jspdf";
@@ -15,24 +15,30 @@ import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
-const ClientList = () => {
+const ArticleList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
 
-  const [clientData, setClientData] = useState([]);
+  const [articleData, setArticleData] = useState([]);
 
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
 
-  const client_name = (client) => {
-    return client.client_name;
+  const headline = (article) => {
+    return article.headline;
   };
-  const link = (client) => {
-    return client.link;
+  const article_type = (article) => {
+    return article.article_type;
   };
-  const is_active = (client) => {
-    return client.is_active;
+  const meta_title = (article) => {
+    return article.meta_title;
+  };
+  const meta_desc = (article) => {
+    return article.meta_desc;
+  };
+  const meta_keywords = (article) => {
+    return article.meta_keywords;
   };
 
   const customStyles = {
@@ -46,75 +52,54 @@ const ClientList = () => {
 
   const columns = [
     {
-      name: "Client Name",
-      selector: client_name,
+      name: "Headline",
+      selector: headline,
       sortable: true,
-      width: "500px",
+      width: "270px",
     },
     {
-      name: "Link",
-      selector: link,
+      name: "Article Type",
+      selector: article_type,
       sortable: true,
-      width: "500px",
+      width: "220px",
     },
     {
-      name: "Status",
-      selector: is_active,
+      name: "Meta Title",
+      selector: meta_title,
       sortable: true,
-      width: "150px",
-      cell: (client) => (
-        <Fragment>
-          {client.is_active === 1 && (
-            <span className="badge bg-success ">Active</span>
-          )}
-          {client.is_active === 0 && (
-            <span className="badge  bg-warning">Inactive</span>
-          )}
-        </Fragment>
-      ),
+      width: "300px",
+    },
+    {
+      name: "Meta Description",
+      selector: meta_desc,
+      sortable: true,
+      width: "300px",
+    },
+    {
+      name: "Meta Keywords",
+      selector: meta_keywords,
+      sortable: true,
+      width: "300px",
     },
     {
       name: "Action",
       button: true,
       grow: 1,
-      width: "380px",
-      cell: (client) => (
+      width: "140px",
+      cell: (article) => (
         <div>
           <Link
-            href={`/admin/clients/edit/${client.id}`}
+            href={`/admin/articles/edit/${article.id}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-info mr-2"
           >
             Edit
           </Link>
 
-          {client.is_active === 1 ? (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(client.id);
-              }}
-              className="btn btn-sm btn-outline-warning mr-2"
-              style={{ width: 101 }}
-            >
-              Deactivate
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(client.id);
-              }}
-              className="btn btn-sm btn-outline-primary mr-2"
-              style={{ width: 101 }}
-            >
-              Activate
-            </button>
-          )}
           <button
             type="button"
             onClick={() => {
-              deleteClient(client.id);
+              deleteArticle(article.id);
             }}
             className="btn btn-sm btn-outline-danger mr-2"
           >
@@ -126,7 +111,7 @@ const ClientList = () => {
   ];
 
   // useEffect(() => {
-  const temp_rows = clientData.filter(
+  const temp_rows = articleData.filter(
     (item) =>
       JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
       -1
@@ -160,21 +145,21 @@ const ClientList = () => {
   };
 
   useEffect(() => {
-    getClientData();
+    getArticleData();
     // eslint-disable-next-line
   }, [status]);
 
-  const getClientData = async () => {
+  const getArticleData = async () => {
     if (!(status === "loading")) {
       setLoading(true);
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/client`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/article`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
         })
         .then((res) => {
-          setClientData(res.data);
+          setArticleData(res.data);
           setLoading(false);
           if (res.data.length < 0) {
             setNoRecords(true);
@@ -186,23 +171,7 @@ const ClientList = () => {
     }
   };
 
-  const statusHandler = async (id) => {
-    await axios
-      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/client/status/${id}`, {
-        headers: {
-          Authorization: `Bearer ${data.user.token}`,
-        },
-      })
-      .then((res) => {
-        getClientData();
-        notify("success", "Status Updated Successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteClient = (id) => {
+  const deleteArticle = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -214,14 +183,14 @@ const ClientList = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/client/${id}`, {
+          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/article/${id}`, {
             headers: {
               Authorization: `Bearer ${data.user.token}`,
             },
           })
           .then((res) => {
-            getClientData();
-            notify("success", "Client Deleted Successfully");
+            getArticleData();
+            notify("success", "Article Deleted Successfully");
           })
           .catch((err) => {
             console.log(err);
@@ -240,14 +209,14 @@ const ClientList = () => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Clients</h1>
+                <h1>Manage Articles</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Clients</li>
+                  <li className="breadcrumb-item active">All Articles</li>
                 </ol>
               </div>
             </div>
@@ -256,7 +225,7 @@ const ClientList = () => {
         <section className="content">
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">All Clients</h3>
+              <h3 className="card-title">All Articles</h3>
             </div>
             <div className="card-body">
               <div
@@ -266,11 +235,11 @@ const ClientList = () => {
                 <div className="row my-3">
                   <div className="col-md-8 col-sm-8  text-left">
                     <Link
-                      href="/admin/clients/add"
+                      href="/admin/articles/add"
                       style={{ marginRight: "5px" }}
                       className="btn btn-primary mb-2"
                     >
-                      Add Client
+                      Add Article
                     </Link>
                   </div>
                   <div className="col-md-3 col-sm-3 ">
@@ -350,4 +319,4 @@ const ClientList = () => {
   );
 };
 
-export default ClientList;
+export default ArticleList;

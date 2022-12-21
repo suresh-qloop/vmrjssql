@@ -7,6 +7,8 @@ const categoryRoutes = require("./routers/category");
 const reportRoutes = require("./routers/report");
 const testimonialRoutes = require("./routers/testimonial");
 const clientRoutes = require("./routers/client");
+const articleRoutes = require("./routers/article");
+const path = require("path");
 
 const app = express();
 /**
@@ -14,6 +16,8 @@ const app = express();
  */
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "/uploads/logos")));
 
 //enable cros
 app.use(cors({ origin: ["http://192.168.56.1:8080"], credentials: true }));
@@ -30,6 +34,7 @@ app.use("/category", categoryRoutes);
 app.use("/report", reportRoutes);
 app.use("/testimonial", testimonialRoutes);
 app.use("/client", clientRoutes);
+app.use("/article", articleRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;

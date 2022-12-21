@@ -8,11 +8,13 @@ import notify from "../../helpers/Notification";
 import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
+import { useState } from "react";
 
-const TestimonialForm = ({ preLoadedValues }) => {
+const Client = ({ preLoadedValues }) => {
   const { data } = useSession();
   const router = useRouter();
   const { id } = router.query;
+  const [logoImage, setLogoImage] = useState();
 
   const {
     register,
@@ -20,20 +22,31 @@ const TestimonialForm = ({ preLoadedValues }) => {
     formState: { errors },
   } = useForm({ defaultValues: preLoadedValues });
 
-  const onSubmit = (testimonialData) => {
+  const onSubmit = (clientData) => {
+    // console.log(clientData);
+    // if (typeof clientData.logo[0] === "object") {
+    //   setFinalData(clientData);
+    // } else {
+    //   delete clientData.logo;
+    //   setFinalData(clientData);
+    // }
+    // console.log(finalData);
+    const finalData = new FormData();
+    finalData.append("client_name", clientData.client_name);
+    if (logoImage !== undefined) {
+      finalData.append("logo", logoImage);
+    }
+    finalData.append("link", clientData.link);
+
     axios
-      .put(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/testimonial/${id}`,
-        testimonialData,
-        {
-          headers: {
-            Authorization: `Bearer ${data.user.token}`,
-          },
-        }
-      )
+      .put(`${process.env.NEXT_PUBLIC_NEXT_API}/client/${id}`, finalData, {
+        headers: {
+          Authorization: `Bearer ${data.user.token}`,
+        },
+      })
       .then((res) => {
-        notify("success", "testimonial Updated Successfully");
-        router.push("/admin/testimonials");
+        notify("success", "Client Updated Successfully");
+        router.push("/admin/clients");
       })
       .catch((error) => {
         console.log(error);
@@ -44,7 +57,7 @@ const TestimonialForm = ({ preLoadedValues }) => {
   };
 
   return (
-    <div>
+    <div className="wrapper">
       <Header />
       <Menu />
       <div className="content-wrapper">
@@ -52,14 +65,14 @@ const TestimonialForm = ({ preLoadedValues }) => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Edit Testimonial Information</h1>
+                <h1>Edit Client Information</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
                     <Link href="/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">Edit Testimonial</li>
+                  <li className="breadcrumb-item active">Edit Client</li>
                 </ol>
               </div>
             </div>
@@ -71,7 +84,7 @@ const TestimonialForm = ({ preLoadedValues }) => {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">Edit Testimonial Information</h3>
+                    <h3 className="card-title">Edit Client Information</h3>
                   </div>
                   <form
                     className="form-horizontal"
@@ -80,52 +93,83 @@ const TestimonialForm = ({ preLoadedValues }) => {
                     <div className="card-body">
                       <div className="form-group ">
                         <label
-                          htmlFor="testimonial_title"
-                          className="col-sm-4 col-form-label"
+                          htmlFor="client_name"
+                          className="col-sm-2 col-form-label"
                         >
-                          Testimonial Title
+                          Client Name
                         </label>
                         <div className="col-sm-12">
                           <input
                             type="text"
                             className={`form-control ${
-                              errors.testimonial_title ? "is-invalid" : ""
+                              errors.client_name ? "is-invalid" : ""
                             }`}
-                            id="testimonial_title"
-                            placeholder="Testimonial Title"
-                            {...register("testimonial_title", {
+                            id="client_name"
+                            placeholder="Client Name"
+                            {...register("client_name", {
                               required: "This field is required",
                             })}
                           />
-                          {errors.testimonial_title && (
+                          {errors.client_name && (
                             <div className="error invalid-feedback">
-                              <p>{errors.testimonial_title.message}</p>
+                              <p>{errors.client_name.message}</p>
                             </div>
                           )}
                         </div>
                       </div>
                       <div className="form-group ">
                         <label
-                          htmlFor="testimonial_description"
-                          className="col-sm-4 col-form-label"
+                          htmlFor="logo"
+                          className="col-sm-2 col-form-label"
                         >
-                          Testimonial Description
+                          Logo
+                        </label>
+                        <div className="col-sm-12">
+                          <input
+                            type="file"
+                            className="form-control"
+                            id="logo"
+                            placeholder="Logo"
+                            // {...register("logo", {
+                            //   //   required: "This field is required",
+                            // })}
+                            onChange={(e) => {
+                              setLogoImage(e.target.files[0]);
+                            }}
+                          />
+                          {/* {errors.logo && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.logo.message}</p>
+                            </div>
+                          )} */}
+                        </div>
+                        <img
+                          src={`http://localhost:8080/uploads/logos/${preLoadedValues.logo}`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="form-group ">
+                        <label
+                          htmlFor="link"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Link
                         </label>
                         <div className="col-sm-12">
                           <input
                             type="text"
                             className={`form-control ${
-                              errors.testimonial_description ? "is-invalid" : ""
+                              errors.link ? "is-invalid" : ""
                             }`}
-                            id="testimonial_description"
-                            placeholder="Testimonial Description"
-                            {...register("testimonial_description", {
+                            id="link"
+                            placeholder="Link"
+                            {...register("link", {
                               required: "This field is required",
                             })}
                           />
-                          {errors.testimonial_description && (
-                            <div className="error invalid-feedback">
-                              <p>{errors.testimonial_description.message}</p>
+                          {errors.link && (
+                            <div className="invalid-feedback">
+                              <p>{errors.link.message}</p>
                             </div>
                           )}
                         </div>
@@ -136,7 +180,7 @@ const TestimonialForm = ({ preLoadedValues }) => {
                         Save
                       </button>
                       <Link
-                        href="/admin/testimonials"
+                        href="/admin/clients"
                         className="btn btn-default float-right"
                       >
                         Cancel
@@ -154,4 +198,4 @@ const TestimonialForm = ({ preLoadedValues }) => {
   );
 };
 
-export default TestimonialForm;
+export default Client;

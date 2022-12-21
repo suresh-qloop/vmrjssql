@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const EditCategoryForm = ({ preLoadedValues }) => {
+const Category = ({ preLoadedValues }) => {
   const { data } = useSession();
   const navigate = useRouter();
 
@@ -123,4 +123,4 @@ const EditCategoryForm = ({ preLoadedValues }) => {
   );
 };
 
-export default EditCategoryForm;
+export default Category;
