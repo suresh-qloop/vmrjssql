@@ -36,6 +36,16 @@ exports.getReport = async (req, res, next) => {
     const obj =
       "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,product_faq,slug,share_with_reseller,is_upcoming";
     const [report] = await Report.getOne("products", obj, `id=${id}`);
+
+    const [c] = await Report.findById(
+      "product_categories",
+      "*",
+      `product_id=${id}`,
+      "id DESC"
+    );
+    console.log(c);
+
+    report[0].category_id = await c[0].category_id;
     res.status(200).json(report[0]);
   } catch (err) {
     return res.status(500).json({
@@ -113,7 +123,7 @@ exports.addReport = async (req, res, next) => {
   const meta_desc = req.body.meta_desc;
 
   const slug = cleanString(product_name);
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
   // if (req.body.share_with_reseller === "true") {
@@ -125,7 +135,7 @@ exports.addReport = async (req, res, next) => {
   try {
     const field =
       "(product_name,alias,category_id,product_description,product_specification,is_set_toc,price,corporate_price,upto10,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,slug,publisher_name,modified,is_upcoming,share_with_reseller)";
-    const value = `('${product_name}', '${alias}', '${category_id}', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${modified}','${is_upcoming}','${share_with_reseller}')`;
+    const value = `('${product_name}', '${alias}', '2', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${date}','${is_upcoming}','${share_with_reseller}')`;
 
     const [report] = await Report.addData("products", field, value);
     const lastReportId = report.insertId.toString();
@@ -136,6 +146,9 @@ exports.addReport = async (req, res, next) => {
       obj,
       report.insertId
     );
+    const field2 = "(category_id,product_id,created,modified)";
+    const value2 = `('${category_id}','${report.insertId}','${date}','${date}')`;
+    const [add] = await Report.addData("product_categories", field2, value2);
 
     res.status(200).json({
       message: "success",
@@ -191,14 +204,21 @@ exports.editReport = async (req, res, next) => {
   const meta_desc = req.body.meta_desc;
 
   const slug = cleanString(req.body.slug);
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
 
   try {
-    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',publisher_name='${publisher_name}',modified='${modified}',is_upcoming='${is_upcoming}',share_with_reseller='${share_with_reseller}'`;
+    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',share_with_reseller='${share_with_reseller}'`;
 
     const [products] = await Report.editData("products", obj, id);
+
+    const obj2 = `category_id='${category_id}',modified='${date}'`;
+    const [productsCat] = await Report.edit(
+      "product_categories",
+      obj2,
+      `product_id=${id}`
+    );
 
     res.status(200).json({
       message: "success",
@@ -214,6 +234,10 @@ exports.deleteReport = async (req, res, next) => {
   const id = req.params.id;
   try {
     const [report] = await Report.softDelete("products", "is_deleted = 1", id);
+    const [remove] = await Report.hardDelete(
+      "product_categories",
+      `product_id=${id}`
+    );
     res.status(200).json({
       message: "success",
     });

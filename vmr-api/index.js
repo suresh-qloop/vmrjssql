@@ -2,13 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
 const adminRoutes = require("./routers/user");
 const categoryRoutes = require("./routers/category");
 const reportRoutes = require("./routers/report");
 const testimonialRoutes = require("./routers/testimonial");
 const clientRoutes = require("./routers/client");
 const articleRoutes = require("./routers/article");
-const path = require("path");
+const frontRoutes = require("./routers/front");
 
 const app = express();
 /**
@@ -35,6 +36,7 @@ app.use("/report", reportRoutes);
 app.use("/testimonial", testimonialRoutes);
 app.use("/client", clientRoutes);
 app.use("/article", articleRoutes);
+app.use("/front", frontRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
