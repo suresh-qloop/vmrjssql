@@ -15,13 +15,15 @@ const app = express();
 /**
  * @middleware
  */
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "/uploads/logos")));
 
 //enable cros
-app.use(cors({ origin: ["http://192.168.56.1:8080"], credentials: true }));
+// app.use(cors({ origin: ["http://192.168.56.1:8080"], credentials: true }));
 app.use(helmet());
 
 /**
@@ -45,5 +47,5 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message, data: data });
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`running at http://localhost:${port} `));

@@ -16,5 +16,7 @@ router.get("/search", frontRoute.getSearchReports);
 router.get("/latest-reports", frontRoute.getLatestReports);
 router.get("/latest-articles", frontRoute.getLatestArticles);
 router.get("/testimonials", frontRoute.AllTestimonials);
+router.get("/clients", frontRoute.AllClients);
+router.post("/contact", upload.none(), frontRoute.contactFormController);
 
 module.exports = router;

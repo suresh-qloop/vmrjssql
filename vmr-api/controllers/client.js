@@ -55,7 +55,8 @@ exports.addClient = async (req, res, next) => {
       if (
         req.files.logo[0].mimetype === "image/jpg" ||
         req.files.logo[0].mimetype === "image/jpeg" ||
-        req.files.logo[0].mimetype === "image/png"
+        req.files.logo[0].mimetype === "image/png" ||
+        req.files.logo[0].mimetype === "image/webp"
       ) {
         const value = `("${client_name}","${logo}", "${link}","${modified}")`;
         const [client] = await Client.addData(
@@ -98,7 +99,8 @@ exports.editClient = async (req, res, next) => {
       if (
         req.files.logo[0].mimetype === "image/jpg" ||
         req.files.logo[0].mimetype === "image/jpeg" ||
-        req.files.logo[0].mimetype === "image/png"
+        req.files.logo[0].mimetype === "image/png" ||
+        req.files.logo[0].mimetype === "image/webp"
       ) {
         const [imageDelete] = await Client.getOne(
           "our_clients",

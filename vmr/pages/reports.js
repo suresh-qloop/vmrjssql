@@ -7,7 +7,8 @@ import Breadcrumb from "../components/Frontend/Breadcrumb";
 import Navbar from "../components/Frontend/Navbar";
 import NavbarTop from "../components/Frontend/NavbarTop";
 import Footer from "../components/Frontend/Footer";
-import { currencyFormat } from "../components/utils/utils";
+// import { currencyInrFormat } from "../utils/utils.js";
+import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
 // import { useRouter } from "next/router";
@@ -329,7 +330,7 @@ const Reports = () => {
                             Price
                           </strong>
                           <h4 className="text-primary">
-                            {currencyFormat(report.price)}
+                            {currencyInrFormat(report.price)}
                           </h4>
                         </div>
                       </div>

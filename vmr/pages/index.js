@@ -82,7 +82,7 @@ export default function Home() {
         role="button"
         aria-label="Scroll to top"
       >
-        <i class="fas fa-chevron-up"></i>
+        <i className="fas fa-chevron-up"></i>
       </Link>
       <Footer />
     </div>

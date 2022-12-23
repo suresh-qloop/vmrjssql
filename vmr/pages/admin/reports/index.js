@@ -4,7 +4,8 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { CSVLink } from "react-csv";
 import axios from "axios";
-import { currencyFormat } from "../../../components/utils/utils";
+// import { currencyInrFormat } from "../../../utils/utils";
+import { currencyInrFormat } from "../../../utils/currencyInrFormat";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Header from "../../../components/Admin/Header";
@@ -22,31 +23,31 @@ const ReportList = () => {
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [reportName, setReportName] = useState("");
-  const [price, setPrice] = useState("");
+  const [cPrice, setCPrice] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   const [shareWithReseller, setShareWithReseller] = useState("");
   const [category, setCategory] = useState("");
   const [categoryList, setCategoryList] = useState();
 
-  const name = (report) => {
+  const product_name = (report) => {
     return report.product_name;
   };
-  const publisherName = (report) => {
+  const publisher_name = (report) => {
     return report.publisher_name;
   };
-  const metaTitle = (report) => {
+  const meta_name = (report) => {
     return report.meta_name;
   };
-  const metaDescription = (report) => {
+  const meta_desc = (report) => {
     return report.meta_desc;
   };
-  const metaKeywords = (report) => {
+  const meta_keywords = (report) => {
     return report.meta_keywords;
   };
-  const licenses = (report) => {
+  const price = (report) => {
     return report.price;
   };
-  const reportStatus = (report) => {
+  const is_active = (report) => {
     return report.is_active;
   };
 
@@ -62,45 +63,46 @@ const ReportList = () => {
   const columns = [
     {
       name: "Name",
-      selector: name,
+      selector: product_name,
       sortable: true,
       width: "200px",
     },
     {
       name: "Publisher Name",
-      selector: publisherName,
+      selector: publisher_name,
       sortable: true,
       width: "180px",
     },
     {
       name: "Meta Title",
-      selector: metaTitle,
+      selector: meta_name,
       sortable: true,
       width: "200px",
     },
     {
       name: "Meta Description",
-      selector: metaDescription,
+      selector: meta_desc,
       sortable: true,
       width: "180px",
     },
     {
       name: "Meta Keywords",
-      selector: metaKeywords,
+      selector: meta_keywords,
       sortable: true,
       width: "180px",
-      title: metaKeywords,
+      title: meta_keywords,
     },
     {
       name: "Price",
-      selector: licenses,
+      selector: price,
       sortable: true,
       width: "130px",
-      cell: (report) => <div>{currencyFormat(report.price)}</div>,
+      cell: (report) => <div>{currencyInrFormat(report.price)}</div>,
+      // cell: (report) => <div>{report.price}</div>,
     },
     {
       name: "Status",
-      selector: reportStatus,
+      selector: is_active,
       sortable: true,
       width: "130px",
       cell: (report) => (
@@ -208,12 +210,17 @@ const ReportList = () => {
   const download_pdf = () => {
     const doc = new jsPDF();
 
+    console.log(temp_rows, "temp_rows");
+
     const temp_rowData = temp_rows.map((d1) =>
       columns
         .slice(0, columns.length - 1)
         .map((d2) => d2.selector.name)
         .map((d3) => d1[d3])
     );
+
+    console.log(temp_rowData, "temp_rowData");
+
     doc.autoTable({
       head: [columns_data_for_export],
       body: temp_rowData,
@@ -316,7 +323,7 @@ const ReportList = () => {
     e.preventDefault();
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${price}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
+        `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
         {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
@@ -350,7 +357,7 @@ const ReportList = () => {
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Reports</li>
+                  <li className="breadcrumb-item active">All Reports - </li>
                 </ol>
               </div>
             </div>
@@ -447,7 +454,7 @@ const ReportList = () => {
                           type="number"
                           placeholder="Price"
                           className="form-control "
-                          onChange={(e) => setPrice(e.target.value)}
+                          onChange={(e) => setCPrice(e.target.value)}
                         />
                       </div>
                     </div>
@@ -593,7 +600,7 @@ const ReportList = () => {
           role="button"
           aria-label="Scroll to top"
         >
-          <i class="fas fa-chevron-up"></i>
+          <i className="fas fa-chevron-up"></i>
         </Link>
       </div>
       <Footer />

@@ -2,7 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import moment from "moment/moment";
-import { currencyFormat } from "../../../../components/utils/utils";
+// import { currencyInrFormat } from "../../../../utils/utils";
+import { currencyInrFormat } from "../../../../utils/currencyInrFormat";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -143,27 +144,27 @@ const ViewReport = () => {
                         <p>
                           <strong>Single User License($):</strong> &nbsp;&nbsp;
                           <span className="text-success">
-                            {currencyFormat(reportData.price)}
+                            {currencyInrFormat(reportData.price)}
                           </span>
                         </p>
                         <p>
                           <strong>Upto 10 Users License($):</strong>
                           &nbsp;&nbsp;
                           <span className="text-success">
-                            {currencyFormat(reportData.upto10)}
+                            {currencyInrFormat(reportData.upto10)}
                           </span>
                         </p>
                         <p>
                           <strong>Corporate User License($):</strong>
                           &nbsp;&nbsp;
                           <span className="text-success">
-                            {currencyFormat(reportData.corporate_price)}
+                            {currencyInrFormat(reportData.corporate_price)}
                           </span>
                         </p>
                         <p>
                           <strong>DataPack License($):</strong> &nbsp;&nbsp;
                           <span className="text-success">
-                            {currencyFormat(reportData.data_pack_price)}
+                            {currencyInrFormat(reportData.data_pack_price)}
                           </span>
                         </p>
                       </div>

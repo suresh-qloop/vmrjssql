@@ -8,9 +8,16 @@ import Breadcrumb from "../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
-import { currencyFormat } from "../../components/utils/utils";
+// import { currencyInrFormat } from "../../utils/utils";
+import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import Accordion from "react-bootstrap/Accordion";
 import Head from "next/head";
+import WhyChooseUs from "../../components/Frontend/SideBar/WhyChooseUs";
+import Clients from "../../components/Frontend/SideBar/Clients";
+import Testimonials from "../../components/Frontend/SideBar/Testimonials";
+import ChaptersInfo from "../../components/Frontend/SideBar/ChaptersInfo";
+import Objectives from "../../components/Frontend/SideBar/Objectives";
+import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
 
 const ReportDetails = ({ reportData }) => {
   // console.log(data, "context");
@@ -235,7 +242,7 @@ const ReportDetails = ({ reportData }) => {
                           Single User License:&nbsp;
                           <span className="text-xs">
                             {reportData.price
-                              ? currencyFormat(reportData.price)
+                              ? currencyInrFormat(reportData.price)
                               : ""}
                           </span>
                         </label>
@@ -254,7 +261,7 @@ const ReportDetails = ({ reportData }) => {
                           Upto 10 Users License:&nbsp;
                           <span className="text-xs">
                             {reportData.upto10
-                              ? currencyFormat(reportData.upto10)
+                              ? currencyInrFormat(reportData.upto10)
                               : ""}
                           </span>
                         </label>
@@ -273,7 +280,7 @@ const ReportDetails = ({ reportData }) => {
                           Corporate User License:&nbsp;
                           <span className="text-xs">
                             {reportData.corporate_price
-                              ? currencyFormat(reportData.corporate_price)
+                              ? currencyInrFormat(reportData.corporate_price)
                               : ""}
                           </span>
                         </label>
@@ -292,7 +299,7 @@ const ReportDetails = ({ reportData }) => {
                           DataPack License:&nbsp;
                           <span className="text-xs">
                             {reportData.data_pack_price
-                              ? currencyFormat(reportData.data_pack_price)
+                              ? currencyInrFormat(reportData.data_pack_price)
                               : ""}
                           </span>
                         </label>
@@ -308,277 +315,11 @@ const ReportDetails = ({ reportData }) => {
                   </Link>
                 </div>
               </div>
-              <div className="card ">
-                <div className="card-header  text-center p-2">
-                  <strong> Buy Chapters or Sections</strong>
-                </div>
-                <div className="card-body">
-                  <p className="m-0 pb-2  text-sm">
-                    Avail customized purchase options to meet your exact
-                    research needs:
-                  </p>
-                  <ul className="m-0 pl-3">
-                    <li>
-                      <span className=" text-sm">
-                        Buy sections of this report
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Buy country level reports
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Request for historical data
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Request discounts available for Start-Ups & Universities
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                  </ul>
-                  <Link
-                    className="btn btn-primary text-center mt-2  from-control"
-                    href="/report-details"
-                  >
-                    Request for Special Pricing
-                  </Link>
-                </div>
-              </div>
-              <div className="card ">
-                <div className="card-header  text-center p-2">
-                  <strong> Objectives of Study</strong>
-                </div>
-                <div className="card-body">
-                  <ul className="m-0 pl-3">
-                    <li>
-                      <span className=" text-sm">
-                        Define and measure the global market
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Volume or revenue forecast of the global market and its
-                        various sub-segments with respect to main geographies
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Analyze and identify major market trends along with the
-                        factors driving or inhibiting the market growth
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Study the company profiles of the major market players
-                        with their market share
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <span className=" text-sm">
-                        Analyze competitive developments
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                  </ul>
-                </div>
-              </div>
-              <div className="card ">
-                <div className="card-header  text-center p-2">
-                  <strong> Why Choose Us</strong>
-                </div>
-                <div className="card-body">
-                  <ul
-                    className="m-0 p-0 text-left"
-                    style={{ listStyle: "none", margin: 0 }}
-                  >
-                    <li>
-                      <i className="fas fa-user mr-3"></i>
-                      <span className=" text-sm">Client First Policy</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="fas fa-certificate mr-3"></i>
-                      <span className=" text-sm">Excellent Quality</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="fas fa-handshake mr-3"></i>
-                      <span className=" text-sm">After Sales Support</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="far fa-envelope mr-3"></i>
-                      <span className=" text-sm">24/7 Email Support</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                  </ul>
-                </div>
-              </div>
-              <div className="card ">
-                <div className="card-header  text-center p-2">
-                  <strong> Clients</strong>
-                </div>
-                <div className="card-body">
-                  <div
-                    id="carouselExampleIndicators"
-                    className="carousel slide"
-                    data-ride="carousel"
-                  >
-                    <div className="carousel-inner">
-                      <div className="carousel-item active client-logo">
-                        <img
-                          className="d-block w-100 "
-                          src="	https://www.valuemarketresearch.com/img/client_images/Of7Q2kP.webp"
-                          alt="First slide"
-                        />
-                      </div>
-                      <div className="carousel-item client-logo">
-                        <img
-                          className="d-block w-100"
-                          src="	https://www.valuemarketresearch.com/img/client_images/BmQ4EpG.webp"
-                          alt="Second slide"
-                        />
-                      </div>
-                      <div className="carousel-item client-logo">
-                        <img
-                          className="d-block w-100"
-                          src="	https://www.valuemarketresearch.com/img/client_images/Tg9AOGE.webp"
-                          alt="Third slide"
-                        />
-                      </div>
-                    </div>
-                    <a
-                      className="carousel-control-prev"
-                      href="#carouselExampleIndicators"
-                      role="button"
-                      data-slide="prev"
-                    >
-                      <span
-                        className="carousel-control-custom-icon"
-                        aria-hidden="true"
-                      >
-                        <i className="fas fa-chevron-left"></i>
-                      </span>
-                      <span className="sr-only">Previous</span>
-                    </a>
-                    <a
-                      className="carousel-control-next"
-                      href="#carouselExampleIndicators"
-                      role="button"
-                      data-slide="next"
-                    >
-                      <span
-                        className="carousel-control-custom-icon"
-                        aria-hidden="true"
-                      >
-                        <i className="fas fa-chevron-right"></i>
-                      </span>
-                      <span className="sr-only">Next</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="card ">
-                <div className="card-header  text-center p-2">
-                  <strong> Testimonials</strong>
-                </div>
-                <div className="card-body" style={{ height: 380 }}>
-                  <div
-                    id="carouselExampleIndicators1"
-                    className="carousel slide"
-                    data-ride="carousel"
-                  >
-                    <div className="carousel-inner">
-                      <div className="carousel-item active ">
-                        <p>
-                          <i className="fas fa-quote-left text-lg mr-3"></i>"
-                          This is our second purchase and we have been obliged
-                          by the service. We appreciate the efforts put by Value
-                          Market Research in terms of understanding our needs,
-                          expanding the scope of the study, delivery and
-                          handling after sales queries. "
-                        </p>
-                        <hr className="m-2 dashed" />
-                        <h5>
-                          <i className="far fa-user-circle text-lg mr-3"></i>Jo
-                          Chin, Owner of a Manufacturing Plant in Taiwan
-                        </h5>
-                      </div>
-                      <div className="carousel-item ">
-                        <p>
-                          <i className="fas fa-quote-left text-lg mr-3"></i>"
-                          Doing business with Value Market Research was – quick,
-                          easy and accurate. We got what we expected. The team
-                          was very helpful and processes were altered for our
-                          convenience. The whole process from understanding our
-                          niche requirements to delivery to after sales was
-                          excellent. "
-                        </p>
-                        <hr className="m-2 dashed" />
-                        <h5>
-                          <i className="far fa-user-circle text-lg mr-3"></i>
-                          Vincenzo Baydar – Head Planning, Leading Food Chain,
-                          US
-                        </h5>
-                      </div>
-                      <div className="carousel-item ">
-                        <p>
-                          <i className="fas fa-quote-left text-lg mr-3"></i>"
-                          Excellent work!! Working with you has been easy and
-                          direct. Your flexibility to alter the report scope and
-                          timely delivery assisted me in delivering my project
-                          proposal on time. "
-                        </p>
-                        <hr className="m-2 dashed" />
-                        <h5>
-                          <i className="far fa-user-circle text-lg mr-3"></i>Mia
-                          Tang, Director - Business Strategy, Steel Industry,
-                          Germany
-                        </h5>
-                      </div>
-                    </div>
-                    <a
-                      className="carousel-control-prev"
-                      href="#carouselExampleIndicators1"
-                      role="button"
-                      data-slide="prev"
-                    >
-                      <span
-                        className="carousel-control-custom-icon"
-                        aria-hidden="true"
-                      >
-                        <i className="fas fa-chevron-left"></i>
-                      </span>
-                      <span className="sr-only">Previous</span>
-                    </a>
-                    <a
-                      className="carousel-control-next"
-                      href="#carouselExampleIndicators1"
-                      role="button"
-                      data-slide="next"
-                    >
-                      <span
-                        className="carousel-control-custom-icon"
-                        aria-hidden="true"
-                      >
-                        <i className="fas fa-chevron-right"></i>
-                      </span>
-                      <span className="sr-only">Next</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <ChaptersInfo />
+              <Objectives />
+              <WhyChooseUs />
+              <Clients />
+              <Testimonials />
             </div>
             <div className="col-md-12">
               <div className="container my-5">
@@ -596,69 +337,7 @@ const ReportDetails = ({ reportData }) => {
                   </div>
                   <div className="col-md-2"></div>
                 </div>
-                <div className="row border p-2">
-                  <div className="col-md-6">
-                    <h5 className="text-center  mb-3">
-                      KEY QUESTIONS ANSWERED BY THE REPORT
-                    </h5>
-                    <div className="border p-3 m-3">
-                      <Link href="/" className="text-info">
-                        What is the current market size and trends?
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        What will be the market size during the forecast period?
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        How various market factors such as a driver, restraints,
-                        and opportunity impact the market?
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        What are the dominating segment and region in the market
-                        and why?
-                      </Link>
-                      <hr className="m-2 dashed" />
-
-                      <button className="btn btn-primary my-2  form-control">
-                        Request Free Sample Report
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <h5 className="text-center mb-3">
-                      NEED SPECIFIC MARKET INFORMATION?
-                    </h5>
-                    <div className="border p-3 m-3">
-                      <Link href="/" className="text-info">
-                        <i className="fas fa-user text-lg mr-2"></i> What is the
-                        current market size and trends?
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        <i className="fas fa-users text-lg mr-2"></i> Share your
-                        specific research requirments for a customized report
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        <i className="fas fa-share-alt text-lg mr-2"></i>
-                        Request for due diligence and consumer centric studies
-                      </Link>
-                      <hr className="m-2 dashed" />
-                      <Link href="/" className="text-info">
-                        <i className="fas fa-recycle text-lg mr-2"></i>
-                        Request for study updates, segment specific and country
-                        level reports
-                      </Link>
-                      <hr className="m-2 dashed" />
-
-                      <button className="btn btn-primary my-2  form-control">
-                        Request For Customization
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <KeyQuestion />
               </div>
             </div>
           </div>

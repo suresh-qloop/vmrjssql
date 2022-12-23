@@ -61,7 +61,7 @@ export default function Latest() {
                       <h5 className="mb-0">
                         <Link
                           className="text-dark"
-                          href={`/report/${report.id}`}
+                          href={`/report/${report.slug}`}
                         >
                           {report.product_name}
                         </Link>

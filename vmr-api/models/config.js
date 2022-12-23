@@ -7,8 +7,8 @@ const host =
     : `${process.env.HOST}`; //private field
 const user =
   `${process.env.NODE_ENV}` === "dev"
-    ? `${process.env.USER2}`
-    : `${process.env.USER}`; //private field
+    ? `${process.env.DBUSER2}`
+    : `${process.env.DBUSER}`; //private field
 const pass =
   `${process.env.NODE_ENV}` === "dev"
     ? `${process.env.PASS2}`
