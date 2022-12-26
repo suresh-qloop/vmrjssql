@@ -18,5 +18,8 @@ router.get("/latest-articles", frontRoute.getLatestArticles);
 router.get("/testimonials", frontRoute.AllTestimonials);
 router.get("/clients", frontRoute.AllClients);
 router.post("/contact", upload.none(), frontRoute.contactFormController);
+router.post("/req-email", upload.none(), frontRoute.MailController);
+router.get("/articles", frontRoute.AllArticles);
+router.get("/article/:id", frontRoute.getArticle);
 
 module.exports = router;

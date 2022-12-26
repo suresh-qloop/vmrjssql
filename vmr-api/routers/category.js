@@ -12,7 +12,7 @@ const upload = multer();
 // });
 
 router.get("/", authPage([1]), categoryRoute.AllCategory);
-router.get("/drop-list", authPage([1]), categoryRoute.dropListCategory);
+router.get("/drop-list", categoryRoute.dropListCategory);
 router.get("/:id", authPage([1]), categoryRoute.getCategory);
 router.post("/", upload.none(), authPage([1]), categoryRoute.addCategory);
 router.put("/:id", upload.none(), authPage([1]), categoryRoute.editCategory);

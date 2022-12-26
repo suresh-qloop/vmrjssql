@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const ChaptersInfo = () => {
+const ChaptersInfo = ({ slug }) => {
   return (
     <div className="card ">
       <div className="card-header  text-center p-2">
@@ -33,7 +33,7 @@ const ChaptersInfo = () => {
         </ul>
         <Link
           className="btn btn-primary text-center mt-2  from-control"
-          href="/report-details"
+          href={`/contact/request-for-special-price/${slug}`}
         >
           Request for Special Pricing
         </Link>

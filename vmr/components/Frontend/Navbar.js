@@ -97,7 +97,7 @@ const Navbar = (props) => {
                     navigate.pathname === "/reports" ? "active" : ""
                   }`}
                   href="/reports"
-                  prefetch={true}
+                  // prefetch={true}
                 >
                   Reports
                 </Link>

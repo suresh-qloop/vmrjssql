@@ -23,15 +23,17 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "/uploads/logos")));
 
 //enable cros
-// app.use(cors({ origin: ["http://192.168.56.1:8080"], credentials: true }));
+app.use(cors({ origin: [process.env.BACK_URL], credentials: true }));
 app.use(helmet());
 
 /**
  * @routers
  */
+
 app.get("/", (req, res) => {
   res.send("home");
 });
+
 app.use("/user", adminRoutes);
 app.use("/category", categoryRoutes);
 app.use("/report", reportRoutes);

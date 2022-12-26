@@ -133,14 +133,6 @@ const ReportDetails = ({ reportData }) => {
                     >
                       COVID-19 Impact
                     </Link>
-
-                    <button
-                      className="btn btn-primary btn-sm mr-3  mt-3"
-                      onClick={() => router.back()}
-                      style={{ width: 150 }}
-                    >
-                      back
-                    </button>
                   </div>
                 </div>
                 <div className="col-md-12">
@@ -315,7 +307,7 @@ const ReportDetails = ({ reportData }) => {
                   </Link>
                 </div>
               </div>
-              <ChaptersInfo />
+              <ChaptersInfo slug={reportData.slug} />
               <Objectives />
               <WhyChooseUs />
               <Clients />

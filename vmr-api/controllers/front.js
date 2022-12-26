@@ -4,6 +4,16 @@ const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    // user: smtpUser.value,
+    // pass: smtpPassword.value,
+    user: "prince.queueloop@gmail.com",
+    pass: "vkezezfceqphsmqg",
+  },
+});
+
 // exports.AllReports = async (req, res, next) => {
 //   try {
 //     const [reports] = await Model.findById(
@@ -258,15 +268,7 @@ exports.contactFormController = async (req, res, next) => {
     // const smtpUser = await Settings.findOne({ name: "smtpUser" });
     // const smtpPassword = await Settings.findOne({ name: "smtpPassword" });
     // const mailToUser = await Settings.findOne({ name: "mailToUser" });
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        // user: smtpUser.value,
-        // pass: smtpPassword.value,
-        user: "prince.queueloop@gmail.com",
-        pass: "",
-      },
-    });
+
     res.render(
       "useremail",
       {
@@ -350,7 +352,7 @@ exports.contactFormController = async (req, res, next) => {
   }
 };
 
-exports.askQuestionController = async (req, res, next) => {
+exports.MailController = async (req, res, next) => {
   await check("fullName").notEmpty().run(req);
   await check("organization").notEmpty().run(req);
   await check("designation").notEmpty().run(req);
@@ -360,6 +362,7 @@ exports.askQuestionController = async (req, res, next) => {
   await check("country").notEmpty().run(req);
   await check("question").notEmpty().run(req);
   await check("name").notEmpty().run(req);
+  await check("type").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -374,28 +377,18 @@ exports.askQuestionController = async (req, res, next) => {
   const country = req.body.country;
   const question = req.body.question;
   const name = req.body.name;
-  const type = "Ask Question";
+  const type = req.body.type;
 
   try {
-    // const smtpUser = await Settings.findOne({ name: "smtpUser" });
-    // const smtpPassword = await Settings.findOne({ name: "smtpPassword" });
-    // const mailToUser = await Settings.findOne({ name: "mailToUser" });
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        // user: smtpUser.value,
-        // pass: smtpPassword.value,
-        user: "prince.queueloop@gmail.com",
-        pass: "",
-      },
-    });
-    res.render("user-question-info-email", {}, function (err, html) {
+    res.render("user-question-email", {}, function (err, html) {
       if (err) {
         console.log("error rendering email template:", err);
-        return;
+        return res.status(500).json({
+          error: err.message,
+        });
       } else {
         //Setting up Email settings
-        var userMailOptions = {
+        let userMailOptions = {
           from: "prince.queueloop@gmail.com",
           to: confirmEmail,
           subject: "Contact Information",
@@ -412,7 +405,7 @@ exports.askQuestionController = async (req, res, next) => {
             console.log(response);
 
             res.render(
-              "admin-question-info-email",
+              "admin-question-email",
               {
                 fullName,
                 organization,
@@ -428,10 +421,12 @@ exports.askQuestionController = async (req, res, next) => {
               function (err, html) {
                 if (err) {
                   console.log("error rendering email template:", err);
-                  return;
+                  return res.status(500).json({
+                    error: err.message,
+                  });
                 } else {
                   //Setting up Email settings
-                  var adminMailOptions = {
+                  let adminMailOptions = {
                     from: "prince.queueloop@gmail.com",
                     to: "prince.queueloop@gmail.com",
                     subject: "Contact Information",
@@ -445,7 +440,10 @@ exports.askQuestionController = async (req, res, next) => {
                     function (error, response) {
                       if (error) {
                         console.log(error);
-                        res.send("Mail Error! Try again");
+                        // res.send("Mail Error! Try again");
+                        return res.status(500).json({
+                          error: "Mail Error! Try again",
+                        });
                       } else {
                         console.log(response);
 
@@ -462,467 +460,38 @@ exports.askQuestionController = async (req, res, next) => {
         });
       }
     });
-    // const userMail = await transporter.sendMail({
-    //   from: "prince.queueloop@gmail.com",
-    //   to: confirmEmail,
-    //   subject: "Contact Information",
-    //   html: `
-    //   <html lang="en-US">
-    //   <head>
-    //     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 
-    //     <meta
-    //       name="keywords"
-    //       content="Market Research Reports, Business Research, Industry Analysis, Market Insights, Syndicate Research Reports, Customized Research Reports, Business Consulting, VMR, VMR Reports, Industry Reports, Best market Research Company, Market Research Reports Provider, Research Reports company, Market Report Company"
-    //     />
-    //     <meta
-    //       name="description"
-    //       content="The Leading Market Research Reports provider - Value Market Research offers custom market analysis services with market growth prospects and forecasts."
-    //     />
+exports.AllArticles = async (req, res, next) => {
+  const start = req.query.start || 0;
+  const limit = req.query.limit || 10;
+  try {
+    const [articles] = await Model.fetchAll(
+      "articles",
+      "*",
+      `id DESC LIMIT ${start},${limit}`
+    );
+    const [c] = await Model.fetchAll("articles", "*", "id DESC");
+    const count = c.length;
 
-    //     <title>
-    //       Market Research Reports, Industry Insights: Value Market Research
-    //     </title>
-    //     <style type="text/css">
-    //       a:hover {
-    //         text-decoration: underline !important;
-    //       }
-    //     </style>
-    //   </head>
+    res.status(200).json({ articles, count });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 
-    //   <body
-    //     marginheight="0"
-    //     topmargin="0"
-    //     marginwidth="0"
-    //     style="margin: 0px; background-color: #f2f3f8"
-    //     leftmargin="0"
-    //   >
-    //     <!--100% body table-->
-    //     <table
-    //       cellspacing="0"
-    //       border="0"
-    //       cellpadding="0"
-    //       width="100%"
-    //       bgcolor="#f2f3f8"
-    //       style="
-    //         @import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700);
-    //         font-family: 'Open Sans', sans-serif;
-    //       "
-    //     >
-    //       <tr>
-    //         <td>
-    //           <table
-    //             style="background-color: #f2f3f8; max-width: 670px; margin: 0 auto"
-    //             width="100%"
-    //             border="0"
-    //             align="center"
-    //             cellpadding="0"
-    //             cellspacing="0"
-    //           >
-    //             <tr>
-    //               <td style="height: 80px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td style="height: 20px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td>
-    //                 <table
-    //                   width="95%"
-    //                   border="0"
-    //                   align="center"
-    //                   cellpadding="0"
-    //                   cellspacing="0"
-    //                   style="
-    //                     max-width: 670px;
-    //                     background: #fff;
-    //                     border-radius: 3px;
-    //                     text-align: center;
-    //                     -webkit-box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                     -moz-box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                     box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                   "
-    //                 >
-    //                   <tr>
-    //                     <td style="height: 40px">&nbsp;</td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td style="padding: 0 35px">
-    //                       <h1
-    //                         style="
-    //                           color: #1e1e2d;
-    //                           font-weight: 500;
-    //                           margin: 0;
-    //                           font-size: 32px;
-    //                           font-family: 'Rubik', sans-serif;
-    //                         "
-    //                       >
-    //                         Inquiry has been Submitted Successfully
-    //                       </h1>
-    //                       <span
-    //                         style="
-    //                           display: inline-block;
-    //                           vertical-align: middle;
-    //                           margin: 29px 0 26px;
-    //                           border-bottom: 1px solid #cecece;
-    //                           width: 100px;
-    //                         "
-    //                       ></span>
-    //                       <p
-    //                         style="
-    //                           color: #455056;
-    //                           font-size: 15px;
-    //                           line-height: 24px;
-    //                           margin: 0;
-    //                         "
-    //                       >
-    //                         Thank you for getting in touch! We appreciate you
-    //                         contacting us
-    //                       </p>
-    //                       <a
-    //                         href="https://vmr-app.vercel.app"
-    //                         style="
-    //                           background: #20e277;
-    //                           text-decoration: none !important;
-    //                           font-weight: 500;
-    //                           margin-top: 35px;
-    //                           color: #fff;
-    //                           text-transform: uppercase;
-    //                           font-size: 14px;
-    //                           padding: 10px 24px;
-    //                           display: inline-block;
-    //                           border-radius: 50px;
-    //                         "
-    //                         >Click Here</a
-    //                       >
-    //                     </td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td style="height: 40px">&nbsp;</td>
-    //                   </tr>
-    //                 </table>
-    //               </td>
-    //             </tr>
-
-    //             <tr>
-    //               <td style="height: 20px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td style="text-align: center">
-    //                 <p
-    //                   style="
-    //                     font-size: 14px;
-    //                     color: rgba(69, 80, 86, 0.7411764705882353);
-    //                     line-height: 18px;
-    //                     margin: 0 0 0;
-    //                   "
-    //                 >
-    //                   &copy; <strong>www.valuemarketresearch.com</strong>
-    //                 </p>
-    //               </td>
-    //             </tr>
-    //             <tr>
-    //               <td style="height: 80px">&nbsp;</td>
-    //             </tr>
-    //           </table>
-    //         </td>
-    //       </tr>
-    //     </table>
-    //     <!--/100% body table-->
-    //   </body>
-    // </html>
-    //   `,
-    // });
-
-    // const AdminMail = await transporter.sendMail({
-    //   to: mailToUser.value,
-    //   from: "prince.queueloop@gmail.com",
-    //   subject: "Contact Information",
-    //   html: `
-    //   <html lang="en-US">
-    //   <head>
-    //     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    //     <title>Contact Information</title>
-    //     <meta name="description" content="Contact Information" />
-    //     <style type="text/css">
-    //       a:hover {
-    //         text-decoration: underline !important;
-    //       }
-    //     </style>
-    //   </head>
-
-    //   <body
-    //     marginheight="0"
-    //     topmargin="0"
-    //     marginwidth="0"
-    //     style="margin: 0px; background-color: #f2f3f8"
-    //     leftmargin="0"
-    //   >
-    //     <table
-    //       cellspacing="0"
-    //       border="0"
-    //       cellpadding="0"
-    //       width="100%"
-    //       bgcolor="#f2f3f8"
-    //       style="
-    //         @import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700);
-    //         font-family: 'Open Sans', sans-serif;
-    //       "
-    //     >
-    //       <tr>
-    //         <td>
-    //           <table
-    //             style="background-color: #f2f3f8; max-width: 670px; margin: 0 auto"
-    //             width="100%"
-    //             border="0"
-    //             cellpadding="0"
-    //             cellspacing="0"
-    //           >
-    //             <tr>
-    //               <td style="height: 80px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td style="height: 20px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td>
-    //                 <table
-    //                   width="95%"
-    //                   border="0"
-    //                   cellpadding="0"
-    //                   cellspacing="0"
-    //                   style="
-    //                     max-width: 670px;
-    //                     /* background: #fff; */
-    //                     border-radius: 3px;
-    //                     text-align: center;
-    //                     -webkit-box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                     -moz-box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                     box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.06);
-    //                   "
-    //                 >
-    //                   <tr>
-    //                     <td style="height: 40px">&nbsp;</td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td style="padding: 0 35px">
-    //                       <h1
-    //                         style="
-    //                           color: #345f7a;
-    //                           font-weight: 500;
-    //                           margin: 0;
-    //                           font-size: 32px;
-    //                           font-family: 'Rubik', sans-serif;
-    //                         "
-    //                       >
-    //                         New Inquiry has been Received
-    //                       </h1>
-    //                       <p
-    //                         style="
-    //                           color: #1e1e2d;
-    //                           font-weight: 200;
-    //                           margin-top: 25px;
-    //                           font-size: 23px;
-    //                           font-family: 'Rubik', sans-serif;
-    //                         "
-    //                       >
-    //                         From Ask Question
-    //                       </p>
-    //                       <p
-    //                         style="
-    //                           color: #5b5b5b;
-    //                           font-weight: 200;
-    //                           margin-top: 25px;
-    //                           font-size: 12px;
-    //                           font-family: 'Rubik', sans-serif;
-    //                         "
-    //                       >
-    //                         Check Below Content
-    //                       </p>
-    //                       <span
-    //                         style="
-    //                           display: inline-block;
-    //                           vertical-align: middle;
-    //                           margin: 0px 0 26px;
-    //                           border-bottom: 1px solid #cecece;
-    //                           width: 100px;
-    //                         "
-    //                       ></span>
-    //                       <p
-    //                         style="
-    //                           color: #455056;
-    //                           font-size: 15px;
-    //                           line-height: 24px;
-    //                           margin: 0;
-    //                         "
-    //                       ></p>
-    //                     </td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td style="padding: 0 35px">
-    //                       <table
-    //                         style="table-layout: fixed; min-width: 600px"
-    //                         cellspacing="0"
-    //                         cellpadding="5"
-    //                       >
-    //                         <tbody>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="width: 30%">
-    //                               <div
-    //                                 style="
-    //                                   margin: 5px;
-    //                                   box-shadow: 0 2px 2px #aeaeae;
-    //                                   background-color: #d0d0d0;
-    //                                   color: white;
-    //                                   border-radius: 4px;
-    //                                   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    //                                   text-align: center;
-    //                                   padding: 5px;
-    //                                 "
-    //                               >
-    //                                 #
-    //                               </div>
-    //                             </td>
-    //                             <td>
-    //                               <div
-    //                                 style="
-    //                                   margin: 5px;
-    //                                   box-shadow: 0 2px 2px #aeaeae;
-    //                                   background-color: #d0d0d0;
-    //                                   color: white;
-    //                                   border-radius: 4px;
-    //                                   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    //                                   text-align: center;
-    //                                   padding: 5px;
-    //                                 "
-    //                               >
-    //                                 Information
-    //                               </div>
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">Full Name</td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${fullName}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">
-    //                               organization
-    //                             </td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${organization}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">
-    //                               Designation
-    //                             </td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${designation}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">Mobile</td>
-    //                             <td style="background-color: #f5f5f5">${mobile}</td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">
-    //                               Corporate Email
-    //                             </td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${corporateEmail}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">
-    //                               Confirm Email
-    //                             </td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${confirmEmail}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">Country</td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${country}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">Question</td>
-    //                             <td style="background-color: #f5f5f5">
-    //                               ${question}
-    //                             </td>
-    //                           </tr>
-    //                           <tr style="border-bottom: 0.5px solid #ddd">
-    //                             <td style="background-color: #f5f5f5">
-    //                               Report Name
-    //                             </td>
-    //                             <td style="background-color: #f5f5f5">${name}</td>
-    //                           </tr>
-    //                         </tbody>
-    //                       </table>
-    //                     </td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td>
-    //                       <a
-    //                         href="https://vmr-app.vercel.app"
-    //                         style="
-    //                           background: #20e277;
-    //                           text-decoration: none !important;
-    //                           font-weight: 500;
-    //                           margin-top: 35px;
-    //                           color: #fff;
-    //                           text-transform: uppercase;
-    //                           font-size: 14px;
-    //                           padding: 10px 24px;
-    //                           display: inline-block;
-    //                           border-radius: 50px;
-    //                         "
-    //                         >Click Here</a
-    //                       >
-    //                     </td>
-    //                   </tr>
-    //                   <tr>
-    //                     <td style="height: 40px">&nbsp;</td>
-    //                   </tr>
-    //                 </table>
-    //               </td>
-    //             </tr>
-
-    //             <tr>
-    //               <td style="height: 20px">&nbsp;</td>
-    //             </tr>
-    //             <tr>
-    //               <td style="text-align: center">
-    //                 <p
-    //                   style="
-    //                     font-size: 14px;
-    //                     color: rgba(69, 80, 86, 0.7411764705882353);
-    //                     line-height: 18px;
-    //                     margin: 0 0 0;
-    //                   "
-    //                 >
-    //                   &copy; <strong>www.valuemarketresearch.com</strong>
-    //                 </p>
-    //               </td>
-    //             </tr>
-    //             <tr>
-    //               <td style="height: 80px">&nbsp;</td>
-    //             </tr>
-    //           </table>
-    //         </td>
-    //       </tr>
-    //     </table>
-    //   </body>
-    // </html>
-    //   `,
-    // });
-
-    // res.status(201).json({
-    //   message: "Mail Send successfully",
-    // });
+exports.getArticle = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const [article] = await Model.getOne("articles", "*", `id='${id}'`);
+    res.status(200).json(article[0]);
   } catch (err) {
     return res.status(500).json({
       error: err.message,

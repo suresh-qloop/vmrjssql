@@ -16,7 +16,7 @@ import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
 const CategoryList = () => {
-  const { status, data } = useSession();
+  const { authStatus, data } = useSession();
   const refContainer = useRef();
   const [catData, setCatData] = useState([]);
 
@@ -28,7 +28,7 @@ const CategoryList = () => {
     return category.name;
   };
 
-  const catStatus = (category) => {
+  const status = (category) => {
     return category.status;
   };
 
@@ -51,7 +51,7 @@ const CategoryList = () => {
     },
     {
       name: "Status",
-      selector: catStatus,
+      selector: status,
       sortable: true,
       width: "130px",
       cell: (category) => (
@@ -166,10 +166,10 @@ const CategoryList = () => {
   useEffect(() => {
     getReportCategoryData();
     // eslint-disable-next-line
-  }, [status]);
+  }, [authStatus]);
 
   const getReportCategoryData = async () => {
-    if (!(status === "loading")) {
+    if (!(authStatus === "loading")) {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category`, {

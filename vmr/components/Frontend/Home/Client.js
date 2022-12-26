@@ -24,7 +24,7 @@ export default function Fact() {
       {clientList?.map((client, i) => (
         <div className="col-md-2 border text-center">
           <img
-            src={`http://localhost:8080/uploads/logos/${client.logo}`}
+            src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
             className="client_image"
             alt="client_image"
           />

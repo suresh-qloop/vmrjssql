@@ -40,7 +40,7 @@ const Clients = () => {
               >
                 <img
                   className="d-block w-100 "
-                  src={`http://localhost:8080/uploads/logos/${client.logo}`}
+                  src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
                   alt=""
                 />
               </div>
