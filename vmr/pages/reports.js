@@ -11,6 +11,7 @@ import Footer from "../components/Frontend/Footer";
 import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
+import BackTop from "../components/common/BackTop";
 // import { useRouter } from "next/router";
 
 // import { useSession } from "next-auth/react";
@@ -18,10 +19,8 @@ import { Fragment } from "react";
 const Reports = () => {
   // const router = useRouter();
   const [categoryList, setCategoryList] = useState();
-  console.log(categoryList);
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
-  console.log(count);
   const [hasMore, setHasMore] = useState(true);
   const [categoryId, setCategoryId] = useState();
 
@@ -342,6 +341,7 @@ const Reports = () => {
           </div>
         </div>
       </div>
+      <BackTop />
       <Footer />
     </div>
   );

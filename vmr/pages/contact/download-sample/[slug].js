@@ -12,15 +12,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
 const DownloadSample = () => {
-  // console.log(data, "context");
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  // setReportData(data);
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug);
 
   const getReportData = async () => {
     await axios
@@ -43,7 +40,6 @@ const DownloadSample = () => {
   }, [slug]);
 
   const handleCaptcha = async (value) => {
-    console.log("value", value);
     setIsVerified(true);
   };
 
@@ -54,10 +50,8 @@ const DownloadSample = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    // console.log(data);
     data.report = reportData.product_name;
     const finalData = { ...data, name, description };
-    console.log(finalData);
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
       .then((res) => {

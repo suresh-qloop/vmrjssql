@@ -9,6 +9,7 @@ const reportRoutes = require("./routers/report");
 const testimonialRoutes = require("./routers/testimonial");
 const clientRoutes = require("./routers/client");
 const articleRoutes = require("./routers/article");
+const settingRoutes = require("./routers/setting");
 const frontRoutes = require("./routers/front");
 
 const app = express();
@@ -40,6 +41,7 @@ app.use("/report", reportRoutes);
 app.use("/testimonial", testimonialRoutes);
 app.use("/client", clientRoutes);
 app.use("/article", articleRoutes);
+app.use("/setting", settingRoutes);
 app.use("/front", frontRoutes);
 
 app.use((error, req, res, next) => {

@@ -18,10 +18,8 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  console.log(status);
 
   const LoginHandler = async (data, e) => {
-    console.log(data);
     e.preventDefault();
 
     const status = await signIn("credentials", {
@@ -31,7 +29,6 @@ const Login = () => {
       callbackUrl: "/dashboard",
     });
 
-    console.log(status);
     if (status.ok) {
       navigate.push("/admin/dashboard");
     }
@@ -103,13 +100,7 @@ const Login = () => {
               </div>
               <div className="row">
                 <div className="col-4">
-                  <button
-                    type="submit"
-                    onClick={() => {
-                      console.log("click");
-                    }}
-                    className="btn btn-primary btn-block"
-                  >
+                  <button type="submit" className="btn btn-primary btn-block">
                     Sign In
                   </button>
                 </div>

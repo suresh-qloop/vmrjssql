@@ -7,7 +7,7 @@ import Fact from "../components/Frontend/Home/Fact";
 import Testimonial from "../components/Frontend/Home/Testimonial";
 import Research from "../components/Frontend/Home/Research";
 import Client from "../components/Frontend/Home/Client";
-import Link from "next/link";
+import BackTop from "../components/common/BackTop";
 
 export default function Home() {
   return (
@@ -75,15 +75,7 @@ export default function Home() {
         </div>
       </section>
       <Latest />
-      <Link
-        id="back-to-top"
-        href="#"
-        className="btn btn-primary back-to-top"
-        role="button"
-        aria-label="Scroll to top"
-      >
-        <i className="fas fa-chevron-up"></i>
-      </Link>
+      <BackTop />
       <Footer />
     </div>
   );

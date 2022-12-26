@@ -108,6 +108,14 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
+                {isAdmin && (
+                  <li className="nav-item">
+                    <Link href="/admin/settings" className="nav-link">
+                      <i className="nav-icon fas fa-wrench mr-2"></i>
+                      <p>Settings</p>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
             {/* /.sidebar-menu */}

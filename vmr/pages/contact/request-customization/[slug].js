@@ -12,17 +12,14 @@ import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
 const RequestCustomization = () => {
-  // console.log(data, "context");
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  console.log(reportData);
 
   // setReportData(data);
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug);
 
   const getReportData = async () => {
     await axios
@@ -45,7 +42,6 @@ const RequestCustomization = () => {
   }, [slug]);
 
   const handleCaptcha = async (value) => {
-    console.log("value", value);
     setIsVerified(true);
   };
 
@@ -56,7 +52,6 @@ const RequestCustomization = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     data.report = reportData.product_name;
     const finalData = { ...data, name, description };
     axios

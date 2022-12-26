@@ -210,16 +210,12 @@ const ReportList = () => {
   const download_pdf = () => {
     const doc = new jsPDF();
 
-    console.log(temp_rows, "temp_rows");
-
     const temp_rowData = temp_rows.map((d1) =>
       columns
         .slice(0, columns.length - 1)
         .map((d2) => d2.selector.name)
         .map((d3) => d1[d3])
     );
-
-    console.log(temp_rowData, "temp_rowData");
 
     doc.autoTable({
       head: [columns_data_for_export],
@@ -244,10 +240,9 @@ const ReportList = () => {
           },
         })
         .then((res) => {
-          //   console.log(res.data.reports);
           setReportData(res.data);
           setLoading(false);
-          if (reportData < 0) {
+          if (reportData.length < 0) {
             setNoRecords(true);
           }
         })

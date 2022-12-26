@@ -28,7 +28,7 @@ export default function Latest() {
   const getArticleList = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/latest-articles?start=0&limit=2`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/latest-articles?start=0&limit=5`
       )
       .then((res) => {
         setArticleList(res.data);
@@ -75,22 +75,6 @@ export default function Latest() {
                       >
                         {/* {report.name.slice(0, 150)}... */}
                       </p>
-                      {/* <div className="d-flax ">
-                    <button
-                      className="btn btn-success btn-sm mr-3  mt-3"
-                      style={{ width: 180 }}
-                    >
-                      <i className="fas fa-download"></i> Download Sample
-                    </button>
-
-                    <button
-                      className="btn btn-info btn-sm mt-3"
-                      style={{ width: 150 }}
-                    >
-                      <i className="fas fa-question-circle"></i> Ask
-                      Questions
-                    </button>
-                  </div> */}
                     </div>
                   </div>
                 </div>
@@ -113,8 +97,7 @@ export default function Latest() {
                     <p className="mb-0">
                       <Link
                         className="text-dark"
-                        // href={`/report/${article.slug}`}
-                        href={`/`}
+                        href={`/article/${article.id}`}
                       >
                         {article.headline}
                       </Link>

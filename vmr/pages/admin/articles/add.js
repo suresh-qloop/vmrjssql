@@ -65,7 +65,6 @@ const AddArticle = () => {
     }
 
     const finalData = { ...reportData, description };
-    console.log(finalData);
 
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/article/`, finalData, {

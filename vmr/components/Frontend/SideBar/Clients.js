@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 const Clients = () => {
   const [clientList, setClientList] = useState([]);
-  console.log(clientList);
   useEffect(() => {
     getClientList();
     // eslint-disable-next-line

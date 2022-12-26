@@ -144,7 +144,7 @@ const Client = ({ preLoadedValues }) => {
                           )} */}
                         </div>
                         <img
-                          src={`http://localhost:8080/uploads/logos/${preLoadedValues.logo}`}
+                          src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${preLoadedValues.logo}`}
                           alt=""
                         />
                       </div>

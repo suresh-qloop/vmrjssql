@@ -29,9 +29,9 @@ const Navbar = (props) => {
     // });
   };
   return (
-    <div className=" bg-white py-2 shadow-sm rounded">
+    <div className=" bg-white py-2 shadow-sm rounded sticky-top">
       <div className=" container">
-        <nav className="navbar navbar-expand-lg navbar-white bg-white">
+        <nav className="navbar navbar-expand-lg navbar-white bg-white ">
           {/* <Link className="navbar-brand" href="/">
           </Link> */}
           <Link className="navbar-brand" href="/">
@@ -106,9 +106,9 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    navigate.pathname === "/" ? "active" : ""
+                    navigate.pathname === "/articles" ? "active" : ""
                   }`}
-                  href="/"
+                  href="/articles"
                 >
                   Press Release
                 </Link>
@@ -116,9 +116,9 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    navigate.pathname === "/" ? "active" : ""
+                    navigate.pathname === "/about" ? "active" : ""
                   }`}
-                  href="/"
+                  href="/about"
                 >
                   About Us
                 </Link>

@@ -5,7 +5,7 @@ import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
 import Breadcrumb from "../../components/Frontend/Breadcrumb";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
 // import { currencyInrFormat } from "../../utils/utils";
@@ -18,6 +18,7 @@ import Testimonials from "../../components/Frontend/SideBar/Testimonials";
 import ChaptersInfo from "../../components/Frontend/SideBar/ChaptersInfo";
 import Objectives from "../../components/Frontend/SideBar/Objectives";
 import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
+import BackTop from "../../components/common/BackTop";
 
 const ReportDetails = ({ reportData }) => {
   // console.log(data, "context");
@@ -25,7 +26,7 @@ const ReportDetails = ({ reportData }) => {
   // console.log(commentsFromServer, "commentsFromServer");
 
   // setReportData(data);
-  const router = useRouter();
+  // const router = useRouter();
   // const { slug } = router.query;
   // console.log(slug);
 
@@ -46,7 +47,14 @@ const ReportDetails = ({ reportData }) => {
   //   }
   //   getReportData();
   // }, [slug]);
-
+  const obj = JSON.parse(reportData.product_faq);
+  let output;
+  if (obj) {
+    output = Object.entries(obj).map(([question, answer]) => ({
+      question,
+      answer,
+    }));
+  }
   return (
     <Fragment>
       <Head>
@@ -60,7 +68,7 @@ const ReportDetails = ({ reportData }) => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Industrial Equipment" />
+      <Breadcrumb name={reportData.alias} />
       <div className=" bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">
@@ -193,7 +201,7 @@ const ReportDetails = ({ reportData }) => {
                       Frequently Asked Questions (FAQs) about this Report
                     </h4>
                   )}
-                  {reportData.faqs?.map((faq, i) => (
+                  {output?.map((faq, i) => (
                     <Accordion
                       key={i + 1}
                       defaultActiveKey="0"
@@ -335,7 +343,7 @@ const ReportDetails = ({ reportData }) => {
           </div>
         </div>
       </div>
-
+      <BackTop />
       <Footer />
     </Fragment>
   );

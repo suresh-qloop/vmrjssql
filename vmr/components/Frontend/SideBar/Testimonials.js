@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 const Testimonials = () => {
   const [testimonialList, setTestimonialList] = useState([]);
-  console.log(testimonialList);
   useEffect(() => {
     getReportList();
     // eslint-disable-next-line

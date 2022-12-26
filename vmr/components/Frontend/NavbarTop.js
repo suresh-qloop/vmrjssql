@@ -2,7 +2,7 @@ import React from "react";
 
 const NavbarTop = () => {
   return (
-    <div className=" dark-background ">
+    <div className=" dark-background">
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-sm-12">
@@ -11,7 +11,7 @@ const NavbarTop = () => {
                 className="text-light"
                 href="mailto:sales@valuemarketresearch.com"
               >
-                <i className="fas fa-envelope-open-text mr-3 mt-1"></i>
+                <i className="fas fa-envelope-open-text mr-2 mt-1"></i>
                 &nbsp; sales@valuemarketresearch.com
               </a>
             </div>

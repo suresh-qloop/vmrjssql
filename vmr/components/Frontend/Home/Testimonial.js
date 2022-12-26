@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 
 export default function Testimonial() {
   const [testimonialList, setTestimonialList] = useState([]);
-  console.log(testimonialList);
   useEffect(() => {
     getReportList();
     // eslint-disable-next-line
@@ -26,12 +25,15 @@ export default function Testimonial() {
       <div
         id="carouselExampleIndicators1"
         className="carousel slide my-4"
-        data-interval="5000"
+        data-interval="4000"
         data-ride="carousel"
       >
         <div className="carousel-inner">
           {testimonialList?.map((article, i) => (
-            <div key={i} className={`carousel-item ${i === 0 ? "active" : ""}`}>
+            <div
+              key={i + 1}
+              className={`carousel-item ${i === 0 ? "active" : ""}`}
+            >
               <div className="d-block ">
                 <p>
                   <i className="fas fa-quote-left text-lg mr-3"></i>"
@@ -48,7 +50,9 @@ export default function Testimonial() {
           ))}
         </div>
       </div>
-      <button className="btn btn-info my-2">Read More</button>
+      <Link href={`/testimonials`} className="btn btn-info my-2">
+        Read More
+      </Link>
     </div>
   );
 }

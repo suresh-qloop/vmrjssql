@@ -349,3 +349,42 @@ hr.dashed {
 .dangerously br {
   display: none !important;
 }
+
+.dangerously-article {
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dangerously-article p {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px !important;
+  text-align: justify !important;
+  font-weight: 300 !important;
+  color: #5b5b5b !important;
+}
+.dangerously-article strong {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px !important;
+  text-align: justify !important;
+  font-weight: 300 !important;
+  color: #5b5b5b !important;
+}
+.dangerously-article span {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px !important;
+  text-align: justify !important;
+  font-weight: 300 !important;
+  color: #5b5b5b !important;
+}
+
+.dangerously-article img {
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.dangerously-article br {
+  display: none !important;
+}

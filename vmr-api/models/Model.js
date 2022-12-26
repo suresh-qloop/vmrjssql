@@ -8,7 +8,6 @@ module.exports = class Model {
   }
 
   static getOne(table, field = "*", con) {
-    console.log(`SELECT ${field} FROM ${table} WHERE ${con}`);
     return db.execute(`SELECT ${field} FROM ${table} WHERE ${con}`);
   }
 
@@ -61,26 +60,4 @@ module.exports = class Model {
       AND product_specification LIKE '%${name}%' AND product_description LIKE '%${name}%'`
     );
   }
-
-  // static limitedProducts(start, limit) {
-  //   return db.execute(
-  //     `SELECT p.id,p.product_name,p.product_description,p.publisher_name,p.price,p.pub_date,p.is_active
-  //     FROM products p,product_categories pc WHERE p.id = pc.product_id
-  //     ORDER BY p.id
-  //     LIMIT ${start},${limit}`
-  //   );
-  // }
-
-  // static AllProducts() {
-  //   return db.execute(
-  //     `SELECT * FROM products p,product_categories pc WHERE p.id = pc.product_id ORDER BY p.id`
-  //   );
-  // }
-
-  // static findProductByCatId(id, start, limit) {
-  //   return db.execute(
-  //     `SELECT p.* FROM products p, product_categories pc WHERE pc.category_id=${id} AND p.id=pc.product_id AND
-  //      p.is_deleted = 0 AND p.is_active = 1 ORDER BY p.id LIMIT ${start},${limit}`
-  //   );
-  // }
 };

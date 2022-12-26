@@ -4,16 +4,6 @@ const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    // user: smtpUser.value,
-    // pass: smtpPassword.value,
-    user: "prince.queueloop@gmail.com",
-    pass: "vkezezfceqphsmqg",
-  },
-});
-
 // exports.AllReports = async (req, res, next) => {
 //   try {
 //     const [reports] = await Model.findById(
@@ -121,9 +111,7 @@ exports.AllCategories = async (req, res, next) => {
 };
 
 exports.getReport = async (req, res, next) => {
-  // console.log(req);
   const slug = req.params.slug;
-  // console.log(slug);
 
   try {
     const [report] = await Model.getOne(
@@ -131,7 +119,6 @@ exports.getReport = async (req, res, next) => {
       "p.*,c.category_name",
       `p.category_id = c.id AND p.slug='${slug}'`
     );
-    console.log(report[0]);
     res.status(200).json(report[0]);
   } catch (err) {
     return res.status(500).json({
@@ -170,8 +157,6 @@ exports.getCategoryReports = async (req, res, next) => {
 
 exports.getSearchReports = async (req, res, next) => {
   const name = req.query.name;
-  console.log(req);
-  console.log(name);
 
   try {
     const [reports] = await Model.searchReport(name);
@@ -265,9 +250,34 @@ exports.contactFormController = async (req, res, next) => {
   const message = req.body.message;
 
   try {
-    // const smtpUser = await Settings.findOne({ name: "smtpUser" });
-    // const smtpPassword = await Settings.findOne({ name: "smtpPassword" });
-    // const mailToUser = await Settings.findOne({ name: "mailToUser" });
+    const [smtpUser] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpUser'`,
+      "id ASC"
+    );
+    const [smtpPassword] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpPassword'`,
+      "id ASC"
+    );
+    const [mailToUser] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='mailToUser'`,
+      "id ASC"
+    );
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: smtpUser[0].value,
+        pass: smtpPassword[0].value,
+        // user: "prince.queueloop@gmail.com",
+        // pass: "vkezezfceqphsmqg",
+      },
+    });
 
     res.render(
       "useremail",
@@ -279,12 +289,13 @@ exports.contactFormController = async (req, res, next) => {
       },
       function (err, html) {
         if (err) {
-          console.log("error rendering email template:", err);
-          return;
+          return res.status(500).json({
+            error: err.message,
+          });
         } else {
           //Setting up Email settings
           var userMailOptions = {
-            from: "prince.queueloop@gmail.com",
+            from: smtpUser[0].value,
             to: email,
             subject: "Contact Information",
             generateTextFromHtml: true,
@@ -297,8 +308,6 @@ exports.contactFormController = async (req, res, next) => {
               console.log(error);
               res.send("Mail Error! Try again");
             } else {
-              console.log(response);
-
               res.render(
                 "adminemail",
                 {
@@ -309,13 +318,14 @@ exports.contactFormController = async (req, res, next) => {
                 },
                 function (err, html) {
                   if (err) {
-                    console.log("error rendering email template:", err);
-                    return;
+                    return res.status(500).json({
+                      error: err.message,
+                    });
                   } else {
                     //Setting up Email settings
                     var adminMailOptions = {
-                      from: "prince.queueloop@gmail.com",
-                      to: "prince.queueloop@gmail.com",
+                      from: smtpUser[0].value,
+                      to: mailToUser[0].value,
                       subject: "Contact Information",
                       generateTextFromHtml: true,
                       html: html,
@@ -329,8 +339,6 @@ exports.contactFormController = async (req, res, next) => {
                           console.log(error);
                           res.send("Mail Error! Try again");
                         } else {
-                          console.log(response);
-
                           res.status(201).json({
                             message: "Mail Send successfully",
                           });
@@ -380,16 +388,44 @@ exports.MailController = async (req, res, next) => {
   const type = req.body.type;
 
   try {
+    const [smtpUser] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpUser'`,
+      "id ASC"
+    );
+    const [smtpPassword] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpPassword'`,
+      "id ASC"
+    );
+    const [mailToUser] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='mailToUser'`,
+      "id ASC"
+    );
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: smtpUser[0].value,
+        pass: smtpPassword[0].value,
+        // user: "prince.queueloop@gmail.com",
+        // pass: "vkezezfceqphsmqg",
+      },
+    });
+
     res.render("user-question-email", {}, function (err, html) {
       if (err) {
-        console.log("error rendering email template:", err);
         return res.status(500).json({
           error: err.message,
         });
       } else {
         //Setting up Email settings
         let userMailOptions = {
-          from: "prince.queueloop@gmail.com",
+          from: smtpUser[0].value,
           to: confirmEmail,
           subject: "Contact Information",
           generateTextFromHtml: true,
@@ -399,11 +435,8 @@ exports.MailController = async (req, res, next) => {
         //Execute this to send the mail
         transporter.sendMail(userMailOptions, function (error, response) {
           if (error) {
-            console.log(error);
             res.send("Mail Error! Try again");
           } else {
-            console.log(response);
-
             res.render(
               "admin-question-email",
               {
@@ -420,15 +453,14 @@ exports.MailController = async (req, res, next) => {
               },
               function (err, html) {
                 if (err) {
-                  console.log("error rendering email template:", err);
                   return res.status(500).json({
                     error: err.message,
                   });
                 } else {
                   //Setting up Email settings
                   let adminMailOptions = {
-                    from: "prince.queueloop@gmail.com",
-                    to: "prince.queueloop@gmail.com",
+                    from: smtpUser[0].value,
+                    to: mailToUser[0].value,
                     subject: "Contact Information",
                     generateTextFromHtml: true,
                     html: html,
@@ -445,8 +477,6 @@ exports.MailController = async (req, res, next) => {
                           error: "Mail Error! Try again",
                         });
                       } else {
-                        console.log(response);
-
                         res.status(201).json({
                           message: "Mail Send successfully",
                         });

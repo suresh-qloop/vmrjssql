@@ -43,7 +43,7 @@ exports.getReport = async (req, res, next) => {
       `product_id=${id}`,
       "id DESC"
     );
-    console.log(c);
+  
 
     report[0].category_id = await c[0].category_id;
     res.status(200).json(report[0]);

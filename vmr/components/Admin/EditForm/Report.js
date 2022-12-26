@@ -80,8 +80,6 @@ const Report = ({ preLoadedValues }) => {
     reportData.product_specification = TOC;
     reportData.product_description = description;
 
-    console.log(reportData, "reportData");
-
     axios
       .put(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, reportData, {
         headers: {
@@ -93,7 +91,6 @@ const Report = ({ preLoadedValues }) => {
         router.push("/admin/reports");
       })
       .catch((error) => {
-        console.log(error);
         if (error.response.status === 401) {
           router.push("/unauthorized");
         }
@@ -110,7 +107,6 @@ const Report = ({ preLoadedValues }) => {
   }, [status, id]);
 
   const getEditData = async () => {
-    console.log(id);
     if (!(status === "loading")) {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, {

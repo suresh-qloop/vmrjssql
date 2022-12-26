@@ -11,19 +11,19 @@ const Footer = () => {
 
             <ul className="footer_ul_amrc">
               <li>
-                <Link href="/">About Us</Link>
+                <Link href="/about">About Us</Link>
               </li>
               <li>
-                <Link href="/report-list">Reports</Link>
+                <Link href="/reports">Reports</Link>
               </li>
               <li>
                 <Link href="/">Upcoming Reports</Link>
               </li>
               <li>
-                <Link href="/">Testimonials</Link>
+                <Link href="/testimonials">Testimonials</Link>
               </li>
               <li>
-                <Link href="/">Contact Us</Link>
+                <Link href="/contact">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -33,10 +33,10 @@ const Footer = () => {
 
             <ul className="footer_ul_amrc">
               <li>
-                <Link href="/">Press Release</Link>
+                <Link href="/articles">Press Release</Link>
               </li>
               <li>
-                <Link href="/">Analyses</Link>
+                <Link href="/articles">Analyses</Link>
               </li>
               <li>
                 <Link href="/">Privacy Policy</Link>

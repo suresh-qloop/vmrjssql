@@ -179,7 +179,6 @@ const CategoryList = () => {
         })
         .then((res) => {
           setCatData(res.data);
-          console.log(res.data);
           setLoading(false);
           if (res.data.length < 0) {
             setNoRecords(true);

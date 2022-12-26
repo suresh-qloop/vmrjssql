@@ -11,7 +11,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../components/helpers/Notification";
 
 const ContactUs = () => {
-  // console.log(data, "context");
   const [isVerified, setIsVerified] = useState(false);
 
   const {
@@ -26,12 +25,10 @@ const ContactUs = () => {
   useEffect(() => {}, []);
 
   const handleCaptcha = async (value) => {
-    console.log("value", value);
     setIsVerified(true);
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/contact`, data)
       .then((res) => {
@@ -177,7 +174,7 @@ const ContactUs = () => {
 
                     <button
                       className="btn btn-info justify-content-center mt-3"
-                      disabled={!isVerified}
+                      // disabled={!isVerified}
                     >
                       Submit
                     </button>
@@ -199,13 +196,13 @@ const ContactUs = () => {
                     href="mailto:sales@valuemarketresearch.com"
                     className="text-sm text-secondary "
                   >
-                    <i class="far fa-envelope mr-2"></i>
+                    <i className="far fa-envelope mr-2"></i>
                     sales@valuemarketresearch.com
                   </a>
                 </p>
                 <p>
                   <a href="tel:8882941147" className="text-sm text-secondary">
-                    <i class="fas fa-mobile-alt mr-2"></i>+1-888-294-1147
+                    <i className="fas fa-mobile-alt mr-2"></i>+1-888-294-1147
                   </a>
                 </p>
               </div>
