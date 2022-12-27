@@ -38,6 +38,7 @@ exports.AllReports = async (req, res, next) => {
       "p.id DESC"
     );
     const count = c.length;
+    // console.log(reports);
 
     // const [reports] = await Model.limitedProducts(start, limit);
     // const [c] = await Model.AllProducts();

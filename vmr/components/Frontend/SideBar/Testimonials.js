@@ -28,6 +28,7 @@ const Testimonials = () => {
           id="carouselExampleIndicators1"
           className="carousel slide"
           data-ride="carousel"
+          data-interval="4000"
         >
           <div className="carousel-inner">
             {testimonialList?.map((article, i) => (
@@ -62,7 +63,7 @@ const Testimonials = () => {
             <span className="sr-only">Previous</span>
           </a>
           <a
-            className="carousel-control-next text-dark"
+            className="carousel-control-next "
             href="#carouselExampleIndicators1"
             role="button"
             data-slide="next"

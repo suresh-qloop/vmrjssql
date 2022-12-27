@@ -57,13 +57,13 @@ exports.addCategory = async (req, res, next) => {
 
   const category_name = toUpperCase(req.body.category_name);
 
-  let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
-    const value = `("${category_name}", "2", "2","${created}", "${created}")`;
+    const value = `("${category_name}", "2", "2", "${date}")`;
     const [category] = await Category.addData(
       "categories",
-      "(category_name,parent_category_id,level,created,modified)",
+      "(category_name,parent_category_id,level,modified)",
       value
     );
 

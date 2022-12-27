@@ -26,11 +26,11 @@ const Reports = () => {
 
   useEffect(() => {
     getCategoryList();
+
     getReportList();
 
     // eslint-disable-next-line
   }, []);
-
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
@@ -67,6 +67,7 @@ const Reports = () => {
       .then((res) => {
         setReportList(res.data.reports);
         setCount(res.data.count);
+        console.log(reportList);
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +78,7 @@ const Reports = () => {
     if (categoryId) {
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=2`
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
         )
         .then((res) => {
           const reports = res.data.reports;
@@ -91,7 +92,7 @@ const Reports = () => {
     if (!categoryId) {
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=2`
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
         )
         .then((res) => {
           const reports = res.data.reports;

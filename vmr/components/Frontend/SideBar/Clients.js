@@ -28,6 +28,7 @@ const Clients = () => {
           id="carouselExampleIndicators"
           className="carousel slide"
           data-ride="carousel"
+          data-interval="2000"
         >
           <div className="carousel-inner">
             {clientList?.map((client, i) => (

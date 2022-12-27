@@ -54,7 +54,7 @@ exports.addUser = async (req, res, next) => {
   const email = req.body.email;
   const password = md5(req.body.password);
   const role = req.body.role;
-  let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-D H:MM:SS");
 
   try {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
@@ -65,10 +65,10 @@ exports.addUser = async (req, res, next) => {
       });
     }
 
-    const value = `("${first_name}", "${last_name}", "${email}", "${password}", "${role}", "${created}", "${created}")`;
+    const value = `("${first_name}", "${last_name}", "${email}", "${password}", "${role}", "${date}")`;
     const [user] = await Admin.addData(
       "users",
-      "(first_name, last_name, email, password, role,created,modified)",
+      "(first_name, last_name, email, password, role,modified)",
       value
     );
 

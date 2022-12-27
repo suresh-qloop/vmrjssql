@@ -55,12 +55,12 @@ exports.addArticle = async (req, res, next) => {
   const meta_keywords = req.body.meta_keywords;
 
   const slug = cleanString(headline);
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
   try {
     const field =
-      "(headline,article_type,description,category_id,slug,meta_title,meta_desc,meta_keywords,created,modified)";
-    const value = `('${headline}', '${article_type}', '${description}', '2','${slug}', '${meta_title}', '${meta_desc}','${meta_keywords}','${modified}','${modified}')`;
+      "(headline,article_type,description,category_id,slug,meta_title,meta_desc,meta_keywords,modified)";
+    const value = `('${headline}', '${article_type}', '${description}', '2','${slug}', '${meta_title}', '${meta_desc}','${meta_keywords}','${date}')`;
 
     const [article] = await Article.addData("articles", field, value);
 
