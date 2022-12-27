@@ -176,7 +176,7 @@ exports.getLatestReports = async (req, res, next) => {
   try {
     const [reports] = await Model.findById(
       "products",
-      "id,product_name,category_id,product_description,publisher_name,slug,price,pub_date,is_active",
+      "id,product_name,alias,category_id,product_description,publisher_name,slug,price,pub_date,is_active",
       `is_deleted = 0 AND is_active = 1`,
       `id DESC LIMIT ${start},${limit}`
     );

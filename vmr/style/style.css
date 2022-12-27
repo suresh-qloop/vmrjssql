@@ -388,3 +388,8 @@ hr.dashed {
 .dangerously-article br {
   display: none !important;
 }
+
+.dropdown-menu {
+  max-height: 380px;
+  overflow-y: auto;
+}

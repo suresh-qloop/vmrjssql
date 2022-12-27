@@ -3,21 +3,22 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import Breadcrumb from "../components/Frontend/Breadcrumb";
-import Navbar from "../components/Frontend/Navbar";
-import NavbarTop from "../components/Frontend/NavbarTop";
-import Footer from "../components/Frontend/Footer";
+import Breadcrumb from "../../components/Frontend/Breadcrumb";
+import Navbar from "../../components/Frontend/Navbar";
+import NavbarTop from "../../components/Frontend/NavbarTop";
+import Footer from "../../components/Frontend/Footer";
 // import { currencyInrFormat } from "../utils/utils.js";
-import { currencyInrFormat } from "../utils/currencyInrFormat";
+import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
-import BackTop from "../components/common/BackTop";
-// import { useRouter } from "next/router";
+import BackTop from "../../components/common/BackTop";
+import { useRouter } from "next/router";
 
 // import { useSession } from "next-auth/react";
 
 const Reports = () => {
-  // const router = useRouter();
+  const router = useRouter();
+  const catId = router.query.id;
   const [categoryList, setCategoryList] = useState();
 
   const [reportList, setReportList] = useState([]);
@@ -27,9 +28,7 @@ const Reports = () => {
 
   useEffect(() => {
     getCategoryList();
-
     getReportList();
-
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -42,6 +41,23 @@ const Reports = () => {
       .then((res) => {
         console.log(res.data, "report");
         setCategoryList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getReportList = async () => {
+    // setCategoryId(router.query.id);
+    // console.log(categoryId);
+    // console.log(router);
+    await axios
+      .get(
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
+      )
+      .then((res) => {
+        setReportList(res.data.reports);
+        setCount(res.data.count);
       })
       .catch((err) => {
         console.log(err);
@@ -63,19 +79,6 @@ const Reports = () => {
       });
   };
 
-  const getReportList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=0&limit=10`)
-      .then((res) => {
-        setReportList(res.data.reports);
-        setCount(res.data.count);
-        console.log(reportList);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const getMoreReport = async () => {
     if (categoryId) {
       await axios
@@ -91,19 +94,19 @@ const Reports = () => {
         });
     }
 
-    if (!categoryId) {
-      await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
-        )
-        .then((res) => {
-          const reports = res.data.reports;
-          setReportList((reportList) => [...reportList, ...reports]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // if (!categoryId) {
+    //   await axios
+    //     .get(
+    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
+    //     )
+    //     .then((res) => {
+    //       const reports = res.data.reports;
+    //       setReportList((reportList) => [...reportList, ...reports]);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
   };
 
   return (
@@ -131,49 +134,6 @@ const Reports = () => {
                 </div>
 
                 <div className="card-body p-0">
-                  {/* <ul className="nav  flex-column">
-                    {categoryList?.map((curElem, i) => {
-                      return (
-                        <li className="nav-item dropdown" key={i + 1}>
-                          <Link
-                            className="nav-link dropdown-toggle"
-                            href="/"
-                            id="navbarDropdown"
-                            role="button"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <p>
-                              {curElem.name}
-
-                              {curElem.children.length > 0 && (
-                                <i className="fas fa-angle-left right text-secondary"></i>
-                              )}
-                              <span className="badge badge-info right">6</span>
-                            </p>
-                          </Link>
-                          <div
-                            className="dropdown-menu"
-                            aria-labelledby="navbarDropdown"
-                          >
-                            {curElem.children.map((Elem) => {
-                              return (
-                                <Link
-                                  href="/"
-                                  className="dropdown-item text-info"
-                                  key={Elem._id}
-                                >
-                                  <p>{Elem.name}</p>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul> */}
-
                   <div id="accordion">
                     {categoryList?.map((curElem, i) => (
                       <Fragment key={i + 1}>

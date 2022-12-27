@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-// import axios from "axios";
-import { useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { Fragment } from "react";
 
 const Navbar = (props) => {
   const navigate = useRouter();
+  const { status, data } = useSession();
   const [name, setName] = useState();
+  const [categoryList, setCategoryList] = useState();
   // const [count, setCount] = useState(null);
   // const [reportList, setReportList] = useState([]);
 
@@ -28,6 +31,28 @@ const Navbar = (props) => {
     //   console.log(err);
     // });
   };
+
+  const getCategoryList = async () => {
+    if (!(status === "loading")) {
+      await axios
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`, {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        })
+        .then((res) => {
+          setCategoryList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  useEffect(() => {
+    getCategoryList();
+
+    // eslint-disable-next-line
+  }, [status]);
   return (
     <div className=" bg-white py-2 shadow-sm rounded sticky-top">
       <div className=" container">
@@ -69,7 +94,7 @@ const Navbar = (props) => {
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
-                  href="/"
+                  href="/industries"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -79,16 +104,37 @@ const Navbar = (props) => {
                   Industries
                 </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <Link className="dropdown-item" href="/">
-                    Action
-                  </Link>
-                  <Link className="dropdown-item" href="/">
+                  {categoryList?.map((curElem, i) => {
+                    return (
+                      <Fragment key={i + 1}>
+                        <Link
+                          className="dropdown-item"
+                          href={`industries/${curElem.id}`}
+                          key={curElem.id}
+                        >
+                          {curElem.name}
+                        </Link>
+                        {/* {curElem.children.map((Elem) => {
+                          return (
+                            <Link
+                              key={Elem.id}
+                              className="dropdown-item"
+                              href="/"
+                            >
+                              {Elem.category_name}
+                            </Link>
+                          );
+                        })} */}
+                      </Fragment>
+                    );
+                  })}
+                  {/* <Link className="dropdown-item" href="/">
                     Another action
                   </Link>
                   <div className="dropdown-divider"></div>
                   <Link className="dropdown-item" href="/">
                     Something else here
-                  </Link>
+                  </Link> */}
                 </div>
               </li>
               <li className="nav-item">
