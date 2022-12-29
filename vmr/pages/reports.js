@@ -12,12 +12,12 @@ import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
 import BackTop from "../components/common/BackTop";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 // import { useSession } from "next-auth/react";
 
 const Reports = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [categoryList, setCategoryList] = useState();
 
   const [reportList, setReportList] = useState([]);
@@ -27,11 +27,12 @@ const Reports = () => {
 
   useEffect(() => {
     getCategoryList();
+    getCategoryList();
 
     getReportList();
 
     // eslint-disable-next-line
-  }, []);
+  }, [router.asPath]);
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
@@ -40,7 +41,6 @@ const Reports = () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
       .then((res) => {
-        console.log(res.data, "report");
         setCategoryList(res.data);
       })
       .catch((err) => {
@@ -69,7 +69,6 @@ const Reports = () => {
       .then((res) => {
         setReportList(res.data.reports);
         setCount(res.data.count);
-        console.log(reportList);
       })
       .catch((err) => {
         console.log(err);

@@ -12,12 +12,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
 const Covid19Impact = () => {
- 
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  
 
   // setReportData(data);
   const router = useRouter();
@@ -317,7 +315,7 @@ const Covid19Impact = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6LdAAQojAAAAAKcx4MuWVWwBxQ1V1rANtwrKth-v"
+                        sitekey="6LdRcLYjAAAAAAHeKbtlkGu-lbC3evPKc3fbPaD4"
                         onChange={handleCaptcha}
                       />
                     </div>

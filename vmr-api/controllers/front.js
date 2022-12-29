@@ -38,11 +38,6 @@ exports.AllReports = async (req, res, next) => {
       "p.id DESC"
     );
     const count = c.length;
-    // console.log(reports);
-
-    // const [reports] = await Model.limitedProducts(start, limit);
-    // const [c] = await Model.AllProducts();
-    // const count = c.length;
     res.status(200).json({ reports, count });
   } catch (err) {
     return res.status(500).json({
@@ -225,7 +220,12 @@ exports.AllTestimonials = async (req, res, next) => {
 
 exports.AllClients = async (req, res, next) => {
   try {
-    const [clients] = await Model.fetchAll("our_clients", "*", "id DESC");
+    const [clients] = await Model.findById(
+      "our_clients",
+      "*",
+      "is_active='1'",
+      "id DESC"
+    );
 
     res.status(200).json(clients);
   } catch (err) {

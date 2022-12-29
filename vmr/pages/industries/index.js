@@ -8,29 +8,30 @@ import Footer from "../../components/Frontend/Footer";
 import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import LatestReport from "../../components/Frontend/SideBar/LatestReport";
+
 import { useRouter } from "next/router";
 
 export default function Categories() {
   const router = useRouter();
-  console.log(router);
   const [categoryList, setCategoryList] = useState();
-  useEffect(() => {
-    getCategoryList();
-
-    // eslint-disable-next-line
-  }, []);
 
   const getCategoryList = async () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
       .then((res) => {
-        console.log(res.data, "categorirs");
         setCategoryList(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    getCategoryList();
+    getCategoryList();
+
+    // eslint-disable-next-line
+  }, [router.asPath]);
   return (
     <div className="wrapper">
       <NavbarTop />

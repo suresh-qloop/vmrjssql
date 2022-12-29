@@ -21,39 +21,16 @@ import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
 import BackTop from "../../components/common/BackTop";
 
 const ReportDetails = ({ reportData }) => {
-  // console.log(data, "context");
-  // const [reportData, setReportData] = useState([]);
-  // console.log(commentsFromServer, "commentsFromServer");
-
-  // setReportData(data);
-  // const router = useRouter();
-  // const { slug } = router.query;
-  // console.log(slug);
-
-  // const getReportData = async () => {
-  //   await axios
-  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${slug}`)
-  //     .then((res) => {
-  //       setReportData(res.data.report);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (!slug) {
-  //     return;
-  //   }
-  //   getReportData();
-  // }, [slug]);
-  const obj = JSON.parse(reportData.product_faq);
   let output;
-  if (obj) {
-    output = Object.entries(obj).map(([question, answer]) => ({
-      question,
-      answer,
-    }));
+  if (reportData.product_faq) {
+    const obj = JSON.parse(reportData.product_faq);
+
+    if (obj) {
+      output = Object.entries(obj).map(([question, answer]) => ({
+        question,
+        answer,
+      }));
+    }
   }
   return (
     <Fragment>
@@ -353,7 +330,6 @@ export default ReportDetails;
 
 ReportDetails.getInitialProps = async (ctx) => {
   const { query } = ctx;
-  // console.log(query);
   const res = await axios(
     `${process.env.NEXT_PUBLIC_NEXT_API}/front/report/${query.slug}`
   );

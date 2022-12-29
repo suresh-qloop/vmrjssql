@@ -36,7 +36,6 @@ const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // console.log(user, "opopopo");
         token = user;
         // all of the user data is being logged, yet how to pass it down to session callback so i can use all the user data in the client?
       }

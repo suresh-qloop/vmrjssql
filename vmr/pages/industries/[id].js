@@ -28,9 +28,10 @@ const Reports = () => {
 
   useEffect(() => {
     getCategoryList();
+    getCategoryList();
     getReportList();
     // eslint-disable-next-line
-  }, []);
+  }, [catId]);
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
@@ -39,7 +40,6 @@ const Reports = () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
       .then((res) => {
-        console.log(res.data, "report");
         setCategoryList(res.data);
       })
       .catch((err) => {
@@ -48,9 +48,6 @@ const Reports = () => {
   };
 
   const getReportList = async () => {
-    // setCategoryId(router.query.id);
-    // console.log(categoryId);
-    // console.log(router);
     await axios
       .get(
         `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
@@ -93,26 +90,11 @@ const Reports = () => {
           console.log(err);
         });
     }
-
-    // if (!categoryId) {
-    //   await axios
-    //     .get(
-    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
-    //     )
-    //     .then((res) => {
-    //       const reports = res.data.reports;
-    //       setReportList((reportList) => [...reportList, ...reports]);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
   };
 
   return (
     <div className="wrapper">
       <NavbarTop />
-      {/* <Navbar onSubmit={getData} searchName={setData} allCount={getCount} /> */}
       <Navbar />
       <Breadcrumb name="Reports" />
       <div className=" bg-light pb-5 pt-3">

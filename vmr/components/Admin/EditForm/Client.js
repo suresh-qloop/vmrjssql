@@ -23,14 +23,6 @@ const Client = ({ preLoadedValues }) => {
   } = useForm({ defaultValues: preLoadedValues });
 
   const onSubmit = (clientData) => {
-    // console.log(clientData);
-    // if (typeof clientData.logo[0] === "object") {
-    //   setFinalData(clientData);
-    // } else {
-    //   delete clientData.logo;
-    //   setFinalData(clientData);
-    // }
-    // console.log(finalData);
     const finalData = new FormData();
     finalData.append("client_name", clientData.client_name);
     if (logoImage !== undefined) {

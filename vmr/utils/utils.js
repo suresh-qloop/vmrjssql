@@ -14,6 +14,5 @@ exports.currencyInrFormat = (num) => {
 
 exports.keyValue = (input) =>
   Object.entries(input).forEach(([key, value]) => {
-    console.log(key, value);
     return { key, value };
   });

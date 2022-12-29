@@ -12,7 +12,6 @@ module.exports = class Model {
   }
 
   static findById(table, field = "*", con, order) {
-    console.log(`SELECT ${field} FROM ${table} WHERE ${con} ORDER BY ${order}`);
     return db.execute(
       `SELECT ${field} FROM ${table} WHERE ${con} ORDER BY ${order}`
     );

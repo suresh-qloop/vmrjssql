@@ -2,61 +2,38 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { Fragment } from "react";
 
 const Navbar = (props) => {
   const navigate = useRouter();
-  const { status, data } = useSession();
   const [name, setName] = useState();
   const [categoryList, setCategoryList] = useState();
-  // const [count, setCount] = useState(null);
-  // const [reportList, setReportList] = useState([]);
 
   const searchHandler = async (e) => {
     e.preventDefault();
     navigate.push(`/search-results/${name}`);
-    // await axios
-    //   .get(
-    //     `${process.env.NEXT_PUBLIC_NEXT_API}/search?name=${name}&start=0&limit=2`
-    //   )
-    //   .then((res) => {
-    //     setReportList(res.data.reports);
-    //     setCount(res.data.count);
-    // props.onSubmit(reportList);
-    // props.searchName(name);
-    // props.allCount(count);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
   };
 
   const getCategoryList = async () => {
-    if (!(status === "loading")) {
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`, {
-          headers: {
-            Authorization: `Bearer ${data.user.token}`,
-          },
-        })
-        .then((res) => {
-          setCategoryList(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`)
+      .then((res) => {
+        setCategoryList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     getCategoryList();
 
     // eslint-disable-next-line
-  }, [status]);
+  }, [navigate.asPath]);
+
   return (
-    <div className=" bg-white py-2 shadow-sm rounded sticky-top">
+    <div className="bg-white py-2 shadow-sm rounded sticky-top">
       <div className=" container">
-        <nav className="navbar navbar-expand-lg navbar-white bg-white ">
+        <nav className="navbar navbar-expand-lg navbar-white bg-white">
           {/* <Link className="navbar-brand" href="/">
           </Link> */}
           <Link className="navbar-brand" href="/">
@@ -91,18 +68,27 @@ const Navbar = (props) => {
                   <i className="fas fa-home"></i>
                 </Link>
               </li>
+              <li className="nav-item me-0-auto">
+                <Link
+                  className={`nav-link ${
+                    navigate.pathname === "/industries" ? "active" : ""
+                  }`}
+                  href="/industries"
+                  // prefetch={true}
+                >
+                  Industries
+                </Link>
+              </li>
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
-                  href="/industries"
+                  href="#"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                >
-                  Industries
-                </Link>
+                ></Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   {categoryList?.map((curElem, i) => {
                     return (
@@ -128,13 +114,6 @@ const Navbar = (props) => {
                       </Fragment>
                     );
                   })}
-                  {/* <Link className="dropdown-item" href="/">
-                    Another action
-                  </Link>
-                  <div className="dropdown-divider"></div>
-                  <Link className="dropdown-item" href="/">
-                    Something else here
-                  </Link> */}
                 </div>
               </li>
               <li className="nav-item">

@@ -19,7 +19,6 @@ const Article = ({ preLoadedValues }) => {
   const { status, data } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  console.log(preLoadedValues);
   const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState(null);
   const descriptionEditor = useRef(null);

@@ -314,7 +314,7 @@ const RequestCustomization = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6LdAAQojAAAAAKcx4MuWVWwBxQ1V1rANtwrKth-v"
+                        sitekey="6LdRcLYjAAAAAAHeKbtlkGu-lbC3evPKc3fbPaD4"
                         onChange={handleCaptcha}
                       />
                     </div>

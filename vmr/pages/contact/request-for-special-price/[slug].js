@@ -52,7 +52,6 @@ const RequestForDiscount = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-
     data.report = reportData.product_name;
     const finalData = { ...data, name, description };
     axios
@@ -316,7 +315,7 @@ const RequestForDiscount = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6LdAAQojAAAAAKcx4MuWVWwBxQ1V1rANtwrKth-v"
+                        sitekey="6LdRcLYjAAAAAAHeKbtlkGu-lbC3evPKc3fbPaD4"
                         onChange={handleCaptcha}
                       />
                     </div>

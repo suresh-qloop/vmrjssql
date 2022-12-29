@@ -3,11 +3,6 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth({
   callbacks: {
     authorized({ req, token }) {
-      // `/admin` requires admin role
-
-      // console.log(token, "middleware");
-      // console.log(req.nextUrl.pathname, "path");
-
       const AdminRoles = [
         "/admin/users",
         "/admin/users/add",
@@ -22,27 +17,14 @@ export default withAuth({
 
       for (let i = 0; i < AdminRoles.length; i++) {
         if (req.nextUrl.pathname === AdminRoles[i]) {
-          // console.log(AdminRoles, "inner");
           return token?.role === 1;
         }
       }
-
-      // for (let i = 0; i < UserRoles.length; i++) {
-      //   if (req.nextUrl.pathname === UserRoles[i]) {
-      //     console.log(UserRoles, "inner");
-      //     return token?.role === "User";
-      //   }
-      // }
 
       if (req.nextUrl.pathname === "/admin/dashboard") {
         return token?.role === 2 || token?.role === 1;
       }
 
-      // if (req.nextUrl.pathname === ["/user"]) {
-      //   return token?.role === "User";
-      // }
-
-      // `/me` only requires the user to be logged in
       return !!token;
     },
   },
