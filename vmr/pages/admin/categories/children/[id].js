@@ -164,7 +164,7 @@ const ChildrenCategoryList = () => {
   }, [status]);
 
   const getReportCategoryData = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/child/${id}`, {

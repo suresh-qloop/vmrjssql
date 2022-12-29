@@ -231,7 +231,7 @@ const ReportList = () => {
   }, [status]);
 
   const getReportData = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report`, {
@@ -253,7 +253,7 @@ const ReportList = () => {
   };
 
   const getCategoryList = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`, {
           headers: {

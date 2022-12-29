@@ -76,7 +76,7 @@ const SettingList = () => {
   }, [status]);
 
   const getSettingData = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/setting`, {

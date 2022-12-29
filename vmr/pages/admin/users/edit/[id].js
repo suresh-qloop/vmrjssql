@@ -20,7 +20,7 @@ const EditUser = () => {
   }, [status, id]);
 
   const getEditData = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/user/${id}`, {
           headers: {

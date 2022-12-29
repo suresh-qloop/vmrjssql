@@ -150,7 +150,7 @@ const ArticleList = () => {
   }, [status]);
 
   const getArticleData = async () => {
-    if (!(status === "loading")) {
+    if (!(status === "authenticated")) {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/article`, {
