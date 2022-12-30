@@ -24,7 +24,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "/uploads/logos")));
 
 //enable cros
-app.use(cors({ origin: [process.env.BACK_URL], credentials: true }));
+// app.use(cors({ origin: [process.env.BACK_URL], credentials: true }));
+app.use(cors());
 app.use(helmet());
 
 /**

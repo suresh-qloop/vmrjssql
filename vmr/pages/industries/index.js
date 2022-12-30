@@ -28,7 +28,7 @@ export default function Categories() {
 
   useEffect(() => {
     getCategoryList();
-    getCategoryList();
+    // getCategoryList();
 
     // eslint-disable-next-line
   }, [router.asPath]);

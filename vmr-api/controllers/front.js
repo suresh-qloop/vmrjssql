@@ -47,6 +47,7 @@ exports.AllReports = async (req, res, next) => {
 };
 
 exports.AllCategories = async (req, res, next) => {
+  let categories = [];
   try {
     const [arr] = await Model.findById(
       "categories",
@@ -54,52 +55,105 @@ exports.AllCategories = async (req, res, next) => {
       "parent_category_id = 2",
       "category_name ASC"
     );
-    let categories = [];
 
-    for (i = 0; i < arr.length; i++) {
-      const [total] = await Model.findById(
-        "product_categories pc",
-        "pc.*",
-        `category_id=${arr[i].id}`,
-        "pc.id ASC"
-      );
-      const reports = total.length;
-      const [child] = await Model.findById(
-        "categories",
-        "id,category_name,parent_category_id,is_active",
-        `parent_category_id = ${arr[i].id}`,
-        "category_name ASC"
-      );
+    // console.log(arr);
 
-      let obj = {
-        id: arr[i].id,
-        name: arr[i].category_name,
-        status: arr[i].is_active,
-        children: [],
-        reports: reports,
-      };
+    // for (i = 0; i < arr.length; i++) {
+    // console.log(arr[i]);
+    // console.log(i);
+    // const [total] = await Model.findById(
+    //   "product_categories pc",
+    //   "pc.*",
+    //   `category_id=${arr[i].id}`,
+    //   "pc.id ASC"
+    // );
+    // const reports = total.length;
+    // const [child] = await Model.findById(
+    //   "categories",
+    //   "id,category_name,parent_category_id,is_active",
+    //   `parent_category_id = ${arr[i].id}`,
+    //   "category_name ASC"
+    // );
 
-      for (j = 0; j < child.length; j++) {
-        const [t] = await Model.findById(
+    // let obj = {
+    //   id: arr[i].id,
+    //   name: arr[i].category_name,
+    //   status: arr[i].is_active,
+    //   children: [],
+    //   reports: 2,
+    // };
+
+    // for (j = 0; j < child.length; j++) {
+    //   const [t] = await Model.findById(
+    //     "product_categories pc",
+    //     "pc.*",
+    //     `category_id=${arr[j].id}`,
+    //     "pc.id ASC"
+    //   );
+    //   const all = t.length;
+    //   let childObj = {
+    //     id: child[j].id,
+    //     name: child[j].category_name,
+    //     is_active: child[j].is_active,
+    //     reports: all,
+    //   };
+    //   obj.children.push(childObj);
+    // }
+    //   categories.push(obj);
+    // }
+
+    // let obj = {};
+
+    await Promise.all(
+      arr.map(async (item) => {
+        const [total] = await Model.findById(
           "product_categories pc",
           "pc.*",
-          `category_id=${arr[j].id}`,
+          `category_id=${item.id}`,
           "pc.id ASC"
         );
-        const all = t.length;
-        let childObj = {
-          id: child[j].id,
-          name: child[j].category_name,
-          is_active: child[j].is_active,
-          reports: all,
+        let reports = total.length;
+
+        let [child] = await Model.findById(
+          "categories",
+          "id,category_name,parent_category_id,is_active",
+          `parent_category_id = ${item.id}`,
+          "category_name ASC"
+        );
+
+        let obj = {
+          id: item.id,
+          name: item.category_name,
+          status: item.is_active,
+          children: [],
+          reports: reports,
         };
-        obj.children.push(childObj);
-      }
-      categories.push(obj);
-    }
+        await Promise.all(
+          child.map(async (child, i) => {
+            const [t] = await Model.findById(
+              "product_categories pc",
+              "pc.*",
+              `category_id=${child.id}`,
+              "pc.id ASC"
+            );
+            const all = t.length;
+            let childObj = {
+              id: child.id,
+              name: child.category_name,
+              is_active: child.is_active,
+              reports: all,
+            };
+            return obj.children.push(childObj);
+          })
+        );
+        return categories.push(obj);
+      })
+    );
+    categories.sort((a, b) => a.name.localeCompare(b.name));
 
     res.status(200).json(categories);
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       error: err.message,
     });

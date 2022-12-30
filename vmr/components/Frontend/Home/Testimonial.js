@@ -20,7 +20,7 @@ export default function Testimonial() {
       });
   };
   return (
-    <div className="col-md-6">
+    <div className="col-md-6 pb-3">
       <h3>Clients Testimonials</h3>
       <div
         id="carouselExampleIndicators1"
@@ -50,7 +50,7 @@ export default function Testimonial() {
           ))}
         </div>
       </div>
-      <Link href={`/testimonials`} className="btn btn-info my-2">
+      <Link href={`/testimonials`} className="btn btn-info my-2 mb-4">
         Read More
       </Link>
     </div>

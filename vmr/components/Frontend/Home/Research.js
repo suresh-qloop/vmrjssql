@@ -6,69 +6,67 @@ export default function Research() {
           Discover how Grand View Research can help your business:
         </h3>
         <div className="row mt-4  ">
-          <nav className="">
-            <div
-              className="nav nav-tabs justify-content-center p-2"
-              id="product-tab"
-              role="tablist"
+          <div
+            className="nav nav-tabs justify-content-center text-center"
+            id="product-tab"
+            role="tablist"
+          >
+            <a
+              className="nav-item  nav-link active"
+              id="compass"
+              data-toggle="tab"
+              href="#report-compass"
+              role="tab"
+              aria-controls="report-compass"
+              aria-selected="false"
             >
-              <a
-                className="nav-item  nav-link active"
-                id="compass"
-                data-toggle="tab"
-                href="#report-compass"
-                role="tab"
-                aria-controls="report-compass"
-                aria-selected="false"
-              >
-                Compass
-              </a>
-              <a
-                className="nav-item  nav-link"
-                id="consulting"
-                data-toggle="tab"
-                href="#report-consulting"
-                role="tab"
-                aria-controls="report-consulting"
-                aria-selected="false"
-              >
-                Consulting Services
-              </a>
-              <a
-                className="nav-item nav-link"
-                id="industry"
-                data-toggle="tab"
-                href="#report-industry"
-                role="tab"
-                aria-controls="report-industry"
-                aria-selected="false"
-              >
-                Industry Reports
-              </a>
-              <a
-                className="nav-item nav-link"
-                id="engagement"
-                data-toggle="tab"
-                href="#report-engagement"
-                role="tab"
-                aria-controls="report-engagement"
-                aria-selected="false"
-              >
-                Full Time Engagement
-              </a>
-              <a
-                className="nav-item nav-link"
-                id="research"
-                data-toggle="tab"
-                href="#report-research"
-                role="tab"
-                aria-controls="report-research"
-                aria-selected="false"
-              >
-                Custom Research
-              </a>
-            </div>
-          </nav>
+              &nbsp;&nbsp;&nbsp;&nbsp; Compass &nbsp;&nbsp;&nbsp;&nbsp;
+            </a>
+            <a
+              className="nav-item  nav-link"
+              id="consulting"
+              data-toggle="tab"
+              href="#report-consulting"
+              role="tab"
+              aria-controls="report-consulting"
+              aria-selected="false"
+            >
+              Consulting Services
+            </a>
+            <a
+              className="nav-item nav-link"
+              id="industry"
+              data-toggle="tab"
+              href="#report-industry"
+              role="tab"
+              aria-controls="report-industry"
+              aria-selected="false"
+            >
+              Industry Reports
+            </a>
+            <a
+              className="nav-item nav-link"
+              id="engagement"
+              data-toggle="tab"
+              href="#report-engagement"
+              role="tab"
+              aria-controls="report-engagement"
+              aria-selected="false"
+            >
+              Full Time Engagement
+            </a>
+            <a
+              className="nav-item nav-link"
+              id="research"
+              data-toggle="tab"
+              href="#report-research"
+              role="tab"
+              aria-controls="report-research"
+              aria-selected="false"
+            >
+              Custom Research
+            </a>
+          </div>
 
           <div className="tab-content py-3" id="nav-tabContent">
             <div

@@ -262,7 +262,7 @@ exports.dropListCategory = async (req, res, next) => {
 
     res.status(200).json(categories);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({
       error: err.message,
     });

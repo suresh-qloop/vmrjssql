@@ -393,3 +393,8 @@ hr.dashed {
   max-height: 380px;
   overflow-y: auto;
 }
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}

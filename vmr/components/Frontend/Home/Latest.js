@@ -106,7 +106,9 @@ export default function Latest() {
                 </div>
               </div>
             ))}
-            <button className="btn btn-info my-4">View More Articles</button>
+            <Link href="/articles" className="btn btn-info my-4">
+              View More Articles
+            </Link>
           </div>
         </div>
       </div>

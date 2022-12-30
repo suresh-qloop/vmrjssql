@@ -28,14 +28,12 @@ const Navbar = (props) => {
     getCategoryList();
 
     // eslint-disable-next-line
-  }, [navigate.asPath]);
+  }, []);
 
   return (
     <div className="bg-white py-2 shadow-sm rounded sticky-top">
       <div className=" container">
         <nav className="navbar navbar-expand-lg navbar-white bg-white">
-          {/* <Link className="navbar-brand" href="/">
-          </Link> */}
           <Link className="navbar-brand" href="/">
             <img
               src="https://www.valuemarketresearch.com/img/logos/vmr-logo.webp"
@@ -68,27 +66,20 @@ const Navbar = (props) => {
                   <i className="fas fa-home"></i>
                 </Link>
               </li>
-              <li className="nav-item me-0-auto">
-                <Link
-                  className={`nav-link ${
-                    navigate.pathname === "/industries" ? "active" : ""
-                  }`}
-                  href="/industries"
-                  // prefetch={true}
-                >
-                  Industries
-                </Link>
-              </li>
+
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
-                  href="#"
+                  href="/industries"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                ></Link>
+                >
+                  {" "}
+                  Industries
+                </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   {categoryList?.map((curElem, i) => {
                     return (

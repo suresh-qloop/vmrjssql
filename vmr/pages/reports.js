@@ -27,7 +27,6 @@ const Reports = () => {
 
   useEffect(() => {
     getCategoryList();
-    getCategoryList();
 
     getReportList();
 

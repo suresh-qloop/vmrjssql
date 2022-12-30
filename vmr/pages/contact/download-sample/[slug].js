@@ -312,7 +312,7 @@ const DownloadSample = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6LdRcLYjAAAAAAHeKbtlkGu-lbC3evPKc3fbPaD4"
+                        sitekey="6Ld50rcjAAAAAGcLGnl1gUapCo2Asc7awRhWFny7"
                         onChange={handleCaptcha}
                       />
                     </div>
