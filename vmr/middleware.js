@@ -3,6 +3,16 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth({
   callbacks: {
     authorized({ req, token }) {
+      const getTimestampInSeconds = () => {
+        return Math.floor(Date.now() / 1000);
+      };
+
+      if (token) {
+        if (token.expTime <= getTimestampInSeconds()) {
+          return false;
+        }
+      }
+
       const AdminRoles = [
         "/admin/users",
         "/admin/users/add",

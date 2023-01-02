@@ -230,13 +230,9 @@ const Reports = () => {
             </div>
             <div className="col-md-9">
               <div className="row">
-                {reportList?.length === 0 && (
-                  <div className="text-center m-5 p-5">
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                )}
+                {/* {reportList?.length === 0 && ( */}
+
+                {/* )} */}
                 <InfiniteScroll
                   dataLength={reportList.length} //This is important field to render the next data
                   next={getMoreReport}
@@ -253,7 +249,7 @@ const Reports = () => {
                   }
                   endMessage={
                     <p className="mt-2" style={{ textAlign: "center" }}>
-                      <b></b>
+                      <b>No More Records Found</b>
                     </p>
                   }
                 >

@@ -22,8 +22,6 @@ const authOptions = {
           }
         );
 
-        console.log(user);
-
         return user.data;
       },
     }),

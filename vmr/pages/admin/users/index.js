@@ -220,7 +220,7 @@ const UserList = () => {
   }, [status]);
 
   const getUserData = async () => {
-    if (!(status === "authenticated")) {
+    if (status === "authenticated") {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/user`, {

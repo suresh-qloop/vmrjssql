@@ -54,7 +54,7 @@ exports.addUser = async (req, res, next) => {
   const email = req.body.email;
   const password = md5(req.body.password);
   const role = req.body.role;
-  let date = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
   try {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
@@ -139,6 +139,7 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
+  console.log(req.body, "body");
   await check("email").notEmpty().run(req);
   await check("password").notEmpty().run(req);
   const result = validationResult(req);
@@ -147,7 +148,8 @@ exports.login = async (req, res, next) => {
   }
   const email = req.body.email;
   const password = req.body.password;
-  var last_login = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let last_login = await moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  console.log(last_login, "last_login");
   let loadedUser;
 
   try {
@@ -173,16 +175,20 @@ exports.login = async (req, res, next) => {
       },
       SECRET,
       { expiresIn: "24h" }
+      // 120000
     );
 
     const obj = `last_login="${last_login}"`;
-
     const [lastLogin] = await Admin.editData("users", obj, loadedUser.id);
+    console.log(lastLogin);
+    const jwtPayload = JSON.parse(Buffer.from(token.split(".")[1], "base64"));
+    const expTime = jwtPayload.exp;
 
     res.status(200).json({
       token: token,
       userId: loadedUser.id,
       role: loadedUser.role,
+      expTime: expTime,
       message: "success",
     });
   } catch (err) {

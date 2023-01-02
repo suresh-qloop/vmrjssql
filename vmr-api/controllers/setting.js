@@ -72,9 +72,10 @@ exports.editSetting = async (req, res, next) => {
   const id = req.params.id;
   const key = req.body.key;
   const value = req.body.value;
+  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
   try {
-    const obj = `\`key\`="${key}",\`value\`="${value}"`;
+    const obj = `\`key\`="${key}",\`value\`="${value}",modified="${modified}"`;
 
     const [setting] = await Settings.editData("settings", obj, id);
 

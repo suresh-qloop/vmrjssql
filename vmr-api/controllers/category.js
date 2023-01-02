@@ -57,7 +57,7 @@ exports.addCategory = async (req, res, next) => {
 
   const category_name = toUpperCase(req.body.category_name);
 
-  let date = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
   try {
     const value = `("${category_name}", "2", "2", "${date}")`;
@@ -195,7 +195,7 @@ exports.addChildCategory = async (req, res, next) => {
   const parent_category_id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
 
-  let created = moment(new Date()).format("YYYY-MM-D H:MM:SS");
+  let created = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
 
   try {
     const value = `("${category_name}", "${parent_category_id}", "3","${created}", "${created}")`;

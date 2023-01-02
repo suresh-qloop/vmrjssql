@@ -22,17 +22,8 @@ exports.AllReports = async (req, res, next) => {
 
 exports.getReport = async (req, res, next) => {
   const id = req.params.id;
-  // const obj = `products.id,products.product_name,products.alias,products.product_no,products.product_description,products.product_image,products.product_specification,products.price,products.corporate_price,products.upto10,products.data_pack_price,products.dollar_price,products.is_active,products.meta_name,products.meta_keywords,products.meta_desc,products.publisher_name,products.share_with_reseller,products.pub_date,products.is_upcoming,products.created,products.modified,categories.category_name`;
-  // const con1 = `products.category_id = categories.id`;
-  // const con2 = `products.id=${id}`;
+
   try {
-    // const [report] = await Report.findByJoin(
-    //   "products",
-    //   obj,
-    //   "categories",
-    //   con1,
-    //   con2
-    // );
     const obj =
       "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,product_faq,slug,share_with_reseller,is_upcoming";
     const [report] = await Report.getOne("products", obj, `id=${id}`);
@@ -43,7 +34,6 @@ exports.getReport = async (req, res, next) => {
       `product_id=${id}`,
       "id DESC"
     );
-  
 
     report[0].category_id = await c[0].category_id;
     res.status(200).json(report[0]);
@@ -96,18 +86,12 @@ exports.addReport = async (req, res, next) => {
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
-  // let is_set_toc;
-  // let share_with_reseller;
 
   const product_name = toUpperCase(req.body.product_name);
   const alias = toUpperCase(req.body.alias);
   const publisher_name = req.body.publisher_name;
   const is_set_toc = req.body.is_set_toc ? 1 : 0;
-  // if (req.body.is_set_toc == "true") {
-  //   is_set_toc = 1;
-  // } else {
-  //   is_set_toc = 0;
-  // }
+
   const category_id = req.body.category_id;
   const product_description = req.body.description;
   const product_specification = req.body.TOC;
@@ -126,11 +110,6 @@ exports.addReport = async (req, res, next) => {
   let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
-  // if (req.body.share_with_reseller === "true") {
-  //   share_with_reseller = 1;
-  // } else {
-  //   share_with_reseller = 0;
-  // }
 
   try {
     const field =

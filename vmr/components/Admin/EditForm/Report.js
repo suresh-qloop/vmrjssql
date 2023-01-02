@@ -107,7 +107,7 @@ const Report = ({ preLoadedValues }) => {
   }, [status, id]);
 
   const getEditData = async () => {
-    if (!(status === "authenticated")) {
+    if (status === "authenticated") {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, {
           headers: {
@@ -125,7 +125,7 @@ const Report = ({ preLoadedValues }) => {
   };
 
   const getCategoryList = async () => {
-    if (!(status === "authenticated")) {
+    if (status === "authenticated") {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`, {
           headers: {

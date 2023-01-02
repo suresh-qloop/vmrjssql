@@ -62,7 +62,7 @@ const AddReport = () => {
   }, [status]);
 
   const getCategoryList = async () => {
-    if (!(status === "authenticated")) {
+    if (status === "authenticated") {
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category/drop-list`, {
           headers: {

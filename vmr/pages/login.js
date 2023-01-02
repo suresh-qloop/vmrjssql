@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 
 const Login = () => {
-  const { status } = useSession();
+  const { status, data } = useSession();
   const navigate = useRouter();
 
+  const getTimestampInSeconds = () => {
+    return Math.floor(Date.now() / 1000);
+  };
+
   if (status === "authenticated") {
-    navigate.push("/admin/dashboard");
+    if (data.user.expTime <= getTimestampInSeconds()) {
+      signOut({
+        redirect: false,
+      });
+    } else {
+      navigate.push("/admin/dashboard");
+    }
   }
 
   const [error, setError] = useState(false);
@@ -26,7 +36,7 @@ const Login = () => {
       email: data.email,
       password: data.password,
       redirect: false,
-      callbackUrl: "/dashboard",
+      callbackUrl: "/admin/dashboard",
     });
 
     if (status.ok) {
