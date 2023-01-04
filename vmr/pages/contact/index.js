@@ -6,16 +6,20 @@ import Footer from "../../components/Frontend/Footer";
 import Breadcrumb from "../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../components/helpers/Notification";
+import InputMask from "react-input-mask";
 
 const ContactUs = () => {
   const [isVerified, setIsVerified] = useState(false);
+  const [number, setNumber] = useState("");
+  const [numberError, setNumberError] = useState(false);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -29,16 +33,22 @@ const ContactUs = () => {
   };
 
   const onSubmit = (data) => {
+    if (number.length !== 10) {
+      setNumberError(true);
+      return false;
+    }
+    data.number = number;
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/contact`, data)
       .then((res) => {
-        notify("success", "Form Submitted Successfully");
-        router.push("/");
+        // notify("success", "Form Submitted Successfully");
+        // router.push("/");
       })
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.message);
       });
+    router.push("/thanks");
   };
 
   return (
@@ -118,24 +128,70 @@ const ContactUs = () => {
                         Mobile
                       </label>
                       <div className="col-sm-12">
+                        {/* <Controller
+                          name="number"
+                          control={control}
+                          defaultValue=""
+                          rules={{
+                            required: "Please enter a card number",
+                            minLength: 10,
+                          }}
+                          render={({
+                            field: { onChange, value, onBlur, ref },
+                          }) => (
+                            <InputMask
+                              mask="99999 99999"
+                              maskChar=" "
+                              value={value}
+                              onChange={onChange}
+                              onBlur={onBlur}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  className={`form-control ${
+                                    errors.number ? "is-invalid" : ""
+                                  }`}
+                                  id="mobile"
+                                  placeholder="Mobile"
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        /> */}
                         <input
-                          type="number"
+                          type="text"
                           className={`form-control ${
-                            errors.number ? "is-invalid" : ""
+                            numberError ? "is-invalid" : ""
                           }`}
-                          id="mobile"
-                          placeholder="Mobile"
-                          {...register("number", {
-                            required: "This field is required",
-                          })}
+                          pattern="[0-9]*"
+                          id="number"
+                          value={number}
+                          placeholder="Number"
+                          size="10"
+                          maxLength="10"
+                          // minlength="10"
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === "" ||
+                              re.test(e.target.value)
+                            ) {
+                              setNumber(e.target.value);
+                              setNumberError(false);
+                            } else {
+                              setNumberError(true);
+                            }
+                          }}
                         />
-                        {errors.number && (
+                        {numberError && (
                           <div className="error invalid-feedback">
-                            <p>{errors.number.message}</p>
+                            <p>Please Enter Valid Mobile Number</p>
                           </div>
                         )}
                       </div>
                     </div>
+
                     <div className="form-group row">
                       <label
                         htmlFor="message"
@@ -167,7 +223,7 @@ const ContactUs = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6Ld50rcjAAAAAGcLGnl1gUapCo2Asc7awRhWFny7"
+                        sitekey={process.env.SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>
@@ -175,6 +231,11 @@ const ContactUs = () => {
                     <button
                       className="btn btn-info justify-content-center mt-3"
                       disabled={!isVerified}
+                      onClick={() => {
+                        if (number.length !== 10) {
+                          setNumberError(true);
+                        }
+                      }}
                     >
                       Submit
                     </button>

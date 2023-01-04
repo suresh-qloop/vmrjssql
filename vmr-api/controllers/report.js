@@ -107,7 +107,7 @@ exports.addReport = async (req, res, next) => {
   const meta_desc = req.body.meta_desc;
 
   const slug = cleanString(product_name);
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
 
@@ -176,14 +176,14 @@ exports.editReport = async (req, res, next) => {
   const corporate_price = req.body.corporate_price;
   const data_pack_price = req.body.data_pack_price;
 
-  const pub_date = moment(req.body.pub_date).format("YYYY-MM-DD HH:MM:SS");
+  const pub_date = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
 
   const slug = cleanString(req.body.slug);
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
 
@@ -276,25 +276,42 @@ exports.searchReport = async (req, res, next) => {
   const name = req.query.name;
   const price = req.query.price;
   const status = req.query.status;
-  let reseller;
-  if (req.query.reseller === "true") {
-    reseller = 1;
-  } else {
-    reseller = 0;
-  }
-  // const reseller = req.query.reseller;
+  const reseller = req.query.reseller;
   const category_id = req.query.category_id;
 
   try {
-    const [reports] = await Report.findReport(
-      name,
-      price,
-      status,
-      reseller,
-      category_id
+    let condition = "p.is_deleted = 0";
+    let table = "products p";
+
+    if (name) {
+      condition += ` AND p.product_name LIKE '%${name}%'`;
+    }
+
+    if (price) {
+      condition += ` AND p.price LIKE '${price}%'`;
+    }
+
+    if (status && status != 3) {
+      condition += ` AND p.is_active=${status}`;
+    }
+
+    if (reseller && reseller != 3) {
+      condition += ` AND p.share_with_reseller=${reseller}`;
+    }
+
+    if (category_id && category_id != 3) {
+      table += `, product_categories pc`;
+      condition += ` AND p.id = pc.product_id AND pc.category_id=${category_id}`;
+    }
+
+    const [reports] = await Report.findById(
+      table,
+      "p.id,p.product_name,p.publisher_name,p.meta_name,p.meta_desc,p.meta_keywords,p.price,p.is_active",
+      condition,
+      "p.id DESC"
     );
 
-    res.status(201).json(reports);
+    return res.status(200).json(reports);
   } catch (err) {
     return res.status(500).json({
       error: err.message,

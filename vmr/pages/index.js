@@ -14,13 +14,13 @@ export default function Home() {
     <div className="wrapper">
       <NavbarTop />
       <Navbar />
-      <section className=" bg-light  p-md-5 p-3">
+      <section className=" bg-white  p-md-5 p-3">
         <div className="container p-md-5 py-3">
           <div className="row">
             <div className="col-md-8 col-sm-12">
+              <h4> We add value to the business with our</h4>
               <h1 className="banner_title">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Magnam, deserunt.
+                Customized and Syndicate Market Research Reports
               </h1>
               <button className="btn btn-info  mt-md-3">
                 Try Compass for Free
@@ -30,7 +30,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <Research />
+      {/* <Research /> */}
       <section className="bg-light">
         <div className="container py-5">
           <div className="row">

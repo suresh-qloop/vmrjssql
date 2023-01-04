@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const keyQuestion = () => {
+const keyQuestion = ({ slug }) => {
   return (
     <div className="row border p-2">
       <div className="col-md-6">
@@ -27,9 +27,12 @@ const keyQuestion = () => {
           </Link>
           <hr className="m-2 dashed" />
 
-          <button className="btn btn-primary my-2  form-control">
+          <Link
+            href={`/contact/req-free-sample/${slug}`}
+            className="btn btn-primary my-2  form-control"
+          >
             Request Free Sample Report
-          </button>
+          </Link>
         </div>
       </div>
       <div className="col-md-6">

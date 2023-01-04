@@ -29,6 +29,10 @@ const ReportList = () => {
   const [category, setCategory] = useState("");
   const [categoryList, setCategoryList] = useState();
 
+  useEffect(() => {
+    searchHandler();
+  }, [reportName, cPrice, searchStatus, shareWithReseller, category]);
+
   const product_name = (report) => {
     return report.product_name;
   };
@@ -207,26 +211,10 @@ const ReportList = () => {
     .slice(0, columns.length - 1)
     .map((d) => d.name);
 
-  const download_pdf = () => {
-    const doc = new jsPDF();
-
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
-
   useEffect(() => {
     getReportData();
     getCategoryList();
+
     // eslint-disable-next-line
   }, [status]);
 
@@ -315,27 +303,53 @@ const ReportList = () => {
   };
 
   const searchHandler = async (e) => {
-    e.preventDefault();
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
-        {
-          headers: {
-            Authorization: `Bearer ${data.user.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        setReportData(res.data);
-        setLoading(false);
-        if (reportData.length < 0) {
-          setNoRecords(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (status === "authenticated") {
+      // e.preventDefault();
+      setLoading(true);
+      setReportData([]);
+      await axios
+        .get(
+          `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
+          {
+            headers: {
+              Authorization: `Bearer ${data.user.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          setReportData(res.data);
+          setLoading(false);
+          if (reportData.length < 0) {
+            setNoRecords(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
+  // const searchHandler = async (e) => {
+  //   e.preventDefault();
+  //   await axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${data.user.token}`,
+  //         },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       setReportData(res.data);
+  //       setLoading(false);
+  //       if (reportData.length < 0) {
+  //         setNoRecords(true);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   return (
     <div className="wrapper">
       <Header />
@@ -378,7 +392,7 @@ const ReportList = () => {
                       Add Report
                     </Link>
                   </div>
-                  <div className="col-md-3 col-sm-3 ">
+                  {/* <div className="col-md-3 col-sm-3 ">
                     <label className="d-flex ">
                       <input
                         type="search"
@@ -387,8 +401,8 @@ const ReportList = () => {
                         onChange={(e) => setSearchValue(e.target.value)}
                       />
                     </label>
-                  </div>
-                  <div className="col-md-1 col-sm-1  text-right">
+                  </div> */}
+                  <div className="col-md-4 col-sm-4  text-right">
                     <div className="dt-buttons btn-group flex-wrap">
                       <button
                         className="btn btn-secondary buttons-csv buttons-html5"
@@ -402,18 +416,8 @@ const ReportList = () => {
                           headers={columns_data_for_export}
                           filename={"client_list.csv"}
                         >
-                          <span className="text-light">CSV</span>
+                          <span className="text-light">Export to CSV</span>
                         </CSVLink>
-                      </button>
-
-                      <button
-                        className="btn btn-secondary buttons-pdf buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
-                        onClick={download_pdf}
-                      >
-                        <span>PDF</span>
                       </button>
                     </div>
                   </div>
@@ -446,10 +450,20 @@ const ReportList = () => {
                           Price
                         </label>
                         <input
-                          type="number"
+                          type="text"
+                          pattern="[0-9]*"
                           placeholder="Price"
                           className="form-control "
-                          onChange={(e) => setCPrice(e.target.value)}
+                          value={cPrice}
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === "" ||
+                              re.test(e.target.value)
+                            ) {
+                              setCPrice(e.target.value);
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -466,7 +480,9 @@ const ReportList = () => {
                           className="form-control "
                           onChange={(e) => setSearchStatus(e.target.value)}
                         >
-                          <option value="">All</option>
+                          <option defaultValue={3} value={3}>
+                            All
+                          </option>
                           {/* <option value="readyToActive">Ready To Active</option> */}
                           <option value={1}>Active</option>
                           <option value={0}>InActive</option>
@@ -486,9 +502,11 @@ const ReportList = () => {
                           id="shareWithReseller"
                           onChange={(e) => setShareWithReseller(e.target.value)}
                         >
-                          <option value="">All</option>
-                          <option value={false}>No</option>
-                          <option value={true}>Yes</option>
+                          <option defaultValue={3} value={3}>
+                            All
+                          </option>
+                          <option value={0}>No</option>
+                          <option value={1}>Yes</option>
                         </select>
                       </div>
                     </div>
@@ -510,7 +528,9 @@ const ReportList = () => {
                             <option hidden value="">
                               Select Category
                             </option>
-                            <option value="">All</option>
+                            <option defaultValue={3} value={3}>
+                              All
+                            </option>
                             {categoryList?.map((curElem, i) => {
                               return (
                                 <Fragment key={i + 1}>
@@ -537,20 +557,6 @@ const ReportList = () => {
                             })}
                           </select>
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <div className="form-group ">
-                        <label htmlFor="" className="col-sm-12 col-form-label">
-                          &nbsp;
-                        </label>
-                        <button
-                          type="submit"
-                          className="btn  btn-success "
-                          style={{ width: 101 }}
-                        >
-                          Search
-                        </button>
                       </div>
                     </div>
                   </div>

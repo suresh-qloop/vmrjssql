@@ -18,7 +18,7 @@ exports.AllCategory = async (req, res, next) => {
       let obj = {
         id: arr[i].id,
         name: arr[i].category_name,
-        status: arr[i].is_active,
+        is_active: arr[i].is_active,
       };
       categories.push(obj);
     }
@@ -57,7 +57,7 @@ exports.addCategory = async (req, res, next) => {
 
   const category_name = toUpperCase(req.body.category_name);
 
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const value = `("${category_name}", "2", "2", "${date}")`;
@@ -172,7 +172,7 @@ exports.AllChildCategory = async (req, res, next) => {
       let obj = {
         id: arr[i].id,
         name: arr[i].category_name,
-        status: arr[i].is_active,
+        is_active: arr[i].is_active,
       };
       categories.push(obj);
     }
@@ -195,7 +195,7 @@ exports.addChildCategory = async (req, res, next) => {
   const parent_category_id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
 
-  let created = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let created = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const value = `("${category_name}", "${parent_category_id}", "3","${created}", "${created}")`;

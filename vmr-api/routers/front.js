@@ -21,5 +21,7 @@ router.post("/contact", upload.none(), frontRoute.contactFormController);
 router.post("/req-email", upload.none(), frontRoute.MailController);
 router.get("/articles", frontRoute.AllArticles);
 router.get("/article/:id", frontRoute.getArticle);
+router.get("/settings", frontRoute.getSettings);
+// router.get("/search", frontRoute.getSearchReports);
 
 module.exports = router;

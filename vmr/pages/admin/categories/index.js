@@ -16,7 +16,7 @@ import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
 const CategoryList = () => {
-  const { authStatus, data } = useSession();
+  const { status, data } = useSession();
   const refContainer = useRef();
   const [catData, setCatData] = useState([]);
 
@@ -28,8 +28,8 @@ const CategoryList = () => {
     return category.name;
   };
 
-  const status = (category) => {
-    return category.status;
+  const is_active = (category) => {
+    return category.is_active;
   };
 
   const customStyles = {
@@ -51,15 +51,15 @@ const CategoryList = () => {
     },
     {
       name: "Status",
-      selector: status,
+      selector: is_active,
       sortable: true,
       width: "130px",
       cell: (category) => (
         <Fragment>
-          {category.status === 1 && (
+          {category.is_active === 1 && (
             <span className="badge bg-success ">Active</span>
           )}
-          {category.status === 0 && (
+          {category.is_active === 0 && (
             <span className="badge  bg-warning">Inactive</span>
           )}
         </Fragment>
@@ -82,7 +82,7 @@ const CategoryList = () => {
             </button>
           </Link>
 
-          {category.status === 1 ? (
+          {category.is_active === 1 ? (
             <button
               type="button"
               onClick={() => {
@@ -166,10 +166,10 @@ const CategoryList = () => {
   useEffect(() => {
     getReportCategoryData();
     // eslint-disable-next-line
-  }, [authStatus]);
+  }, [status]);
 
   const getReportCategoryData = async () => {
-    if (!(authStatus === "loading")) {
+    if (status === "authenticated") {
       setLoading(true);
       await axios
         .get(`${process.env.NEXT_PUBLIC_NEXT_API}/category`, {
@@ -277,7 +277,7 @@ const CategoryList = () => {
                       Add Category
                     </Link>
                   </div>
-                  <div className="col-md-3 col-sm-3 ">
+                  <div className="col-md-3 col-sm-3 text-right">
                     <label className="d-flex ">
                       <input
                         type="search"
@@ -288,33 +288,22 @@ const CategoryList = () => {
                     </label>
                   </div>
                   <div className="col-md-1 col-sm-1  text-right">
-                    <div className="dt-buttons btn-group flex-wrap">
-                      <button
-                        className="btn btn-secondary buttons-csv buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
+                    <button
+                      className="btn btn-secondary buttons-csv buttons-html5"
+                      tabIndex="0"
+                      aria-controls="example1"
+                      type="button"
+                      style={{ width: "130px" }}
+                    >
+                      <CSVLink
+                        className="text-decoration-none"
+                        data={rows_data_for_export}
+                        headers={columns_data_for_export}
+                        filename={"client_list.csv"}
                       >
-                        <CSVLink
-                          className="text-decoration-none"
-                          data={rows_data_for_export}
-                          headers={columns_data_for_export}
-                          filename={"client_list.csv"}
-                        >
-                          <span className="text-light">CSV</span>
-                        </CSVLink>
-                      </button>
-
-                      <button
-                        className="btn btn-secondary buttons-pdf buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
-                        onClick={download_pdf}
-                      >
-                        <span>PDF</span>
-                      </button>
-                    </div>
+                        <span className="text-light">Export to CSV</span>
+                      </CSVLink>
+                    </button>
                   </div>
                 </div>
                 {loading && (

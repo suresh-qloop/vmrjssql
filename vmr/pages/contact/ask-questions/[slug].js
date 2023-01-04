@@ -6,16 +6,19 @@ import Footer from "../../../components/Frontend/Footer";
 import Breadcrumb from "../../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Head from "next/head";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
+import InputMask from "react-input-mask";
 
 const AskQuestions = () => {
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isVerified, setIsVerified] = useState(false);
+  const [mobile, setMobile] = useState("");
+  const [mobileError, setMobileError] = useState(false);
 
   // setReportData(data);
   const router = useRouter();
@@ -50,22 +53,30 @@ const AskQuestions = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(mobile);
+    if (mobile.length !== 10) {
+      setMobileError(true);
+      return false;
+    }
+
     data.report = reportData.product_name;
-    const finalData = { ...data, name, description };
+    const finalData = { ...data, name, description, mobile };
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
-      .then((res) => {
-        notify("success", "Form Submitted Successfully");
-        router.push("/");
-      })
+      // .then((res) => {
+      // notify("success", "Form Submitted Successfully");
+      // router.push("/");
+      // })
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.message);
       });
+    router.push("/thanks");
   };
 
   return (
@@ -93,7 +104,15 @@ const AskQuestions = () => {
                     hours.
                   </p>
                   <h3 className="text-center mb-3">Ask Questions </h3>
-                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
+                  <form
+                    className="my-5"
+                    onSubmit={
+                      handleSubmit(onSubmit)
+                      // if (mobile.length !== 10) {
+                      //   setMobileError(true);
+                      // }
+                    }
+                  >
                     <div className="form-group row">
                       <label
                         htmlFor="fullName"
@@ -180,20 +199,67 @@ const AskQuestions = () => {
                         Mobile
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="number"
-                          className={`form-control ${
-                            errors.mobile ? "is-invalid" : ""
-                          }`}
-                          id="mobile"
-                          placeholder="Mobile"
+                        {/* <Controller
+                          name="mobile"
+                          control={control}
+                          defaultValue=""
                           {...register("mobile", {
-                            required: "This field is required",
+                            required: "Please enter a card number",
                           })}
-                        />
-                        {errors.mobile && (
+                          render={({ field: { onChange, value, onBlur } }) => (
+                            <InputMask
+                              mask="99999 99999"
+                              maskChar=" "
+                              value={value}
+                              onChange={onChange}
+                              onBlur={onBlur}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  className={`form-control ${
+                                    errors.mobile ? "is-invalid" : ""
+                                  }`}
+                                  id="mobile"
+                                  placeholder="Mobile"
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        /> */}
+                        {/* {errors.mobile && (
                           <div className="error invalid-feedback">
                             <p>{errors.mobile.message}</p>
+                          </div>
+                        )} */}
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            mobileError ? "is-invalid" : ""
+                          }`}
+                          pattern="[0-9]*"
+                          id="mobile"
+                          value={mobile}
+                          placeholder="Mobile Number"
+                          size="10"
+                          maxLength="10"
+                          // minlength="10"
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === "" ||
+                              re.test(e.target.value)
+                            ) {
+                              setMobile(e.target.value);
+                              setMobileError(false);
+                            } else {
+                              setMobileError(true);
+                            }
+                          }}
+                        />
+                        {mobileError && (
+                          <div className="error invalid-feedback">
+                            <p>Please Enter Valid Mobile Number</p>
                           </div>
                         )}
                       </div>
@@ -279,26 +345,26 @@ const AskQuestions = () => {
                     </div>
                     <div className="form-group row">
                       <label
-                        htmlFor="question"
+                        htmlFor="remarks"
                         className="col-sm-4 col-form-label"
                       >
-                        Question
+                        Remarks
                       </label>
                       <div className="col-sm-8">
                         <input
                           type="text"
                           className={`form-control ${
-                            errors.question ? "is-invalid" : ""
+                            errors.remarks ? "is-invalid" : ""
                           }`}
-                          id="question"
-                          placeholder="Question"
-                          {...register("question", {
+                          id="remarks"
+                          placeholder="Remarks"
+                          {...register("remarks", {
                             required: "This field is required",
                           })}
                         />
-                        {errors.question && (
+                        {errors.remarks && (
                           <div className="error invalid-feedback">
-                            <p>{errors.question.message}</p>
+                            <p>{errors.remarks.message}</p>
                           </div>
                         )}
                       </div>
@@ -316,13 +382,18 @@ const AskQuestions = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6Ld50rcjAAAAAGcLGnl1gUapCo2Asc7awRhWFny7"
+                        sitekey={process.env.SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>
                     <button
                       className="btn btn-info justify-content-center mt-3"
                       disabled={!isVerified}
+                      onClick={() => {
+                        if (mobile.length !== 10) {
+                          setMobileError(true);
+                        }
+                      }}
                     >
                       Submit
                     </button>
@@ -332,7 +403,7 @@ const AskQuestions = () => {
             </div>
             <div className="col-md-6">
               <h5 className="px-2 mt-3">
-                <i className="fas fa-chart-line text-lg text-success mr-2"></i>{" "}
+                <i className="fas fa-chart-line text-lg text-success mr-2"></i>
                 {name}
               </h5>
 

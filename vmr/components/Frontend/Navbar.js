@@ -69,7 +69,9 @@ const Navbar = (props) => {
 
               <li className="nav-item dropdown">
                 <Link
-                  className="nav-link dropdown-toggle"
+                  className={`nav-link dropdown-toggle ${
+                    navigate.pathname === "/industries" ? "active" : ""
+                  }`}
                   href="/industries"
                   id="navbarDropdown"
                   role="button"
@@ -77,7 +79,6 @@ const Navbar = (props) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  {" "}
                   Industries
                 </Link>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -107,6 +108,7 @@ const Navbar = (props) => {
                   })}
                 </div>
               </li>
+
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
@@ -150,7 +152,10 @@ const Navbar = (props) => {
                 </Link>
               </li>
             </ul>
-            <form className="form-inline my-2 my-lg-0" onSubmit={searchHandler}>
+            <form
+              className="form-inline my-2 my-lg-0 "
+              onSubmit={searchHandler}
+            >
               <input
                 className="form-control mr-sm-2"
                 type="text"

@@ -47,7 +47,7 @@ exports.addTestimonial = async (req, res, next) => {
   const testimonial_title = toUpperCase(req.body.testimonial_title);
   const testimonial_description = toUpperCase(req.body.testimonial_description);
 
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const value = `("${req.userId}","${testimonial_title}", "${testimonial_description}","${modified}")`;
@@ -80,7 +80,7 @@ exports.editTestimonial = async (req, res, next) => {
   const testimonial_title = toUpperCase(req.body.testimonial_title);
   const testimonial_description = toUpperCase(req.body.testimonial_description);
 
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const obj = `testimonial_title="${testimonial_title}",testimonial_description="${testimonial_description}",modified="${modified}"`;

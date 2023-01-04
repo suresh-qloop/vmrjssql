@@ -273,7 +273,7 @@ const ClientList = () => {
                       Add Client
                     </Link>
                   </div>
-                  <div className="col-md-3 col-sm-3 ">
+                  <div className="col-md-3 col-sm-3 text-right">
                     <label className="d-flex ">
                       <input
                         type="search"
@@ -284,33 +284,22 @@ const ClientList = () => {
                     </label>
                   </div>
                   <div className="col-md-1 col-sm-1  text-right">
-                    <div className="dt-buttons btn-group flex-wrap">
-                      <button
-                        className="btn btn-secondary buttons-csv buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
+                    <button
+                      className="btn btn-secondary buttons-csv buttons-html5"
+                      tabIndex="0"
+                      aria-controls="example1"
+                      type="button"
+                      style={{ width: "130px" }}
+                    >
+                      <CSVLink
+                        className="text-decoration-none"
+                        data={rows_data_for_export}
+                        headers={columns_data_for_export}
+                        filename={"client_list.csv"}
                       >
-                        <CSVLink
-                          className="text-decoration-none"
-                          data={rows_data_for_export}
-                          headers={columns_data_for_export}
-                          filename={"client_list.csv"}
-                        >
-                          <span className="text-light">CSV</span>
-                        </CSVLink>
-                      </button>
-
-                      <button
-                        className="btn btn-secondary buttons-pdf buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
-                        onClick={download_pdf}
-                      >
-                        <span>PDF</span>
-                      </button>
-                    </div>
+                        <span className="text-light">Export to CSV</span>
+                      </CSVLink>
+                    </button>
                   </div>
                 </div>
                 {loading && (

@@ -43,7 +43,7 @@ exports.addSetting = async (req, res, next) => {
   }
   const key = req.body.key;
   const value = req.body.value;
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   try {
     const field = "(`key`,`value`,modified)";
     const val = `('${key}', '${value}','${date}')`;
@@ -72,7 +72,7 @@ exports.editSetting = async (req, res, next) => {
   const id = req.params.id;
   const key = req.body.key;
   const value = req.body.value;
-  let modified = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const obj = `\`key\`="${key}",\`value\`="${value}",modified="${modified}"`;

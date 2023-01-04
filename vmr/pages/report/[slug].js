@@ -314,7 +314,7 @@ const ReportDetails = ({ reportData }) => {
                   </div>
                   <div className="col-md-2"></div>
                 </div>
-                <KeyQuestion />
+                <KeyQuestion slug={reportData.slug} />
               </div>
             </div>
           </div>

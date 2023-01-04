@@ -3,6 +3,8 @@ const moment = require("moment/moment");
 const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
+const { query } = require("../models/config");
+const { findById } = require("../models/Model");
 
 // exports.AllReports = async (req, res, next) => {
 //   try {
@@ -324,8 +326,10 @@ exports.contactFormController = async (req, res, next) => {
       "id ASC"
     );
 
+    let from = `Value Market Research  <${smtpUser[0].value}>`;
+
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "Gmail",
       auth: {
         user: smtpUser[0].value,
         pass: smtpPassword[0].value,
@@ -350,7 +354,7 @@ exports.contactFormController = async (req, res, next) => {
         } else {
           //Setting up Email settings
           var userMailOptions = {
-            from: smtpUser[0].value,
+            from: from,
             to: email,
             subject: "Contact Information",
             generateTextFromHtml: true,
@@ -379,7 +383,7 @@ exports.contactFormController = async (req, res, next) => {
                   } else {
                     //Setting up Email settings
                     var adminMailOptions = {
-                      from: smtpUser[0].value,
+                      from: from,
                       to: mailToUser[0].value,
                       subject: "Contact Information",
                       generateTextFromHtml: true,
@@ -423,7 +427,7 @@ exports.MailController = async (req, res, next) => {
   await check("corporateEmail").notEmpty().run(req);
   await check("confirmEmail").notEmpty().run(req);
   await check("country").notEmpty().run(req);
-  await check("question").notEmpty().run(req);
+  await check("remarks").notEmpty().run(req);
   await check("name").notEmpty().run(req);
   await check("type").notEmpty().run(req);
 
@@ -438,7 +442,7 @@ exports.MailController = async (req, res, next) => {
   const corporateEmail = req.body.corporateEmail;
   const confirmEmail = req.body.confirmEmail;
   const country = req.body.country;
-  const question = req.body.question;
+  const remarks = req.body.remarks;
   const name = req.body.name;
   const type = req.body.type;
 
@@ -480,7 +484,7 @@ exports.MailController = async (req, res, next) => {
       } else {
         //Setting up Email settings
         let userMailOptions = {
-          from: smtpUser[0].value,
+          from: "Value Market Research",
           to: confirmEmail,
           subject: "Contact Information",
           generateTextFromHtml: true,
@@ -502,7 +506,7 @@ exports.MailController = async (req, res, next) => {
                 corporateEmail,
                 confirmEmail,
                 country,
-                question,
+                remarks,
                 name,
                 type,
               },
@@ -514,7 +518,7 @@ exports.MailController = async (req, res, next) => {
                 } else {
                   //Setting up Email settings
                   let adminMailOptions = {
-                    from: smtpUser[0].value,
+                    from: "Value Market Research",
                     to: mailToUser[0].value,
                     subject: "Contact Information",
                     generateTextFromHtml: true,
@@ -583,3 +587,82 @@ exports.getArticle = async (req, res, next) => {
     });
   }
 };
+
+exports.getSettings = async (req, res, next) => {
+  try {
+    const [settings] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='clientQueries' OR \`key\`='reports' OR \`key\`='categories' OR \`key\`='articles' OR \`key\`='clients'`,
+      `id DESC`
+    );
+    console.log(settings);
+
+    const data = {
+      clients: settings[0].value,
+      clientQueries: settings[1].value,
+      articles: settings[2].value,
+      categories: settings[3].value,
+      reports: settings[4].value,
+    };
+
+    res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+// exports.getSearchReports = async (req, res, next) => {
+//   console.log(req);
+//   const raw_data = req.query.query;
+//   let final_data = raw_data.replace(/'|\|"/gi, " ");
+
+//   console.log(final_data);
+//   try {
+//     if (final_data) {
+//       let keyword = final_data.replace(/'  '/gi, " ");
+//       console.log(keyword);
+//       let words = keyword.split(" ");
+//       let filter_str = null;
+//       let idx = 0;
+//       let is_data = false;
+//       let filt;
+//       let ord;
+
+//       for (let i = 0; i < words.length; i++) {
+//         if (idx == 0) {
+//           filt = ` AND Product.alias LIKE '%${words[i]}%'`;
+//           ord = ` case when Product.alias LIKE '${words[i]}'  then 1
+//                        when Product.alias LIKE '${words[i]}%'  then 2
+//                        when Product.alias LIKE '%${words[i]}%' then 3
+//                        when Product.alias LIKE '%${words[i]}'  then 4 `;
+
+//           idx++;
+//           is_data = true;
+//         } else {
+//           filt += `${filt} AND Product.alias LIKE '%${words[i]}%'`;
+//           ord += ` when Product.alias like '${words[i]}'  then 1
+//                    when Product.alias like '${words[i]}%'  then 2
+//                    when Product.alias like '%${words[i]}%' then 3
+//                    when Product.alias like '%${words[i]}'  then 4 `;
+//         }
+//       }
+//       if (is_data == true) {
+//         // const [search_results] = $this->Product->find('all', array('conditions' => array($filt, '+Product.is_active' => 1, 'Product.is_deleted' => 0), 'recursive' => 0, 'limit' => 10));
+//         const [search_results] = await Model.findById(
+//           "products Product,product_categories pc",
+//           "Product.*",
+//           `${filt} Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
+//           `Product.id DESC LIMIT 10`
+//         );
+//         res.status(200).json({ search_results });
+//       }
+//     }
+//   } catch (err) {
+//     return res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };

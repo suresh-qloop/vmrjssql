@@ -54,7 +54,7 @@ exports.addUser = async (req, res, next) => {
   const email = req.body.email;
   const password = md5(req.body.password);
   const role = req.body.role;
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
@@ -148,7 +148,7 @@ exports.login = async (req, res, next) => {
   }
   const email = req.body.email;
   const password = req.body.password;
-  let last_login = await moment(new Date()).format("YYYY-MM-DD HH:MM:SS");
+  let last_login = new Date().toISOString().slice(0, 19).replace("T", " ");
   console.log(last_login, "last_login");
   let loadedUser;
 

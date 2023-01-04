@@ -11,7 +11,7 @@ import Head from "next/head";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
-const RequestCustomization = () => {
+const FreeSample = () => {
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -19,7 +19,6 @@ const RequestCustomization = () => {
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState(false);
 
-  // setReportData(data);
   const router = useRouter();
   const { slug } = router.query;
 
@@ -93,7 +92,9 @@ const RequestCustomization = () => {
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h3 className="text-center mb-3">Request Customization</h3>
+                  <h3 className="text-center mb-3">
+                    Request Free Sample Report
+                  </h3>
                   <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group row">
                       <label
@@ -325,7 +326,7 @@ const RequestCustomization = () => {
                         id="type"
                         placeholder="type"
                         {...register("type")}
-                        value="Request Customization"
+                        value="Free Sample Report"
                       />
                     </div>
                     <div className="captcha">
@@ -362,7 +363,6 @@ const RequestCustomization = () => {
                   __html: description,
                 }}
               ></p>
-
               <div className="card mx-md-5 my-md-5">
                 <h5 className="card-header  text-center py-3">
                   <strong> Why Choose Us</strong>
@@ -409,4 +409,4 @@ const RequestCustomization = () => {
   );
 };
 
-export default RequestCustomization;
+export default FreeSample;

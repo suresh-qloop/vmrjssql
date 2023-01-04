@@ -128,50 +128,7 @@ const Reports = () => {
                   <h2 className="card-title">Reports by Industry</h2>
                 </div>
 
-                <div className="card-body p-0">
-                  {/* <ul className="nav  flex-column">
-                    {categoryList?.map((curElem, i) => {
-                      return (
-                        <li className="nav-item dropdown" key={i + 1}>
-                          <Link
-                            className="nav-link dropdown-toggle"
-                            href="/"
-                            id="navbarDropdown"
-                            role="button"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <p>
-                              {curElem.name}
-
-                              {curElem.children.length > 0 && (
-                                <i className="fas fa-angle-left right text-secondary"></i>
-                              )}
-                              <span className="badge badge-info right">6</span>
-                            </p>
-                          </Link>
-                          <div
-                            className="dropdown-menu"
-                            aria-labelledby="navbarDropdown"
-                          >
-                            {curElem.children.map((Elem) => {
-                              return (
-                                <Link
-                                  href="/"
-                                  className="dropdown-item text-info"
-                                  key={Elem._id}
-                                >
-                                  <p>{Elem.name}</p>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul> */}
-
+                <div className="card-body p-0 m-0">
                   <div id="accordion">
                     {categoryList?.map((curElem, i) => (
                       <Fragment key={i + 1}>
@@ -207,7 +164,6 @@ const Reports = () => {
                         >
                           {curElem.children.map((Elem, i) => (
                             <Fragment key={Elem.id}>
-                              {/* <i className="far fa-minus-square text-info "></i> */}
                               <button
                                 type="button"
                                 className="btn btn-white text-sm text-info ml-3"
@@ -230,9 +186,6 @@ const Reports = () => {
             </div>
             <div className="col-md-9">
               <div className="row">
-                {/* {reportList?.length === 0 && ( */}
-
-                {/* )} */}
                 <InfiniteScroll
                   dataLength={reportList.length} //This is important field to render the next data
                   next={getMoreReport}

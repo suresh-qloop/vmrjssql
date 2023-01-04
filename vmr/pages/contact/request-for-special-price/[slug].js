@@ -16,6 +16,8 @@ const RequestForDiscount = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isVerified, setIsVerified] = useState(false);
+  const [mobile, setMobile] = useState("");
+  const [mobileError, setMobileError] = useState(false);
 
   // setReportData(data);
   const router = useRouter();
@@ -48,22 +50,23 @@ const RequestForDiscount = () => {
   const {
     register,
     handleSubmit,
+
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
+    if (mobile.length !== 10) {
+      setMobileError(true);
+    }
     data.report = reportData.product_name;
-    const finalData = { ...data, name, description };
+    const finalData = { ...data, name, description, mobile };
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
-      .then((res) => {
-        notify("success", "Form Submitted Successfully");
-        router.push("/");
-      })
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.message);
       });
+    router.push("/thanks");
   };
   return (
     <Fragment>
@@ -180,19 +183,33 @@ const RequestForDiscount = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="number"
+                          type="text"
                           className={`form-control ${
-                            errors.mobile ? "is-invalid" : ""
+                            mobileError ? "is-invalid" : ""
                           }`}
+                          pattern="[0-9]*"
                           id="mobile"
-                          placeholder="Mobile"
-                          {...register("mobile", {
-                            required: "This field is required",
-                          })}
+                          value={mobile}
+                          placeholder="Mobile Number"
+                          size="10"
+                          maxLength="10"
+                          // minlength="10"
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === "" ||
+                              re.test(e.target.value)
+                            ) {
+                              setMobile(e.target.value);
+                              setMobileError(false);
+                            } else {
+                              setMobileError(true);
+                            }
+                          }}
                         />
-                        {errors.mobile && (
+                        {mobileError && (
                           <div className="error invalid-feedback">
-                            <p>{errors.mobile.message}</p>
+                            <p>Please Enter Valid Mobile Number</p>
                           </div>
                         )}
                       </div>
@@ -278,26 +295,26 @@ const RequestForDiscount = () => {
                     </div>
                     <div className="form-group row">
                       <label
-                        htmlFor="question"
+                        htmlFor="remarks"
                         className="col-sm-4 col-form-label"
                       >
-                        Question
+                        Remarks
                       </label>
                       <div className="col-sm-8">
                         <input
                           type="text"
                           className={`form-control ${
-                            errors.question ? "is-invalid" : ""
+                            errors.remarks ? "is-invalid" : ""
                           }`}
-                          id="question"
-                          placeholder="Question"
-                          {...register("question", {
+                          id="remarks"
+                          placeholder="Remarks"
+                          {...register("remarks", {
                             required: "This field is required",
                           })}
                         />
-                        {errors.question && (
+                        {errors.remarks && (
                           <div className="error invalid-feedback">
-                            <p>{errors.question.message}</p>
+                            <p>{errors.remarks.message}</p>
                           </div>
                         )}
                       </div>
@@ -315,13 +332,18 @@ const RequestForDiscount = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey="6Ld50rcjAAAAAGcLGnl1gUapCo2Asc7awRhWFny7"
+                        sitekey={process.env.SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>
                     <button
                       className="btn btn-info justify-content-center mt-3"
                       disabled={!isVerified}
+                      onClick={() => {
+                        if (mobile.length !== 10) {
+                          setMobileError(true);
+                        }
+                      }}
                     >
                       Submit
                     </button>
