@@ -72,7 +72,7 @@ exports.editSetting = async (req, res, next) => {
   const id = req.params.id;
   const key = req.body.key;
   const value = req.body.value;
-  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let modified = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const obj = `\`key\`="${key}",\`value\`="${value}",modified="${modified}"`;

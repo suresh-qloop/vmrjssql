@@ -223,7 +223,7 @@ const ContactUs = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey={process.env.SITEKEY}
+                        sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>

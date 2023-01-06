@@ -97,7 +97,7 @@ const ReportList = () => {
       title: meta_keywords,
     },
     {
-      name: "Price",
+      name: "Single User Price",
       selector: price,
       sortable: true,
       width: "130px",
@@ -328,6 +328,7 @@ const ReportList = () => {
         });
     }
   };
+
   // const searchHandler = async (e) => {
   //   e.preventDefault();
   //   await axios
@@ -447,7 +448,7 @@ const ReportList = () => {
                           htmlFor="price"
                           className="col-sm-12 col-form-label "
                         >
-                          Price
+                          Single User Price
                         </label>
                         <input
                           type="text"

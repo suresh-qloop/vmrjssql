@@ -19,11 +19,11 @@ module.exports = class Model {
   }
 
   static addData(table, field = "*", value) {
+    console.log(`INSERT INTO ${table} ${field} VALUES ${value}`);
     return db.execute(`INSERT INTO ${table} ${field} VALUES ${value}`);
   }
 
   static editData(table, obj, id) {
-    // console.log(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
     return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
   }
 

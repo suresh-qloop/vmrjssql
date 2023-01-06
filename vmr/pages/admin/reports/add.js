@@ -24,8 +24,6 @@ const AddReport = () => {
   const [categoryList, setCategoryList] = useState();
 
   const [TOC, setTOC] = useState(null);
-  const [tocError, setTocError] = useState(false);
-  const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState(null);
   const tocEditor = useRef(null);
   const descriptionEditor = useRef(null);
@@ -38,22 +36,10 @@ const AddReport = () => {
 
   const handleSetToc = (value) => {
     setTOC(value);
-
-    if (TOC === "" || TOC === "<p><br></p>") {
-      setTocError(true);
-    } else {
-      setTocError(false);
-    }
   };
 
   const handleSetDescription = (value) => {
     setDescription(value);
-
-    if (description === "" || description === "<p><br></p>") {
-      setDescError(true);
-    } else {
-      setDescError(false);
-    }
   };
 
   useEffect(() => {
@@ -81,7 +67,6 @@ const AddReport = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
@@ -92,19 +77,6 @@ const AddReport = () => {
   };
 
   const onSubmit = (reportData) => {
-    if (TOC === "<p><br></p>" || TOC === "" || description === null) {
-      setTocError(true);
-      return;
-    }
-    if (
-      description === "<p><br></p>" ||
-      description === "" ||
-      description === null
-    ) {
-      setDescError(true);
-      return;
-    }
-
     const finalData = { ...reportData, TOC, description };
 
     axios
@@ -277,13 +249,7 @@ const AddReport = () => {
                                   tabIndex={1}
                                   onBlur={handleSetToc}
                                   // {...register("content")}
-                                  required
                                 />
-                                {tocError && (
-                                  <div className="error text-danger text-sm">
-                                    <p>This field is required</p>
-                                  </div>
-                                )}
                               </div>
                             </div>
                           </div>
@@ -303,11 +269,6 @@ const AddReport = () => {
                                   tabIndex={1}
                                   onBlur={handleSetDescription}
                                 />
-                                {descError && (
-                                  <div className="error text-danger text-sm">
-                                    <p>This field is required</p>
-                                  </div>
-                                )}
                               </div>
                             </div>
                           </div>
@@ -321,8 +282,7 @@ const AddReport = () => {
                               </label>
                               <div className="col-sm-12">
                                 <input
-                                  type="number"
-                                  step="0.01"
+                                  type="text"
                                   className={`form-control ${
                                     errors.price ? "is-invalid" : ""
                                   }`}
@@ -330,7 +290,16 @@ const AddReport = () => {
                                   placeholder="Single User License"
                                   {...register("price", {
                                     required: "This field is required",
+                                    validate: (value) => {
+                                      const matches = value.match(
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                      );
+                                      return (
+                                        matches?.length > 0 || "Not a Number"
+                                      );
+                                    },
                                   })}
+                                  defaultValue="3950"
                                 />
                                 {errors.price && (
                                   <div className="error invalid-feedback">
@@ -350,8 +319,7 @@ const AddReport = () => {
                               </label>
                               <div className="col-sm-12">
                                 <input
-                                  type="number"
-                                  step="0.01"
+                                  type="text"
                                   className={`form-control ${
                                     errors.upto10 ? "is-invalid" : ""
                                   }`}
@@ -359,7 +327,16 @@ const AddReport = () => {
                                   placeholder="Upto 10 Users License"
                                   {...register("upto10", {
                                     required: "This field is required",
+                                    validate: (value) => {
+                                      const matches = value.match(
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                      );
+                                      return (
+                                        matches?.length > 0 || "Not a Number"
+                                      );
+                                    },
                                   })}
+                                  defaultValue="4950"
                                 />
                                 {errors.upto10 && (
                                   <div className="error invalid-feedback">
@@ -379,8 +356,7 @@ const AddReport = () => {
                               </label>
                               <div className="col-sm-12">
                                 <input
-                                  type="number"
-                                  step="0.01"
+                                  type="text"
                                   className={`form-control ${
                                     errors.corporate_price ? "is-invalid" : ""
                                   }`}
@@ -388,7 +364,16 @@ const AddReport = () => {
                                   placeholder="Corporate User License"
                                   {...register("corporate_price", {
                                     required: "This field is required",
+                                    validate: (value) => {
+                                      const matches = value.match(
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                      );
+                                      return (
+                                        matches?.length > 0 || "Not a Number"
+                                      );
+                                    },
                                   })}
+                                  defaultValue="8600"
                                 />
                                 {errors.corporate_price && (
                                   <div className="error invalid-feedback">
@@ -408,8 +393,7 @@ const AddReport = () => {
                               </label>
                               <div className="col-sm-12">
                                 <input
-                                  type="number"
-                                  step="0.01"
+                                  type="text"
                                   className={`form-control ${
                                     errors.data_pack_price ? "is-invalid" : ""
                                   }`}
@@ -417,7 +401,16 @@ const AddReport = () => {
                                   placeholder=" DataPack License"
                                   {...register("data_pack_price", {
                                     required: "This field is required",
+                                    validate: (value) => {
+                                      const matches = value.match(
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                      );
+                                      return (
+                                        matches?.length > 0 || "Not a Number"
+                                      );
+                                    },
                                   })}
+                                  defaultValue="2100"
                                 />
                                 {errors.data_pack_price && (
                                   <div className="error invalid-feedback">
@@ -573,35 +566,6 @@ const AddReport = () => {
                           <div className="col-md-6">
                             <div className="form-group ">
                               <label
-                                htmlFor="meta_desc"
-                                className="col-sm-4 col-form-label"
-                              >
-                                Meta Description
-                              </label>
-                              <div className="col-sm-12">
-                                <textarea
-                                  type="text"
-                                  rows={5}
-                                  className={`form-control ${
-                                    errors.meta_desc ? "is-invalid" : ""
-                                  }`}
-                                  id="meta_desc"
-                                  placeholder="Meta Description"
-                                  {...register("meta_desc", {
-                                    required: "This field is required",
-                                  })}
-                                />
-                                {errors.meta_desc && (
-                                  <div className="error invalid-feedback">
-                                    <p>{errors.meta_desc.message}</p>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group ">
-                              <label
                                 htmlFor="meta_keywords"
                                 className="col-sm-4 col-form-label"
                               >
@@ -623,6 +587,35 @@ const AddReport = () => {
                                 {errors.meta_keywords && (
                                   <div className="error invalid-feedback">
                                     <p>{errors.meta_keywords.message}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group ">
+                              <label
+                                htmlFor="meta_desc"
+                                className="col-sm-4 col-form-label"
+                              >
+                                Meta Description
+                              </label>
+                              <div className="col-sm-12">
+                                <textarea
+                                  type="text"
+                                  rows={5}
+                                  className={`form-control ${
+                                    errors.meta_desc ? "is-invalid" : ""
+                                  }`}
+                                  id="meta_desc"
+                                  placeholder="Meta Description"
+                                  {...register("meta_desc", {
+                                    required: "This field is required",
+                                  })}
+                                />
+                                {errors.meta_desc && (
+                                  <div className="error invalid-feedback">
+                                    <p>{errors.meta_desc.message}</p>
                                   </div>
                                 )}
                               </div>

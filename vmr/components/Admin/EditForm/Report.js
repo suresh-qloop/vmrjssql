@@ -12,9 +12,27 @@ import Menu from "../Menu";
 import Footer from "../Footer";
 import notify from "../../helpers/Notification";
 import dynamic from "next/dynamic";
-const importJodit = () => import("jodit-react");
+// const importJodit = () => import("jodit-react");
 
-const JoditEditor = dynamic(importJodit, {
+// const JoditEditor = dynamic(importJodit, {
+//   ssr: false,
+// });
+
+// const JoditEditor = dynamic(
+//   {
+//     loader: () => import("jodit-react").then((mod) => mod.importJodit),
+//     render: (props, importJodit) => {
+//       const term = importJodit();
+//       // Add logic with `term`
+//       return term;
+//     },
+//   },
+//   {
+//     ssr: false,
+//   }
+// );
+
+const JoditEditor = dynamic(() => import("jodit-react"), {
   ssr: false,
 });
 
@@ -25,29 +43,16 @@ const Report = ({ preLoadedValues }) => {
 
   const [categoryList, setCategoryList] = useState();
   const [TOC, setTOC] = useState(null);
-  const [tocError, setTocError] = useState(false);
-  const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState(null);
   const tocEditor = useRef(null);
   const descriptionEditor = useRef(null);
 
   const handleSetToc = (value) => {
     setTOC(value);
-
-    if (TOC === "" || TOC === "<p><br></p>") {
-      setTocError(true);
-    } else {
-      setTocError(false);
-    }
   };
 
   const handleSetDescription = (value) => {
     setDescription(value);
-    if (description === "" || description === "<p><br></p>") {
-      setDescError(true);
-    } else {
-      setDescError(false);
-    }
   };
 
   const config = {
@@ -61,25 +66,11 @@ const Report = ({ preLoadedValues }) => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({ defaultValues: preLoadedValues });
+  } = useForm({ defaultValues: preLoadedValues, mode: "onChange" });
 
   const onSubmit = (reportData) => {
-    if (TOC === "<p><br></p>" || TOC === "" || description === null) {
-      setTocError(true);
-      return;
-    }
-    if (
-      description === "<p><br></p>" ||
-      description === "" ||
-      description === null
-    ) {
-      setDescError(true);
-      return;
-    }
-
     reportData.product_specification = TOC;
     reportData.product_description = description;
-
     axios
       .put(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, reportData, {
         headers: {
@@ -291,16 +282,11 @@ const Report = ({ preLoadedValues }) => {
                                 tabIndex={1}
                                 onBlur={handleSetToc}
                               />
-                              {tocError && (
-                                <div className="error text-danger text-sm">
-                                  <p> This field is required</p>
-                                </div>
-                              )}
                             </div>
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group ">
+                          <div className="form-group">
                             <label
                               htmlFor="description"
                               className="col-sm-2 col-form-label"
@@ -315,11 +301,6 @@ const Report = ({ preLoadedValues }) => {
                                 tabIndex={1}
                                 onBlur={handleSetDescription}
                               />
-                              {descError && (
-                                <div className="error text-danger text-sm">
-                                  <p>This field is required</p>
-                                </div>
-                              )}
                             </div>
                           </div>
                         </div>
@@ -333,8 +314,7 @@ const Report = ({ preLoadedValues }) => {
                             </label>
                             <div className="col-sm-12">
                               <input
-                                type="number"
-                                step="0.01"
+                                type="text"
                                 className={`form-control ${
                                   errors.price ? "is-invalid" : ""
                                 }`}
@@ -342,6 +322,14 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder="Single User License"
                                 {...register("price", {
                                   required: "This field is required",
+                                  validate: (value) => {
+                                    const matches = value.match(
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                    );
+                                    return (
+                                      matches?.length > 0 || "Not a Number"
+                                    );
+                                  },
                                 })}
                               />
                               {errors.price && (
@@ -362,8 +350,7 @@ const Report = ({ preLoadedValues }) => {
                             </label>
                             <div className="col-sm-12">
                               <input
-                                type="number"
-                                step="0.01"
+                                type="text"
                                 className={`form-control ${
                                   errors.upto10 ? "is-invalid" : ""
                                 }`}
@@ -371,6 +358,14 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder="Upto 10 Users License"
                                 {...register("upto10", {
                                   required: "This field is required",
+                                  validate: (value) => {
+                                    const matches = value.match(
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                    );
+                                    return (
+                                      matches?.length > 0 || "Not a Number"
+                                    );
+                                  },
                                 })}
                               />
                               {errors.upto10 && (
@@ -391,8 +386,7 @@ const Report = ({ preLoadedValues }) => {
                             </label>
                             <div className="col-sm-12">
                               <input
-                                type="number"
-                                step="0.01"
+                                type="text"
                                 className={`form-control ${
                                   errors.corporate_price ? "is-invalid" : ""
                                 }`}
@@ -400,6 +394,14 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder=" Corporate User License"
                                 {...register("corporate_price", {
                                   required: "This field is required",
+                                  validate: (value) => {
+                                    const matches = value.match(
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                    );
+                                    return (
+                                      matches?.length > 0 || "Not a Number"
+                                    );
+                                  },
                                 })}
                               />
                               {errors.corporate_price && (
@@ -420,8 +422,7 @@ const Report = ({ preLoadedValues }) => {
                             </label>
                             <div className="col-sm-12">
                               <input
-                                type="number"
-                                step="0.01"
+                                type="text"
                                 className={`form-control ${
                                   errors.data_pack_price ? "is-invalid" : ""
                                 }`}
@@ -429,6 +430,14 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder=" DataPack License"
                                 {...register("data_pack_price", {
                                   required: "This field is required",
+                                  validate: (value) => {
+                                    const matches = value.match(
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                    );
+                                    return (
+                                      matches?.length > 0 || "Not a Number"
+                                    );
+                                  },
                                 })}
                               />
                               {errors.data_pack_price && (
@@ -451,16 +460,13 @@ const Report = ({ preLoadedValues }) => {
                               <Controller
                                 name="pub_date"
                                 control={control}
-                                defaultValue=""
-                                {...register("pub_date", {
+                                defaultValue={preLoadedValues.pub_date}
+                                rules={{
                                   required: "This field is required",
-                                })}
-                                render={({
-                                  field: { onChange, value, onBlur },
-                                }) => (
+                                }}
+                                render={({ field: { onChange, value } }) => (
                                   <input
                                     onChange={onChange}
-                                    // onBlur={onBlur}
                                     type="date"
                                     value={moment(value).format("YYYY-MM-DD")}
                                     className={`form-control ${
@@ -512,62 +518,15 @@ const Report = ({ preLoadedValues }) => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          {/* <div className="d-none">
+                          <div className="form-group ">
                             <Controller
-                              render={() => (
-                                <>
-                                  <label
-                                    htmlFor="category_id"
-                                    className="col-sm-4 col-form-label"
-                                  >
-                                    Choose Category1
-                                  </label>
-                                  <select
-                                    defaultValue=""
-                                    className="form-control"
-                                    {...register("category_id", {
-                                      required: "This field is required",
-                                    })}
-                                  >
-                                    <option hidden value="">
-                                      Select Category
-                                    </option>
-                                    {categoryList?.map((curElem, i) => {
-                                      return (
-                                        <Fragment key={i + 1}>
-                                          <option
-                                            key={curElem.id}
-                                            value={curElem.id}
-                                            className="optionGroup"
-                                          >
-                                            {curElem.name}
-                                          </option>
-                                          {curElem.children.map((Elem) => {
-                                            return (
-                                              <option
-                                                key={Elem.id}
-                                                className="optionChild"
-                                                value={Elem.id}
-                                              >
-                                                {Elem.category_name}
-                                              </option>
-                                            );
-                                          })}
-                                        </Fragment>
-                                      );
-                                    })}
-                                  </select>
-                                </>
-                              )}
-                              className="d-none"
                               name="category_id"
                               control={control}
                               defaultValue={preLoadedValues.category_id}
-                            />
-                          </div> */}
-                          <div className="form-group ">
-                            <Controller
-                              render={() => (
+                              rules={{
+                                required: "This field is required",
+                              }}
+                              render={({ field: { onChange, value } }) => (
                                 <>
                                   <label
                                     htmlFor="category_id"
@@ -581,26 +540,20 @@ const Report = ({ preLoadedValues }) => {
                                       className={`form-control ${
                                         errors.category_id ? "is-invalid" : ""
                                       }`}
-                                      // defaultValue={preLoadedValues.category_id}
-                                      // value={preLoadedValues.category}
+                                      value={value}
+                                      onChange={onChange}
                                       id="category_id"
-                                      {...register("category_id", {
-                                        required: "This field is required",
-                                      })}
                                     >
-                                      <option hidden value="">
-                                        Select Category
-                                      </option>
                                       {categoryList?.map((curElem, i) => {
                                         return (
                                           <Fragment key={i + 1}>
                                             <option
                                               key={curElem.id}
                                               value={curElem.id}
-                                              selected={
-                                                curElem.id ==
-                                                preLoadedValues.category_id
-                                              }
+                                              // selected={
+                                              //   curElem.id ==
+                                              //   preLoadedValues.category_id
+                                              // }
                                               className="optionGroup"
                                             >
                                               {curElem.name}
@@ -609,10 +562,10 @@ const Report = ({ preLoadedValues }) => {
                                               return (
                                                 <option
                                                   key={Elem.id}
-                                                  selected={
-                                                    Elem.id ==
-                                                    preLoadedValues.category_id
-                                                  }
+                                                  // selected={
+                                                  //   Elem.id ==
+                                                  //   preLoadedValues.category_id
+                                                  // }
                                                   className="optionChild"
                                                   value={Elem.id}
                                                 >
@@ -624,17 +577,9 @@ const Report = ({ preLoadedValues }) => {
                                         );
                                       })}
                                     </select>
-                                    {errors.category_id && (
-                                      <div className="error invalid-feedback">
-                                        <p>{errors.category_id.message}</p>
-                                      </div>
-                                    )}
                                   </div>
                                 </>
                               )}
-                              name="category_id"
-                              control={control}
-                              defaultValue={preLoadedValues.category_id}
                             />
                           </div>
                         </div>

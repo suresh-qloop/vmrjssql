@@ -99,7 +99,7 @@ exports.editArticle = async (req, res, next) => {
   const meta_keywords = req.body.meta_keywords;
 
   const slug = cleanString(req.body.slug);
-  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let modified = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const obj = `headline='${headline}',article_type='${article_type}',description='${description}',category_id='${category_id}',slug='${slug}',meta_title='${meta_title}',meta_desc='${meta_desc}',meta_keywords='${meta_keywords}',modified='${modified}'`;

@@ -80,7 +80,7 @@ const ReportDetails = ({ reportData }) => {
                     </div>
 
                     <Link
-                      href={`/contact/download-sample/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/download-sample`}
                       className="btn btn-success btn-sm mr-3 mt-3"
                       style={{ width: 180 }}
                     >
@@ -88,7 +88,7 @@ const ReportDetails = ({ reportData }) => {
                     </Link>
 
                     <Link
-                      href={`/contact/ask-questions/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/ask-questions`}
                       className="btn btn-info btn-sm mr-3  mt-3"
                       style={{ width: 150 }}
                     >
@@ -96,7 +96,7 @@ const ReportDetails = ({ reportData }) => {
                     </Link>
 
                     <Link
-                      href={`/contact/request-customization/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/request-customization`}
                       className="btn btn-warning text-light mr-3 btn-sm  mt-3"
                       style={{ width: 200 }}
                     >
@@ -104,7 +104,7 @@ const ReportDetails = ({ reportData }) => {
                     </Link>
 
                     <Link
-                      href={`/contact/request-for-discount/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/request-for-discount`}
                       className="btn btn-primary btn-sm mr-3  mt-3"
                       style={{ width: 150 }}
                     >
@@ -112,7 +112,7 @@ const ReportDetails = ({ reportData }) => {
                     </Link>
 
                     <Link
-                      href={`/contact/covid-19-impact/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/covid-19-impact`}
                       className="btn btn-danger btn-sm mr-3  mt-3"
                       style={{ width: 150 }}
                     >

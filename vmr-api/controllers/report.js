@@ -106,7 +106,7 @@ exports.addReport = async (req, res, next) => {
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
 
-  const slug = cleanString(product_name);
+  const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
@@ -182,7 +182,7 @@ exports.editReport = async (req, res, next) => {
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
 
-  const slug = cleanString(req.body.slug);
+  const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;

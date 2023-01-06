@@ -6,12 +6,29 @@ import { Fragment } from "react";
 
 const Navbar = (props) => {
   const navigate = useRouter();
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [categoryList, setCategoryList] = useState();
+  const [aliasList, setAliasList] = useState();
+  const [dropDown, setDropDown] = useState(false);
 
   const searchHandler = async (e) => {
     e.preventDefault();
     navigate.push(`/search-results/${name}`);
+  };
+  const autoSearchHandler = async (e) => {
+    // e.preventDefault();
+    if (name) {
+      await axios
+        .get(
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/auto-search?query=${name}`
+        )
+        .then((res) => {
+          setAliasList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const getCategoryList = async () => {
@@ -26,9 +43,10 @@ const Navbar = (props) => {
   };
   useEffect(() => {
     getCategoryList();
+    autoSearchHandler();
 
     // eslint-disable-next-line
-  }, []);
+  }, [name]);
 
   return (
     <div className="bg-white py-2 shadow-sm rounded sticky-top">
@@ -153,18 +171,52 @@ const Navbar = (props) => {
               </li>
             </ul>
             <form
-              className="form-inline my-2 my-lg-0 "
+              className="form-inline my-2 my-lg-0 search"
               onSubmit={searchHandler}
+              autoComplete="off"
             >
-              <input
-                className="form-control mr-sm-2"
-                type="text"
-                placeholder="Search"
-                aria-label="Search"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
+              <div className="dropdown">
+                <input
+                  className="form-control mr-sm-2"
+                  // style={{ width: "200px" }}
+                  type="text"
+                  placeholder="Search"
+                  aria-label="Search"
+                  onChange={(e) => {
+                    setName(e.target.value);
+
+                    if (e.target.value == "") {
+                      setDropDown(false);
+                      setAliasList([]);
+                    } else {
+                      setDropDown(true);
+                    }
+                  }}
+
+                  // id="dropdownMenuButton1"
+                  // data-bs-toggle="dropdown"
+                  // aria-expanded="false"
+                />
+
+                <ul
+                  className={`dropdown-menu ${dropDown ? "d-block" : "d-none"}`}
+                  // aria-labelledby="dropdownMenuButton1"
+                  // style={{ width: "200px" }}
+                >
+                  {aliasList?.map((alias, i) => {
+                    return (
+                      <li key={i + 1}>
+                        <Link
+                          className="dropdown-item text-sm"
+                          href={`/report/${alias.slug}`}
+                        >
+                          {alias.alias.slice(0, 35)}...
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
               <button className="btn btn-primary my-2 my-sm-0" type="submit">
                 <i className="fas fa-search"></i> Search
               </button>

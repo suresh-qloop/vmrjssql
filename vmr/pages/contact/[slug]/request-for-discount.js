@@ -3,7 +3,6 @@ import { useState } from "react";
 import Navbar from "../../../components/Frontend/Navbar";
 import NavbarTop from "../../../components/Frontend/NavbarTop";
 import Footer from "../../../components/Frontend/Footer";
-import Breadcrumb from "../../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -50,6 +49,7 @@ const RequestForDiscount = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -58,7 +58,14 @@ const RequestForDiscount = () => {
       setMobileError(true);
     }
     data.report = reportData.product_name;
-    const finalData = { ...data, name, description, mobile };
+    data.publisher_name = reportData.publisher_name;
+    data.slug = reportData.slug;
+    data.price = reportData.price;
+    data.product_id = reportData.id;
+    const finalData = {
+      ...data,
+      mobile,
+    };
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
       .catch(function (error) {
@@ -80,7 +87,7 @@ const RequestForDiscount = () => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Covid 19 Impact" />
+
       <div className=" bg-light py-3">
         <div className="container bg-white p-4 px-2">
           <div className="row">
@@ -221,7 +228,7 @@ const RequestForDiscount = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.corporateEmail ? "is-invalid" : ""
                           }`}
@@ -229,7 +236,19 @@ const RequestForDiscount = () => {
                           placeholder="Corporate Email"
                           {...register("corporateEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.corporateEmail && (
                           <div className="error invalid-feedback">
@@ -247,7 +266,7 @@ const RequestForDiscount = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.confirmEmail ? "is-invalid" : ""
                           }`}
@@ -255,7 +274,26 @@ const RequestForDiscount = () => {
                           placeholder="Confirm Email"
                           {...register("confirmEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
+                            validate: (value) => {
+                              const { corporateEmail } = getValues();
+                              return (
+                                corporateEmail === value ||
+                                "Email should match!"
+                              );
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.confirmEmail && (
                           <div className="error invalid-feedback">
@@ -329,7 +367,7 @@ const RequestForDiscount = () => {
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey={process.env.SITEKEY}
+                        sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>

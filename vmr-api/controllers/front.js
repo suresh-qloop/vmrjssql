@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 const { query } = require("../models/config");
 const { findById } = require("../models/Model");
+const md5 = require("md5");
 
 // exports.AllReports = async (req, res, next) => {
 //   try {
@@ -207,19 +208,19 @@ exports.getCategoryReports = async (req, res, next) => {
   }
 };
 
-exports.getSearchReports = async (req, res, next) => {
-  const name = req.query.name;
+// exports.getSearchReports = async (req, res, next) => {
+//   const name = req.query.name;
 
-  try {
-    const [reports] = await Model.searchReport(name);
+//   try {
+//     const [reports] = await Model.searchReport(name);
 
-    res.status(201).json(reports);
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
+//     res.status(201).json(reports);
+//   } catch (err) {
+//     return res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };
 
 exports.getLatestReports = async (req, res, next) => {
   const start = req.query.start || 0;
@@ -428,14 +429,19 @@ exports.MailController = async (req, res, next) => {
   await check("confirmEmail").notEmpty().run(req);
   await check("country").notEmpty().run(req);
   await check("remarks").notEmpty().run(req);
-  await check("name").notEmpty().run(req);
   await check("type").notEmpty().run(req);
+  await check("report").notEmpty().run(req);
+  await check("publisher_name").notEmpty().run(req);
+  await check("slug").notEmpty().run(req);
+  await check("price").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
     return res.status(400).json({ errors: result.array() });
   }
-  const fullName = req.body.fullName;
+  const name = req.body.fullName;
+  const fullName = name.split(" ");
+
   const organization = req.body.organization;
   const designation = req.body.designation;
   const mobile = req.body.mobile;
@@ -443,8 +449,17 @@ exports.MailController = async (req, res, next) => {
   const confirmEmail = req.body.confirmEmail;
   const country = req.body.country;
   const remarks = req.body.remarks;
-  const name = req.body.name;
-  const type = req.body.type;
+  const subject = req.body.type;
+  const ref_page = req.body.type;
+  const report = req.body.report;
+  const publisher_name = req.body.publisher_name;
+  const slug = req.body.slug;
+  const price = req.body.price;
+  const ip = req.socket.remoteAddress;
+  const product_id = req.body.product_id;
+  let first_name = fullName[0];
+  let last_name = fullName[1];
+  let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const [smtpUser] = await Model.findById(
@@ -465,90 +480,223 @@ exports.MailController = async (req, res, next) => {
       `\`key\`='mailToUser'`,
       "id ASC"
     );
-
+    let from = `Value Market Research  <${smtpUser[0].value}>`;
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: smtpUser[0].value,
         pass: smtpPassword[0].value,
-        // user: "prince.queueloop@gmail.com",
-        // pass: "vkezezfceqphsmqg",
       },
     });
 
-    res.render("user-question-email", {}, function (err, html) {
-      if (err) {
-        return res.status(500).json({
-          error: err.message,
-        });
-      } else {
-        //Setting up Email settings
-        let userMailOptions = {
-          from: "Value Market Research",
-          to: confirmEmail,
-          subject: "Contact Information",
-          generateTextFromHtml: true,
-          html: html,
-        };
+    const [user] = await Model.findById(
+      "users",
+      "*",
+      `email ='${confirmEmail}'`,
+      "id DESC"
+    );
 
-        //Execute this to send the mail
-        transporter.sendMail(userMailOptions, function (error, response) {
-          if (error) {
-            res.send("Mail Error! Try again");
+    if (user.length > 0) {
+      console.log("yes");
+      const userId = user[0].id;
+      const value2 = `(${user[0].id},${product_id}, 'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}','${date}')`;
+
+      const [newEnquirie] = await Model.addData(
+        "enquiries",
+        "(user_id,product_id,subject,message,visited_ip,ref_page,created,modified)",
+        value2
+      );
+      let leadId = newEnquirie.insertId;
+
+      res.render(
+        "user-question-email",
+        { report, name, organization },
+        function (err, html) {
+          if (err) {
+            return res.status(500).json({
+              error: err.message,
+            });
           } else {
-            res.render(
-              "admin-question-email",
-              {
-                fullName,
-                organization,
-                designation,
-                mobile,
-                corporateEmail,
-                confirmEmail,
-                country,
-                remarks,
-                name,
-                type,
-              },
-              function (err, html) {
-                if (err) {
-                  return res.status(500).json({
-                    error: err.message,
-                  });
-                } else {
-                  //Setting up Email settings
-                  let adminMailOptions = {
-                    from: "Value Market Research",
-                    to: mailToUser[0].value,
-                    subject: "Contact Information",
-                    generateTextFromHtml: true,
-                    html: html,
-                  };
+            //Setting up Email settings
+            let userMailOptions = {
+              from: from,
+              to: confirmEmail,
+              subject: subject,
+              generateTextFromHtml: true,
+              html: html,
+            };
 
-                  //Execute this to send the mail
-                  transporter.sendMail(
-                    adminMailOptions,
-                    function (error, response) {
-                      if (error) {
-                        console.log(error);
-                        // res.send("Mail Error! Try again");
-                        return res.status(500).json({
-                          error: "Mail Error! Try again",
-                        });
-                      } else {
-                        res.status(201).json({
-                          message: "Mail Send successfully",
-                        });
-                      }
+            //Execute this to send the mail
+            transporter.sendMail(userMailOptions, function (error, response) {
+              if (error) {
+                res.send("Mail Error! Try again");
+              } else {
+                res.render(
+                  "admin-question-email",
+                  {
+                    report,
+                    leadId,
+                    name,
+                    corporateEmail,
+                    mobile,
+                    subject,
+                    organization,
+                    designation,
+                    country,
+                    remarks,
+                    ip,
+                    ref_page,
+                    price,
+                    userId,
+                    slug,
+                    publisher_name,
+                  },
+                  function (err, html) {
+                    if (err) {
+                      return res.status(500).json({
+                        error: err.message,
+                      });
+                    } else {
+                      //Setting up Email settings
+                      let adminMailOptions = {
+                        from: from,
+                        to: mailToUser[0].value,
+                        subject: subject,
+                        generateTextFromHtml: true,
+                        html: html,
+                      };
+
+                      //Execute this to send the mail
+                      transporter.sendMail(
+                        adminMailOptions,
+                        function (error, response) {
+                          if (error) {
+                            console.log(error);
+                            // res.send("Mail Error! Try again");
+                            return res.status(500).json({
+                              error: "Mail Error! Try again",
+                            });
+                          } else {
+                            res.status(201).json({
+                              message: "Mail Send successfully",
+                            });
+                          }
+                        }
+                      );
                     }
-                  );
-                }
+                  }
+                );
               }
-            );
+            });
           }
-        });
-      }
-    });
+        }
+      );
+    } else {
+      console.log("no");
+
+      let hashPassword = md5(
+        "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789"
+      );
+
+      const value = `('${first_name}','${last_name}', '${confirmEmail}',"${hashPassword}',2,'${organization}','${designation}',
+      "${country}","${mobile}","${ip}","${date}")`;
+
+      const [newUser] = await Model.addData(
+        "users",
+        "(first_name,last_name,email,password,role,organisation,job_title,country,mobile,visited_ip,modified)",
+        value
+      );
+      const userId = newUser.insertId;
+
+      const value2 = `('${newUser.insertId}','${product_id}', 'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}'`;
+
+      const [newEnquirie] = await Model.addData(
+        "enquiries",
+        "(user_id,product_id,subject,message,visited_ip,ref_page,modified)",
+        value2
+      );
+      let leadId = newEnquirie.insertId;
+
+      res.render("user-question-email", {}, function (err, html) {
+        if (err) {
+          return res.status(500).json({
+            error: err.message,
+          });
+        } else {
+          //Setting up Email settings
+          let userMailOptions = {
+            from: from,
+            to: confirmEmail,
+            subject: subject,
+            generateTextFromHtml: true,
+            html: html,
+          };
+
+          //Execute this to send the mail
+          transporter.sendMail(userMailOptions, function (error, response) {
+            if (error) {
+              res.send("Mail Error! Try again");
+            } else {
+              res.render(
+                "admin-question-email",
+                {
+                  report,
+                  leadId,
+                  name,
+                  corporateEmail,
+                  mobile,
+                  subject,
+                  organization,
+                  designation,
+                  country,
+                  remarks,
+                  ip,
+                  ref_page,
+                  price,
+                  userId,
+                  slug,
+                  publisher_name,
+                },
+                function (err, html) {
+                  if (err) {
+                    return res.status(500).json({
+                      error: err.message,
+                    });
+                  } else {
+                    //Setting up Email settings
+                    let adminMailOptions = {
+                      from: from,
+                      to: mailToUser[0].value,
+                      subject: subject,
+                      generateTextFromHtml: true,
+                      html: html,
+                    };
+
+                    //Execute this to send the mail
+                    transporter.sendMail(
+                      adminMailOptions,
+                      function (error, response) {
+                        if (error) {
+                          console.log(error);
+                          // res.send("Mail Error! Try again");
+                          return res.status(500).json({
+                            error: "Mail Error! Try again",
+                          });
+                        } else {
+                          res.status(201).json({
+                            message: "Mail Send successfully",
+                          });
+                        }
+                      }
+                    );
+                  }
+                }
+              );
+            }
+          });
+        }
+      });
+    }
   } catch (err) {
     return res.status(500).json({
       error: err.message,
@@ -596,7 +744,6 @@ exports.getSettings = async (req, res, next) => {
       `\`key\`='clientQueries' OR \`key\`='reports' OR \`key\`='categories' OR \`key\`='articles' OR \`key\`='clients'`,
       `id DESC`
     );
-    console.log(settings);
 
     const data = {
       clients: settings[0].value,
@@ -614,55 +761,143 @@ exports.getSettings = async (req, res, next) => {
   }
 };
 
-// exports.getSearchReports = async (req, res, next) => {
-//   console.log(req);
-//   const raw_data = req.query.query;
-//   let final_data = raw_data.replace(/'|\|"/gi, " ");
+exports.getSearchAlias = async (req, res, next) => {
+  const raw_data = req.query.query;
+  let final_data = raw_data.replace(/'|\|"/gi, " ");
 
-//   console.log(final_data);
-//   try {
-//     if (final_data) {
-//       let keyword = final_data.replace(/'  '/gi, " ");
-//       console.log(keyword);
-//       let words = keyword.split(" ");
-//       let filter_str = null;
-//       let idx = 0;
-//       let is_data = false;
-//       let filt;
-//       let ord;
+  try {
+    if (final_data) {
+      let keyword = final_data.replace(/'  '/gi, " ");
 
-//       for (let i = 0; i < words.length; i++) {
-//         if (idx == 0) {
-//           filt = ` AND Product.alias LIKE '%${words[i]}%'`;
-//           ord = ` case when Product.alias LIKE '${words[i]}'  then 1
-//                        when Product.alias LIKE '${words[i]}%'  then 2
-//                        when Product.alias LIKE '%${words[i]}%' then 3
-//                        when Product.alias LIKE '%${words[i]}'  then 4 `;
+      let words = keyword.split(" ");
+      let idx = 0;
+      let is_data = false;
+      let filt;
 
-//           idx++;
-//           is_data = true;
-//         } else {
-//           filt += `${filt} AND Product.alias LIKE '%${words[i]}%'`;
-//           ord += ` when Product.alias like '${words[i]}'  then 1
-//                    when Product.alias like '${words[i]}%'  then 2
-//                    when Product.alias like '%${words[i]}%' then 3
-//                    when Product.alias like '%${words[i]}'  then 4 `;
-//         }
-//       }
-//       if (is_data == true) {
-//         // const [search_results] = $this->Product->find('all', array('conditions' => array($filt, '+Product.is_active' => 1, 'Product.is_deleted' => 0), 'recursive' => 0, 'limit' => 10));
-//         const [search_results] = await Model.findById(
-//           "products Product,product_categories pc",
-//           "Product.*",
-//           `${filt} Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
-//           `Product.id DESC LIMIT 10`
-//         );
-//         res.status(200).json({ search_results });
-//       }
-//     }
-//   } catch (err) {
-//     return res.status(500).json({
-//       error: err.message,
-//     });
-//   }
-// };
+      for (let i = 0; i < words.length; i++) {
+        if (idx == 0) {
+          filt = `Product.alias LIKE '%${words[i]}%'`;
+
+          idx++;
+          is_data = true;
+        } else {
+          filt += ` AND Product.alias LIKE '%${words[i]}%'`;
+        }
+      }
+      if (is_data == true) {
+        const [search_results] = await Model.findById(
+          "products Product,product_categories pc",
+          "Product.id,Product.alias,Product.slug",
+          `${filt} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
+          `Product.id DESC LIMIT 10`
+        );
+
+        const result0 = search_results;
+        Array.prototype.unique = function () {
+          var a = this.concat();
+          for (var k = 0; k < a.length; ++k) {
+            for (var j = k + 1; j < a.length; ++j) {
+              if (a[k].id === a[j].id) a.splice(j--, 1);
+            }
+          }
+          return a;
+        };
+        let results = search_results.concat(result0).unique();
+        res.status(200).json(results);
+      }
+    }
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.getSearchReport = async (req, res, next) => {
+  const raw_data = req.query.q;
+  let final_data = raw_data.replace(/'|\|"/gi, " ");
+
+  try {
+    if (final_data) {
+      let keyword = final_data.replace(/'  '/gi, " ");
+      let words = keyword.split(" ");
+      let idx = 0;
+      let is_data = false;
+
+      let keyword_filter = `(Product.alias LIKE '%${keyword}%' OR Product.product_name LIKE '%${keyword}%' OR Product.product_description LIKE '%${keyword}%')`;
+
+      let keyword_order = `CASE WHEN Product.alias LIKE '%${keyword}%' THEN 1
+      when Product.product_name LIKE '%${keyword}%'  then 2
+      when Product.product_description LIKE '%${keyword}%' then 3 END`;
+
+      let alias_filter;
+      let name_filter;
+      let desc_filter;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i]) {
+          if (idx == 0) {
+            alias_filter = `Product.alias LIKE '%${words[i]}%'`;
+            name_filter = `Product.product_name LIKE '%${words[i]}%'`;
+            desc_filter = `Product.product_description LIKE '%${words[i]}%'`;
+
+            idx++;
+            is_data = true;
+          } else {
+            alias_filter += ` OR Product.alias LIKE '%${words[i]}%'`;
+            name_filter += ` OR Product.product_name LIKE '%${words[i]}%'`;
+            desc_filter += ` OR Product.product_description LIKE '%${words[i]}%'`;
+          }
+
+          alias_filter += ` AND Product.alias NOT LIKE '%${keyword}%' AND Product.is_active=1`;
+          name_filter += ` AND Product.alias NOT LIKE '%${words[i]}%' AND Product.alias NOT LIKE '%${keyword}%' AND Product.product_name NOT LIKE '%${keyword}%' AND Product.is_active=1`;
+          desc_filter += ` AND Product.alias NOT LIKE '%${words[i]}%' AND Product.product_name NOT LIKE '%${words[i]}%' AND Product.alias NOT LIKE '%${keyword}%' AND Product.product_name NOT LIKE '%${keyword}%' AND Product.product_description NOT LIKE '%${keyword}%' AND Product.is_active=1`;
+        }
+      }
+      if (is_data == true) {
+        const [keyword_results] = await Model.findById(
+          "products Product,product_categories pc",
+          "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
+          `${keyword_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
+          `${keyword_order} LIMIT 50`
+        );
+
+        const [alias_results] = await Model.getOne(
+          "products Product,product_categories pc",
+          "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
+          `${alias_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+        );
+
+        const [name_results] = await Model.getOne(
+          "products Product,product_categories pc",
+          "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
+          `${name_filter}
+           AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+        );
+        const [desc_results] = await Model.getOne(
+          "products Product,product_categories pc",
+          "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
+          `${desc_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+        );
+
+        Array.prototype.unique = function () {
+          var a = this.concat();
+          for (var k = 0; k < a.length; ++k) {
+            for (var j = k + 1; j < a.length; ++j) {
+              if (a[k].id === a[j].id) a.splice(j--, 1);
+            }
+          }
+          return a;
+        };
+        let results0 = keyword_results.concat(alias_results).unique();
+        let results1 = results0.concat(name_results).unique();
+        let search_results = results1.concat(desc_results).unique();
+        res.status(200).json({ reports: search_results });
+      }
+    }
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};

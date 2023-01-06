@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import axios from "axios";
 import Link from "next/link";
 import { CSVLink } from "react-csv";
 import { useSession } from "next-auth/react";
-
-import moment from "moment/moment";
 
 // ES6 Modules or TypeScript
 import Swal from "sweetalert2";
@@ -17,33 +14,63 @@ import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
-const UserList = () => {
+const EnquiriesList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
 
-  const [userData, setUserData] = useState([]);
+  const [enquirieData, setEnquirieData] = useState([]);
 
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
 
-  const first_name = (user) => {
-    return user.first_name;
+  const id = (enquirie) => {
+    return enquirie.id;
   };
-  const last_name = (user) => {
-    return user.last_name;
+  const first_name = (enquirie) => {
+    return enquirie.first_name;
   };
-  const email = (user) => {
-    return user.email;
+  const last_name = (enquirie) => {
+    return enquirie.last_name;
   };
-  const role = (user) => {
-    return user.role;
+  const subject = (enquirie) => {
+    return enquirie.subject;
   };
-  const last_login = (user) => {
-    return user.last_login;
+
+  const email = (enquirie) => {
+    return enquirie.email;
   };
-  const is_active = (user) => {
-    return user.is_active;
+  const product_name = (enquirie) => {
+    return enquirie.product_name;
+  };
+  const publisher_name = (enquirie) => {
+    return enquirie.publisher_name;
+  };
+  const e_status = (enquirie) => {
+    return enquirie.status;
+  };
+  const rating = (enquirie) => {
+    return enquirie.rating;
+  };
+  const message = (enquirie) => {
+    return enquirie.message;
+  };
+  const remark = (enquirie) => {
+    return enquirie.remark;
+  };
+
+  const visited_ip = (enquirie) => {
+    return enquirie.visited_ip;
+  };
+  const organisation = (enquirie) => {
+    return enquirie.organisation;
+  };
+
+  const job_title = (enquirie) => {
+    return enquirie.job_title;
+  };
+  const country = (enquirie) => {
+    return enquirie.country;
   };
 
   const customStyles = {
@@ -57,119 +84,109 @@ const UserList = () => {
 
   const columns = [
     {
+      name: "Id",
+      selector: id,
+      sortable: true,
+      width: "70px",
+    },
+    {
       name: "Name",
       selector: first_name,
       last_name,
       sortable: true,
-      cell: (user) => (
+      width: "140px",
+      cell: (enquirie) => (
         <div>
-          {user.first_name}
+          {enquirie.first_name}
           &nbsp;
-          {user.last_name}
+          {enquirie.last_name}
         </div>
       ),
+    },
+    {
+      name: "Ref page",
+      selector: subject,
+      sortable: true,
+      width: "150px",
+      cell: (enquirie) => <div>{enquirie.subject.slice(12)}</div>,
     },
     {
       name: "Email",
       selector: email,
       sortable: true,
-      cell: (user) => (
-        <a className="text-decoration-none" href={`mailto:${user.email}`}>
-          {user.email}
-        </a>
-      ),
+      width: "290px",
     },
     {
-      name: "Role",
-      selector: role,
+      name: "Product Name",
+      selector: product_name,
       sortable: true,
-      cell: (user) => (
-        <Fragment>
-          {user.role === 1 && <div>SuperAdmin</div>}
-          {user.role === 2 && <div>User</div>}
-          {user.role === 3 && <div>User</div>}
-          {user.role === 11 && <div>User</div>}
-        </Fragment>
-      ),
+      width: "290px",
     },
     {
-      name: "Last Login",
-      selector: last_login,
+      name: "Publisher Name",
+      selector: publisher_name,
       sortable: true,
-      cell: (user) => (
-        <div>
-          {user.last_login
-            ? moment(user.last_login).format().slice(0, 19).replace("T", " ")
-            : null}
-        </div>
-      ),
+      width: "205px",
     },
     {
-      name: "Status",
-      selector: is_active,
+      name: "Progress",
+      selector: e_status,
       sortable: true,
-      width: "130px",
-      cell: (user) => (
-        <Fragment>
-          {user.is_active === 0 && (
-            <span className="badge bg-success ">Active</span>
-          )}
-          {user.is_active === 1 && (
-            <span className="badge  bg-warning">Inactive</span>
-          )}
-        </Fragment>
-      ),
+      width: "140px",
+    },
+    {
+      name: "Ratting",
+      selector: rating,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Message",
+      selector: message,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Remark",
+      selector: remark,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Visited IP",
+      selector: visited_ip,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Organisation",
+      selector: organisation,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Job Title",
+      selector: job_title,
+      sortable: true,
+      width: "140px",
+    },
+    {
+      name: "Country",
+      selector: country,
+      sortable: true,
+      width: "140px",
     },
     {
       name: "Action",
       button: true,
       grow: 1,
-      width: "380px",
-      cell: (user) => (
+      width: "80px",
+      cell: (client) => (
         <div>
-          <Link
-            href={`/admin/users/edit/${user.id}`}
-            style={{ marginRight: "5px" }}
-            className="btn btn-sm btn-outline-info mr-2"
-          >
-            Edit
-          </Link>
-
-          {user.is_active === 0 ? (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(user.id);
-              }}
-              className="btn btn-sm btn-outline-warning mr-2"
-              style={{ width: 101 }}
-            >
-              Deactivate
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(user.id);
-              }}
-              className="btn btn-sm btn-outline-primary mr-2"
-              style={{ width: 101 }}
-            >
-              Activate
-            </button>
-          )}
-          <Link
-            href={`/admin/users/reset-password/${user.id}`}
-            style={{ marginRight: "5px" }}
-            className="btn btn-sm btn-outline-dark mr-2"
-          >
-            Reset
-          </Link>
-
           <button
             type="button"
             onClick={() => {
-              deleteUser(user.id);
+              deleteClient(client.id);
             }}
             className="btn btn-sm btn-outline-danger mr-2"
           >
@@ -181,7 +198,7 @@ const UserList = () => {
   ];
 
   // useEffect(() => {
-  const temp_rows = userData.filter(
+  const temp_rows = enquirieData.filter(
     (item) =>
       JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
       -1
@@ -198,40 +215,24 @@ const UserList = () => {
     .slice(0, columns.length - 1)
     .map((d) => d.name);
 
-  const download_pdf = () => {
-    const doc = new jsPDF();
-
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
-
   useEffect(() => {
-    getUserData();
+    getEnquirieData();
     // eslint-disable-next-line
   }, [status]);
 
-  const getUserData = async () => {
+  const getEnquirieData = async () => {
     if (status === "authenticated") {
       setLoading(true);
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/user`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/enquirie`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
         })
         .then((res) => {
-          setUserData(res.data);
+          setEnquirieData(res.data);
           setLoading(false);
-          if (res.data.users < 0) {
+          if (res.data.length < 0) {
             setNoRecords(true);
           }
         })
@@ -243,13 +244,13 @@ const UserList = () => {
 
   const statusHandler = async (id) => {
     await axios
-      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/user/status/${id}`, {
+      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/client/status/${id}`, {
         headers: {
           Authorization: `Bearer ${data.user.token}`,
         },
       })
       .then((res) => {
-        getUserData();
+        getEnquirieData();
         notify("success", "Status Updated Successfully");
       })
       .catch((err) => {
@@ -257,7 +258,7 @@ const UserList = () => {
       });
   };
 
-  const deleteUser = (id) => {
+  const deleteClient = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -269,14 +270,14 @@ const UserList = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/user/${id}`, {
+          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/enquirie/${id}`, {
             headers: {
               Authorization: `Bearer ${data.user.token}`,
             },
           })
           .then((res) => {
-            getUserData();
-            notify("success", "User Deleted Successfully");
+            getEnquirieData();
+            notify("success", "Inquiry Deleted Successfully");
           })
           .catch((err) => {
             console.log(err);
@@ -295,14 +296,14 @@ const UserList = () => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Manage Users</h1>
+                <h1>Enquiries</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Users</li>
+                  <li className="breadcrumb-item active">All Enquiries</li>
                 </ol>
               </div>
             </div>
@@ -311,7 +312,7 @@ const UserList = () => {
         <section className="content">
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">All Users</h3>
+              <h3 className="card-title">All Enquiries</h3>
             </div>
             <div className="card-body">
               <div
@@ -320,13 +321,13 @@ const UserList = () => {
               >
                 <div className="row my-3">
                   <div className="col-md-8 col-sm-8  text-left">
-                    <Link
-                      href="/admin/users/add"
+                    {/* <Link
+                      href="/admin/clients/add"
                       style={{ marginRight: "5px" }}
                       className="btn btn-primary mb-2"
                     >
-                      Add User
-                    </Link>
+                      Add Enquirie
+                    </Link> */}
                   </div>
                   <div className="col-md-3 col-sm-3 text-right">
                     <label className="d-flex ">
@@ -394,4 +395,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default EnquiriesList;

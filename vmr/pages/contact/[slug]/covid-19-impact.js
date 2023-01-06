@@ -3,7 +3,6 @@ import { useState } from "react";
 import Navbar from "../../../components/Frontend/Navbar";
 import NavbarTop from "../../../components/Frontend/NavbarTop";
 import Footer from "../../../components/Frontend/Footer";
-import Breadcrumb from "../../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,7 @@ import Head from "next/head";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
-const RequestForDiscount = () => {
+const Covid19Impact = () => {
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -46,28 +45,37 @@ const RequestForDiscount = () => {
   const handleCaptcha = async (value) => {
     setIsVerified(true);
   };
-
   const {
     register,
     handleSubmit,
-
+    getValues,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     if (mobile.length !== 10) {
       setMobileError(true);
+      return false;
     }
     data.report = reportData.product_name;
-    const finalData = { ...data, name, description, mobile };
+    data.publisher_name = reportData.publisher_name;
+    data.slug = reportData.slug;
+    data.price = reportData.price;
+    data.product_id = reportData.id;
+    const finalData = {
+      ...data,
+      mobile,
+    };
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
+
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.message);
       });
     router.push("/thanks");
   };
+
   return (
     <Fragment>
       <Head>
@@ -81,7 +89,6 @@ const RequestForDiscount = () => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Covid 19 Impact" />
       <div className=" bg-light py-3">
         <div className="container bg-white p-4 px-2">
           <div className="row">
@@ -93,7 +100,7 @@ const RequestForDiscount = () => {
                     hours.
                   </p>
                   <h3 className="text-center mb-3">
-                    Request for Special Pricing
+                    REQUEST FOR COVID19 IMPACT ANALYSIS
                   </h3>
                   <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group row">
@@ -224,7 +231,7 @@ const RequestForDiscount = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.corporateEmail ? "is-invalid" : ""
                           }`}
@@ -232,7 +239,19 @@ const RequestForDiscount = () => {
                           placeholder="Corporate Email"
                           {...register("corporateEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.corporateEmail && (
                           <div className="error invalid-feedback">
@@ -250,7 +269,7 @@ const RequestForDiscount = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.confirmEmail ? "is-invalid" : ""
                           }`}
@@ -258,7 +277,26 @@ const RequestForDiscount = () => {
                           placeholder="Confirm Email"
                           {...register("confirmEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
+                            validate: (value) => {
+                              const { corporateEmail } = getValues();
+                              return (
+                                corporateEmail === value ||
+                                "Email should match!"
+                              );
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.confirmEmail && (
                           <div className="error invalid-feedback">
@@ -326,13 +364,13 @@ const RequestForDiscount = () => {
                         id="type"
                         placeholder="type"
                         {...register("type")}
-                        value="Request For Special Pricing"
+                        value="Covid 19 Impact"
                       />
                     </div>
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey={process.env.SITEKEY}
+                        sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>
@@ -364,6 +402,21 @@ const RequestForDiscount = () => {
                 }}
               ></p>
 
+              <h4 className="mt-4">
+                Important : Covid-19 Pandemic Market Impact
+              </h4>
+              <hr className="dashed" />
+              <p className="text-secondary text-sm">
+                The world is currently experiencing a huge challenge which has
+                affected all the industries and markets. Few markets have
+                experienced a high growth in their demand while others have
+                faced a downfall. The extent of growth or drop in the market
+                statistics of different industries by COVID 19 plays an
+                important role in how the future of businesses will shape up in
+                the near future. We at Value Market Research provide you with an
+                impact analysis of COVID 19 on this market with its latest
+                update in the purchased version of the report.
+              </p>
               <div className="card mx-md-5 my-md-5">
                 <h5 className="card-header  text-center py-3">
                   <strong> Why Choose Us</strong>
@@ -410,4 +463,4 @@ const RequestForDiscount = () => {
   );
 };
 
-export default RequestForDiscount;
+export default Covid19Impact;

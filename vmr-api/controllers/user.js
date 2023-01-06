@@ -54,7 +54,7 @@ exports.addUser = async (req, res, next) => {
   const email = req.body.email;
   const password = md5(req.body.password);
   const role = req.body.role;
-  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
@@ -139,7 +139,6 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  console.log(req.body, "body");
   await check("email").notEmpty().run(req);
   await check("password").notEmpty().run(req);
   const result = validationResult(req);
@@ -148,8 +147,8 @@ exports.login = async (req, res, next) => {
   }
   const email = req.body.email;
   const password = req.body.password;
-  let last_login = new Date().toISOString().slice(0, 19).replace("T", " ");
-  console.log(last_login, "last_login");
+  let last_login = moment().format().slice(0, 19).replace("T", " ");
+
   let loadedUser;
 
   try {
@@ -180,7 +179,6 @@ exports.login = async (req, res, next) => {
 
     const obj = `last_login="${last_login}"`;
     const [lastLogin] = await Admin.editData("users", obj, loadedUser.id);
-    console.log(lastLogin);
     const jwtPayload = JSON.parse(Buffer.from(token.split(".")[1], "base64"));
     const expTime = jwtPayload.exp;
 

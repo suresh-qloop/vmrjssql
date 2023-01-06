@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import Header from "../../components/Admin/Header";
-import Menu from "../../components/Admin/Menu";
-import Footer from "../../components/Admin/Footer";
+import Header from "../../../components/Admin/Header";
+import Menu from "../../../components/Admin/Menu";
+import Footer from "../../../components/Admin/Footer";
 
 const DashBoard = () => {
   return (

@@ -57,7 +57,7 @@ exports.addCategory = async (req, res, next) => {
 
   const category_name = toUpperCase(req.body.category_name);
 
-  let date = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const value = `("${category_name}", "2", "2", "${date}")`;
@@ -195,7 +195,7 @@ exports.addChildCategory = async (req, res, next) => {
   const parent_category_id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
 
-  let created = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let created = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     const value = `("${category_name}", "${parent_category_id}", "3","${created}", "${created}")`;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import axios from "axios";
 import Link from "next/link";
@@ -143,22 +142,6 @@ const ClientList = () => {
     .slice(0, columns.length - 1)
     .map((d) => d.name);
 
-  const download_pdf = () => {
-    const doc = new jsPDF();
-
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
-
   useEffect(() => {
     getClientData();
     // eslint-disable-next-line
@@ -240,14 +223,16 @@ const ClientList = () => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Clients</h1>
+                <h1>Home Page Logos</h1>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Clients</li>
+                  <li className="breadcrumb-item active">
+                    All Home Page Logos
+                  </li>
                 </ol>
               </div>
             </div>
@@ -256,7 +241,7 @@ const ClientList = () => {
         <section className="content">
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">All Clients</h3>
+              <h3 className="card-title">All Home Page Logos</h3>
             </div>
             <div className="card-body">
               <div

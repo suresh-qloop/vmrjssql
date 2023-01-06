@@ -12,7 +12,7 @@ router.get("/reports", frontRoute.AllReports);
 router.get("/report/:slug", frontRoute.getReport);
 router.get("/categories", frontRoute.AllCategories);
 router.get("/category/:id", frontRoute.getCategoryReports);
-router.get("/search", frontRoute.getSearchReports);
+// router.get("/search", frontRoute.getSearchReports);
 router.get("/latest-reports", frontRoute.getLatestReports);
 router.get("/latest-articles", frontRoute.getLatestArticles);
 router.get("/testimonials", frontRoute.AllTestimonials);
@@ -22,6 +22,7 @@ router.post("/req-email", upload.none(), frontRoute.MailController);
 router.get("/articles", frontRoute.AllArticles);
 router.get("/article/:id", frontRoute.getArticle);
 router.get("/settings", frontRoute.getSettings);
-// router.get("/search", frontRoute.getSearchReports);
+router.get("/auto-search", frontRoute.getSearchAlias);
+router.get("/search", frontRoute.getSearchReport);
 
 module.exports = router;

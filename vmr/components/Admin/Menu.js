@@ -104,7 +104,15 @@ const Menu = () => {
                   <li className="nav-item">
                     <Link href="/admin/clients" className="nav-link">
                       <i className="nav-icon fas fa-user-friends mr-2"></i>
-                      <p>Clients</p>
+                      <p>Home Page Logo</p>
+                    </Link>
+                  </li>
+                )}
+                {isAdmin && (
+                  <li className="nav-item">
+                    <Link href="/admin/enquiries" className="nav-link">
+                      <i className="nav-icon fas fa-question mr-2"></i>
+                      <p>Enquiries</p>
                     </Link>
                   </li>
                 )}

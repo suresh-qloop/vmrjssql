@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    SITEKEY: process.env.SITEKEY,
+    NEXT_PUBLIC_SITEKEY: process.env.NEXT_PUBLIC_SITEKEY,
   },
 };

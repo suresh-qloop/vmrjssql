@@ -33,7 +33,7 @@ const ChaptersInfo = ({ slug }) => {
         </ul>
         <Link
           className="btn btn-primary text-center mt-2  from-control"
-          href={`/contact/request-for-special-price/${slug}`}
+          href={`/contact/${slug}/request-for-special-pricing`}
         >
           Request for Special Pricing
         </Link>

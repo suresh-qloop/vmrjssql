@@ -85,7 +85,7 @@
                           font-family: 'Rubik', sans-serif;
                         "
                       >
-                        <%= type %>
+                        <%= subject %>
                       </p>
                       <p
                         style="
@@ -96,7 +96,7 @@
                           font-family: 'Rubik', sans-serif;
                         "
                       >
-                        Check Below Content
+                        <%= report %>
                       </p>
                       <span
                         style="
@@ -126,101 +126,308 @@
                       >
                         <tbody>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="width: 30%">
-                              <div
-                                style="
-                                  margin: 5px;
-                                  box-shadow: 0 2px 2px #aeaeae;
-                                  background-color: #d0d0d0;
-                                  color: white;
-                                  border-radius: 4px;
-                                  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-                                  text-align: center;
-                                  padding: 5px;
-                                "
-                              >
-                                #
-                              </div>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Full Name
                             </td>
-                            <td>
-                              <div
-                                style="
-                                  margin: 5px;
-                                  box-shadow: 0 2px 2px #aeaeae;
-                                  background-color: #d0d0d0;
-                                  color: white;
-                                  border-radius: 4px;
-                                  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-                                  text-align: center;
-                                  padding: 5px;
-                                "
-                              >
-                                Information
-                              </div>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= name %>
                             </td>
                           </tr>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">Full Name</td>
-                            <td style="background-color: #f5f5f5">
-                              <%= fullName %>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Email
                             </td>
-                          </tr>
-                          <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">
-                              organization
-                            </td>
-                            <td style="background-color: #f5f5f5">
-                              <%= organization %>
-                            </td>
-                          </tr>
-                          <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">
-                              Designation
-                            </td>
-                            <td style="background-color: #f5f5f5">
-                              <%= designation %>
-                            </td>
-                          </tr>
-                          <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">Mobile</td>
-                            <td style="background-color: #f5f5f5">
-                              <%= mobile %>
-                            </td>
-                          </tr>
-                          <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">
-                              Corporate Email
-                            </td>
-                            <td style="background-color: #f5f5f5">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
                               <%= corporateEmail %>
                             </td>
                           </tr>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">
-                              Confirm Email
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Number
                             </td>
-                            <td style="background-color: #f5f5f5">
-                              <%= confirmEmail %>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= mobile %>
                             </td>
                           </tr>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">Country</td>
-                            <td style="background-color: #f5f5f5">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              organization
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= organization %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Job Title
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= designation %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Country
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
                               <%= country %>
                             </td>
                           </tr>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">Remarks</td>
-                            <td style="background-color: #f5f5f5">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Subject
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= subject %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Message
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= remarks %>
+                            </td>
+                          </tr>
+
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Email
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= corporateEmail %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Remarks
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
                               <%= remarks %>
                             </td>
                           </tr>
                           <tr style="border-bottom: 0.5px solid #ddd">
-                            <td style="background-color: #f5f5f5">
-                              Report Name
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Visited IP
                             </td>
-                            <td style="background-color: #f5f5f5">
-                              <%= name %>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= ip %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Ref Page
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= ref_page %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Price
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= price %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Id
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= userId %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Slug
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= slug %>
+                            </td>
+                          </tr>
+                          <tr style="border-bottom: 0.5px solid #ddd">
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: right;
+                                font-weight: bold;
+                              "
+                            >
+                              Publisher
+                            </td>
+                            <td
+                              style="
+                                background-color: #f5f5f5;
+                                text-align: left;
+                              "
+                            >
+                              <%= publisher_name %>
                             </td>
                           </tr>
                         </tbody>

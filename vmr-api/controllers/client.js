@@ -48,7 +48,7 @@ exports.addClient = async (req, res, next) => {
   const link = req.body.link;
   const logo = req.files.logo[0].filename;
 
-  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let modified = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     if (req.files.logo) {
@@ -92,7 +92,7 @@ exports.editClient = async (req, res, next) => {
   const client_name = toUpperCase(req.body.client_name);
   const link = req.body.link;
 
-  let modified = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let modified = moment().format().slice(0, 19).replace("T", " ");
 
   try {
     if (req.files.logo) {

@@ -3,7 +3,6 @@ import { useState } from "react";
 import Navbar from "../../../components/Frontend/Navbar";
 import NavbarTop from "../../../components/Frontend/NavbarTop";
 import Footer from "../../../components/Frontend/Footer";
-import Breadcrumb from "../../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,7 @@ import Head from "next/head";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 
-const DownloadSample = () => {
+const AskQuestions = () => {
   const [reportData, setReportData] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -19,6 +18,7 @@ const DownloadSample = () => {
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState(false);
 
+  // setReportData(data);
   const router = useRouter();
   const { slug } = router.query;
 
@@ -39,29 +39,45 @@ const DownloadSample = () => {
     if (!slug) {
       return;
     }
+    if (slug === "undefined") {
+      return;
+    }
     getReportData();
   }, [slug]);
 
   const handleCaptcha = async (value) => {
     setIsVerified(true);
   };
-
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(mobile);
     if (mobile.length !== 10) {
       setMobileError(true);
       return false;
     }
+
     data.report = reportData.product_name;
-    const finalData = { ...data, name, description, mobile };
+    data.publisher_name = reportData.publisher_name;
+    data.slug = reportData.slug;
+    data.price = reportData.price;
+    data.product_id = reportData.id;
+    const finalData = {
+      ...data,
+      mobile,
+    };
+    console.log(finalData);
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
-
+      // .then((res) => {
+      // notify("success", "Form Submitted Successfully");
+      // router.push("/");
+      // })
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.message);
@@ -82,7 +98,7 @@ const DownloadSample = () => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Covid 19 Impact" />
+
       <div className=" bg-light py-3">
         <div className="container bg-white p-4 px-2">
           <div className="row">
@@ -93,8 +109,16 @@ const DownloadSample = () => {
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h3 className="text-center mb-3">Download Sample</h3>
-                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
+                  <h3 className="text-center mb-3">Ask Questions </h3>
+                  <form
+                    className="my-5"
+                    onSubmit={
+                      handleSubmit(onSubmit)
+                      // if (mobile.length !== 10) {
+                      //   setMobileError(true);
+                      // }
+                    }
+                  >
                     <div className="form-group row">
                       <label
                         htmlFor="fullName"
@@ -181,6 +205,39 @@ const DownloadSample = () => {
                         Mobile
                       </label>
                       <div className="col-sm-8">
+                        {/* <Controller
+                          name="mobile"
+                          control={control}
+                          defaultValue=""
+                          {...register("mobile", {
+                            required: "Please enter a card number",
+                          })}
+                          render={({ field: { onChange, value, onBlur } }) => (
+                            <InputMask
+                              mask="99999 99999"
+                              maskChar=" "
+                              value={value}
+                              onChange={onChange}
+                              onBlur={onBlur}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  className={`form-control ${
+                                    errors.mobile ? "is-invalid" : ""
+                                  }`}
+                                  id="mobile"
+                                  placeholder="Mobile"
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        /> */}
+                        {/* {errors.mobile && (
+                          <div className="error invalid-feedback">
+                            <p>{errors.mobile.message}</p>
+                          </div>
+                        )} */}
                         <input
                           type="text"
                           className={`form-control ${
@@ -223,7 +280,7 @@ const DownloadSample = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.corporateEmail ? "is-invalid" : ""
                           }`}
@@ -231,7 +288,19 @@ const DownloadSample = () => {
                           placeholder="Corporate Email"
                           {...register("corporateEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.corporateEmail && (
                           <div className="error invalid-feedback">
@@ -249,7 +318,7 @@ const DownloadSample = () => {
                       </label>
                       <div className="col-sm-8">
                         <input
-                          type="email"
+                          type="text"
                           className={`form-control ${
                             errors.confirmEmail ? "is-invalid" : ""
                           }`}
@@ -257,7 +326,26 @@ const DownloadSample = () => {
                           placeholder="Confirm Email"
                           {...register("confirmEmail", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: "invalid email address",
+                            },
+                            validate: (value) => {
+                              const { corporateEmail } = getValues();
+                              return (
+                                corporateEmail === value ||
+                                "Email should match!"
+                              );
+                            },
                           })}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
+                          onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                          }}
                         />
                         {errors.confirmEmail && (
                           <div className="error invalid-feedback">
@@ -325,13 +413,13 @@ const DownloadSample = () => {
                         id="type"
                         placeholder="type"
                         {...register("type")}
-                        value="Download Sample"
+                        value="Ask Question"
                       />
                     </div>
                     <div className="captcha">
                       <ReCAPTCHA
                         size="normal"
-                        sitekey={process.env.SITEKEY}
+                        sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
                     </div>
@@ -352,7 +440,7 @@ const DownloadSample = () => {
             </div>
             <div className="col-md-6">
               <h5 className="px-2 mt-3">
-                <i className="fas fa-chart-line text-lg text-success mr-2"></i>{" "}
+                <i className="fas fa-chart-line text-lg text-success mr-2"></i>
                 {name}
               </h5>
 
@@ -408,4 +496,4 @@ const DownloadSample = () => {
   );
 };
 
-export default DownloadSample;
+export default AskQuestions;

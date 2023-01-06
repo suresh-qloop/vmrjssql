@@ -28,7 +28,7 @@ const keyQuestion = ({ slug }) => {
           <hr className="m-2 dashed" />
 
           <Link
-            href={`/contact/req-free-sample/${slug}`}
+            href={`/contact/${slug}/request-free-sample-report`}
             className="btn btn-primary my-2  form-control"
           >
             Request Free Sample Report
