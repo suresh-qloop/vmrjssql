@@ -73,11 +73,14 @@ const AddReport = () => {
   const config = {
     allowResizeX: false,
     allowResizeY: false,
+    askBeforePasteFromWord: false,
+    askBeforePasteHTML: false,
     height: "400",
   };
 
   const onSubmit = (reportData) => {
     const finalData = { ...reportData, TOC, description };
+    console.log(finalData);
 
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
@@ -87,14 +90,36 @@ const AddReport = () => {
       })
       .then((res) => {
         getCategoryList();
+        console.log(res.data.id);
         notify("success", "Report Created Successfully");
-        navigate.push("/admin/reports");
+        navigate.push(`/admin/reports/addfaqs/${res.data.id}`);
       })
       .catch(function (error) {
         console.log(error);
-        // notifyEmail(error.response.data.message);
+        notify("error", error.response.data.error);
       });
   };
+
+  // const onBackSubmit = (e, reportData) => {
+  //   const finalData = { ...reportData, TOC, description };
+  //   console.log(finalData);
+
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
+  //       headers: {
+  //         Authorization: `Bearer ${data.user.token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       getCategoryList();
+  //       notify("success", "Report Created Successfully");
+  //       navigate.push(`/admin/reports`);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //       notify("error", error.response.data.error);
+  //     });
+  // };
   return (
     mounted && (
       <div>
@@ -290,16 +315,21 @@ const AddReport = () => {
                                   placeholder="Single User License"
                                   {...register("price", {
                                     required: "This field is required",
-                                    validate: (value) => {
-                                      const matches = value.match(
-                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                      );
-                                      return (
-                                        matches?.length > 0 || "Not a Number"
-                                      );
+                                    pattern: {
+                                      value:
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                      message: "Not a Number",
                                     },
+                                    // validate: (value) => {
+                                    //   const matches = value.match(
+                                    //     /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+                                    //   );
+                                    //   return (
+                                    //     matches?.length > 0 || "Not a Number"
+                                    //   );
+                                    // },
                                   })}
-                                  defaultValue="3950"
+                                  defaultValue={3950}
                                 />
                                 {errors.price && (
                                   <div className="error invalid-feedback">
@@ -327,16 +357,13 @@ const AddReport = () => {
                                   placeholder="Upto 10 Users License"
                                   {...register("upto10", {
                                     required: "This field is required",
-                                    validate: (value) => {
-                                      const matches = value.match(
-                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                      );
-                                      return (
-                                        matches?.length > 0 || "Not a Number"
-                                      );
+                                    pattern: {
+                                      value:
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                      message: "Not a Number",
                                     },
                                   })}
-                                  defaultValue="4950"
+                                  defaultValue={4950}
                                 />
                                 {errors.upto10 && (
                                   <div className="error invalid-feedback">
@@ -364,16 +391,13 @@ const AddReport = () => {
                                   placeholder="Corporate User License"
                                   {...register("corporate_price", {
                                     required: "This field is required",
-                                    validate: (value) => {
-                                      const matches = value.match(
-                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                      );
-                                      return (
-                                        matches?.length > 0 || "Not a Number"
-                                      );
+                                    pattern: {
+                                      value:
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                      message: "Not a Number",
                                     },
                                   })}
-                                  defaultValue="8600"
+                                  defaultValue={8600}
                                 />
                                 {errors.corporate_price && (
                                   <div className="error invalid-feedback">
@@ -401,16 +425,13 @@ const AddReport = () => {
                                   placeholder=" DataPack License"
                                   {...register("data_pack_price", {
                                     required: "This field is required",
-                                    validate: (value) => {
-                                      const matches = value.match(
-                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                      );
-                                      return (
-                                        matches?.length > 0 || "Not a Number"
-                                      );
+                                    pattern: {
+                                      value:
+                                        /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                      message: "Not a Number",
                                     },
                                   })}
-                                  defaultValue="2100"
+                                  defaultValue={2100}
                                 />
                                 {errors.data_pack_price && (
                                   <div className="error invalid-feedback">
@@ -519,7 +540,7 @@ const AddReport = () => {
                                               className="optionChild"
                                               value={Elem.id}
                                             >
-                                              {Elem.category_name}
+                                              {Elem.name}
                                             </option>
                                           );
                                         })}
@@ -621,12 +642,49 @@ const AddReport = () => {
                               </div>
                             </div>
                           </div>
+                          <div className="col-md-6">
+                            <div className="form-group ">
+                              <label
+                                htmlFor="reference_url"
+                                className="col-sm-4 col-form-label"
+                              >
+                                Reference URL
+                              </label>
+                              <div className="col-sm-12">
+                                <input
+                                  type="text"
+                                  className={`form-control ${
+                                    errors.reference_url ? "is-invalid" : ""
+                                  }`}
+                                  id="reference_url"
+                                  placeholder="Reference URL"
+                                  {...register("reference_url")}
+                                />
+                                {errors.reference_url && (
+                                  <div className="error invalid-feedback">
+                                    <p>{errors.reference_url.message}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="card-footer">
-                        <button type="submit" className="btn btn-info">
-                          Save
+                        <button
+                          type="submit"
+                          className="btn btn-success mr-3"
+                          // onSubmit={handleSubmit(onBackSubmit)}
+                        >
+                          Save & Add FAQs
                         </button>
+                        {/* <button
+                          type="submit"
+                          className="btn btn-info"
+                          onSubmit={handleSubmit(onBackSubmit)}
+                        >
+                          Save & Back to List
+                        </button> */}
                         <Link
                           href="/admin/reports"
                           className="btn btn-default float-right"

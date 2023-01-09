@@ -133,12 +133,32 @@ const EnquiriesList = () => {
       selector: e_status,
       sortable: true,
       width: "140px",
+      cell: (enquirie) => (
+        <Fragment>
+          {enquirie.status === 0 && <div>No Status</div>}
+          {enquirie.status === 1 && <div>Closed</div>}
+          {enquirie.status === 2 && <div>Waiting</div>}
+          {enquirie.status === 3 && <div>DnD</div>}
+          {enquirie.status === 4 && <div>Not Interested</div>}
+          {enquirie.status === 5 && <div>Junk</div>}
+          {enquirie.status === 6 && <div>Lost</div>}
+        </Fragment>
+      ),
     },
     {
       name: "Ratting",
       selector: rating,
       sortable: true,
       width: "140px",
+      cell: (enquirie) => (
+        <Fragment>
+          {enquirie.rating === 0 && <div>No Status</div>}
+          {enquirie.rating === 1 && <div>Hot</div>}
+          {enquirie.rating === 2 && <div>Warm</div>}
+          {enquirie.rating === 3 && <div>Cold</div>}
+          {enquirie.rating === 4 && <div>Very Hot</div>}
+        </Fragment>
+      ),
     },
     {
       name: "Message",

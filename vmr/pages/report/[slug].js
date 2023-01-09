@@ -69,7 +69,7 @@ const ReportDetails = ({ reportData }) => {
                     <div className="col-md-3">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span>
-                        {moment(reportData.pub_date).format("YYYY-MM-DD ")}
+                        {moment(reportData.pub_date).format("MMMM YYYY")}
                       </span>
                     </div>
                     <div className="col-md-9">

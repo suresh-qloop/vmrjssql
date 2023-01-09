@@ -60,7 +60,7 @@ exports.addUser = async (req, res, next) => {
     const [email_check] = await Admin.getOne("users", "*", `email='${email}'`);
 
     if (email_check.length > 0) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "E-mail exists already",
       });
     }

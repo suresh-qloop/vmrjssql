@@ -227,9 +227,7 @@ const ReportDetails = () => {
                           <p>
                             <i className="far fa-calendar-alt mr-2"></i>
                             <span>
-                              {moment(report.pub_date).format(
-                                "YYYY-MM-D H:MM:SS"
-                              )}
+                              {moment(report.pub_date).format("MMMM YYYY")}
                             </span>
                           </p>
                           <h5 className="mb-0">

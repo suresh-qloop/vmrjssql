@@ -110,15 +110,7 @@ const AskQuestions = () => {
                     hours.
                   </p>
                   <h3 className="text-center mb-3">Ask Questions </h3>
-                  <form
-                    className="my-5"
-                    onSubmit={
-                      handleSubmit(onSubmit)
-                      // if (mobile.length !== 10) {
-                      //   setMobileError(true);
-                      // }
-                    }
-                  >
+                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group row">
                       <label
                         htmlFor="fullName"
@@ -136,6 +128,10 @@ const AskQuestions = () => {
                           placeholder="Full Name"
                           {...register("fullName", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^(\w\w+)\s(\w+)$/i,
+                              message: "Please Enter Your Full Name",
+                            },
                           })}
                         />
                         {errors.fullName && (

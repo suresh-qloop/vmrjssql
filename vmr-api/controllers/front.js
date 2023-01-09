@@ -261,9 +261,10 @@ exports.getLatestArticles = async (req, res, next) => {
 
 exports.AllTestimonials = async (req, res, next) => {
   try {
-    const [testimonials] = await Model.fetchAll(
+    const [testimonials] = await Model.findById(
       "testimonials",
       "id,testimonial_title,testimonial_description,is_active",
+      "is_deleted = 0 AND is_active = 1",
       "id DESC"
     );
 

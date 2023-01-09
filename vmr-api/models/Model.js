@@ -12,14 +12,14 @@ module.exports = class Model {
   }
 
   static findById(table, field = "*", con, order) {
-    console.log(`SELECT ${field} FROM ${table} WHERE ${con} ORDER BY ${order}`);
+    // console.log(`SELECT ${field} FROM ${table} WHERE ${con} ORDER BY ${order}`);
     return db.execute(
       `SELECT ${field} FROM ${table} WHERE ${con} ORDER BY ${order}`
     );
   }
 
   static addData(table, field = "*", value) {
-    console.log(`INSERT INTO ${table} ${field} VALUES ${value}`);
+    // console.log(`INSERT INTO ${table} ${field} VALUES ${value}`);
     return db.execute(`INSERT INTO ${table} ${field} VALUES ${value}`);
   }
 

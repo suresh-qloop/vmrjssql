@@ -15,6 +15,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
 // import "../public/fonts/ITC Franklin Gothic Std/ITC Franklin Gothic Std Heavy";
 
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 function MyApp({ Component, pageProps }) {
   return (
     <>

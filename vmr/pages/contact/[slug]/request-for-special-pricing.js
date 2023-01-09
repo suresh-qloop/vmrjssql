@@ -118,6 +118,10 @@ const RequestForDiscount = () => {
                           placeholder="Full Name"
                           {...register("fullName", {
                             required: "This field is required",
+                            pattern: {
+                              value: /^(\w\w+)\s(\w+)$/i,
+                              message: "Please Enter Your Full Name",
+                            },
                           })}
                         />
                         {errors.fullName && (

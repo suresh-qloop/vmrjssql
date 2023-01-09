@@ -398,3 +398,7 @@ hr.dashed {
   display: block;
   margin-top: 0;
 }
+
+.carousel-control-custom-icon {
+  color: rgb(205, 205, 205) !important;
+}

@@ -56,6 +56,7 @@ const AddFaq = () => {
       (r, { question, answer }) => ((r[question] = answer), r),
       {}
     );
+    console.log(result);
     await axios
       .post(
         `${process.env.NEXT_PUBLIC_NEXT_API}/report/faq/${id}`,
@@ -67,7 +68,7 @@ const AddFaq = () => {
         }
       )
       .then((res) => {
-        setFaqs(res.data.report.faqs);
+        // setFaqs(res.data.report.faqs);
         notify("success", "FAQ Updated Successfully");
       })
       .catch((err) => {
@@ -371,7 +372,7 @@ const AddFaq = () => {
                     >
                       Save
                     </button>
-                    <Link href="/admin/reports/reportlist">
+                    <Link href="/admin/reports">
                       <button className="btn btn-default float-right">
                         Cancel
                       </button>

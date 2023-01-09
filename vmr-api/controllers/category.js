@@ -244,25 +244,71 @@ exports.dropListCategory = async (req, res, next) => {
     );
     let categories = [];
 
-    for (i = 0; i < arr.length; i++) {
-      const [child] = await Category.findById(
-        "categories",
-        "id,category_name,parent_category_id,is_active",
-        `parent_category_id = ${arr[i].id}`,
-        "category_name ASC"
-      );
-      let obj = {
-        id: arr[i].id,
-        name: arr[i].category_name,
-        status: arr[i].is_active,
-        children: child,
-      };
-      categories.push(obj);
-    }
+    // for (i = 0; i < arr.length; i++) {
+    //   const [child] = await Category.findById(
+    //     "categories",
+    //     "id,category_name,parent_category_id,is_active",
+    //     `parent_category_id = ${arr[i].id}`,
+    //     "category_name ASC"
+    //   );
+    //   let obj = {
+    //     id: arr[i].id,
+    //     name: arr[i].category_name,
+    //     status: arr[i].is_active,
+    //     children: child,
+    //   };
+    //   categories.push(obj);
+    // }
 
+    await Promise.all(
+      arr.map(async (item) => {
+        const [total] = await Category.findById(
+          "product_categories pc",
+          "pc.*",
+          `category_id=${item.id}`,
+          "pc.id ASC"
+        );
+        let reports = total.length;
+
+        let [child] = await Category.findById(
+          "categories",
+          "id,category_name,parent_category_id,is_active",
+          `parent_category_id = ${item.id}`,
+          "category_name ASC"
+        );
+
+        let obj = {
+          id: item.id,
+          name: item.category_name,
+          status: item.is_active,
+          children: [],
+          reports: reports,
+        };
+        await Promise.all(
+          child.map(async (child, i) => {
+            const [t] = await Category.findById(
+              "product_categories pc",
+              "pc.*",
+              `category_id=${child.id}`,
+              "pc.id ASC"
+            );
+            const all = t.length;
+            let childObj = {
+              id: child.id,
+              name: child.category_name,
+              is_active: child.is_active,
+              reports: all,
+            };
+            return obj.children.push(childObj);
+          })
+        );
+        return categories.push(obj);
+      })
+    );
+
+    categories.sort((a, b) => a.name.localeCompare(b.name));
     res.status(200).json(categories);
   } catch (err) {
-    // console.log(err);
     return res.status(500).json({
       error: err.message,
     });

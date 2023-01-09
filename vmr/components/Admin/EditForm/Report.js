@@ -12,11 +12,14 @@ import Menu from "../Menu";
 import Footer from "../Footer";
 import notify from "../../helpers/Notification";
 import dynamic from "next/dynamic";
-// const importJodit = () => import("jodit-react");
+const importJodit = () => import("jodit-react");
 
-// const JoditEditor = dynamic(importJodit, {
+// const importJodit = dynamic(() => import("jodit-react"), {
 //   ssr: false,
 // });
+const JoditEditor = dynamic(importJodit, {
+  ssr: false,
+});
 
 // const JoditEditor = dynamic(
 //   {
@@ -32,9 +35,9 @@ import dynamic from "next/dynamic";
 //   }
 // );
 
-const JoditEditor = dynamic(() => import("jodit-react"), {
-  ssr: false,
-});
+// const JoditEditor = dynamic(() => import("jodit-react"), {
+//   ssr: false,
+// });
 
 const Report = ({ preLoadedValues }) => {
   const { status, data } = useSession();
@@ -58,6 +61,8 @@ const Report = ({ preLoadedValues }) => {
   const config = {
     allowResizeX: false,
     allowResizeY: false,
+    askBeforePasteFromWord: false,
+    askBeforePasteHTML: false,
     height: "400",
   };
 
@@ -322,13 +327,10 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder="Single User License"
                                 {...register("price", {
                                   required: "This field is required",
-                                  validate: (value) => {
-                                    const matches = value.match(
-                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                    );
-                                    return (
-                                      matches?.length > 0 || "Not a Number"
-                                    );
+                                  pattern: {
+                                    value:
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                    message: "Not a Number",
                                   },
                                 })}
                               />
@@ -358,13 +360,10 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder="Upto 10 Users License"
                                 {...register("upto10", {
                                   required: "This field is required",
-                                  validate: (value) => {
-                                    const matches = value.match(
-                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                    );
-                                    return (
-                                      matches?.length > 0 || "Not a Number"
-                                    );
+                                  pattern: {
+                                    value:
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                    message: "Not a Number",
                                   },
                                 })}
                               />
@@ -394,13 +393,10 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder=" Corporate User License"
                                 {...register("corporate_price", {
                                   required: "This field is required",
-                                  validate: (value) => {
-                                    const matches = value.match(
-                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                    );
-                                    return (
-                                      matches?.length > 0 || "Not a Number"
-                                    );
+                                  pattern: {
+                                    value:
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                    message: "Not a Number",
                                   },
                                 })}
                               />
@@ -430,13 +426,10 @@ const Report = ({ preLoadedValues }) => {
                                 placeholder=" DataPack License"
                                 {...register("data_pack_price", {
                                   required: "This field is required",
-                                  validate: (value) => {
-                                    const matches = value.match(
-                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
-                                    );
-                                    return (
-                                      matches?.length > 0 || "Not a Number"
-                                    );
+                                  pattern: {
+                                    value:
+                                      /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/i,
+                                    message: "Not a Number",
                                   },
                                 })}
                               />
@@ -569,7 +562,7 @@ const Report = ({ preLoadedValues }) => {
                                                   className="optionChild"
                                                   value={Elem.id}
                                                 >
-                                                  {Elem.category_name}
+                                                  {Elem.name}
                                                 </option>
                                               );
                                             })}
@@ -693,6 +686,32 @@ const Report = ({ preLoadedValues }) => {
                               {errors.slug && (
                                 <div className="error invalid-feedback">
                                   <p>{errors.slug.message}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group ">
+                            <label
+                              htmlFor="reference_url"
+                              className="col-sm-4 col-form-label"
+                            >
+                              Reference URL
+                            </label>
+                            <div className="col-sm-12">
+                              <input
+                                type="text"
+                                className={`form-control ${
+                                  errors.reference_url ? "is-invalid" : ""
+                                }`}
+                                id="reference_url"
+                                placeholder="Reference URL"
+                                {...register("reference_url")}
+                              />
+                              {errors.reference_url && (
+                                <div className="error invalid-feedback">
+                                  <p>{errors.reference_url.message}</p>
                                 </div>
                               )}
                             </div>

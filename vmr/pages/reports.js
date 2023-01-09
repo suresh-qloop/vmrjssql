@@ -216,9 +216,7 @@ const Reports = () => {
                           <p>
                             <i className="far fa-calendar-alt mr-2"></i>
                             <span>
-                              {moment(report.pub_date).format(
-                                "YYYY-MM-D H:MM:SS"
-                              )}
+                              {moment(report.pub_date).format("MMMM YYYY")}
                             </span>
                           </p>
                           <h5 className="mb-0">
@@ -256,7 +254,7 @@ const Reports = () => {
                           </p>
                           <div className="d-flax ">
                             <Link
-                              href={`/contact/download-sample/${report.slug}`}
+                              href={`/contact/${report.slug}/download-sample`}
                               className="btn btn-success btn-sm mr-3  mt-3"
                               style={{ width: 180 }}
                             >
@@ -265,7 +263,7 @@ const Reports = () => {
                             </Link>
 
                             <Link
-                              href={`/contact/ask-questions/${report.slug}`}
+                              href={`/contact/${report.slug}/ask-questions`}
                               className="btn btn-info btn-sm mt-3"
                               style={{ width: 150 }}
                             >

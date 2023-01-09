@@ -25,7 +25,7 @@ exports.getReport = async (req, res, next) => {
 
   try {
     const obj =
-      "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,product_faq,slug,share_with_reseller,is_upcoming";
+      "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,product_faq,slug,reference_url,share_with_reseller,is_upcoming";
     const [report] = await Report.getOne("products", obj, `id=${id}`);
 
     const [c] = await Report.findById(
@@ -71,8 +71,8 @@ exports.addReport = async (req, res, next) => {
   await check("alias").notEmpty().run(req);
   await check("publisher_name").notEmpty().run(req);
   await check("category_id").notEmpty().run(req);
-  await check("TOC").notEmpty().run(req);
-  await check("description").notEmpty().run(req);
+  // await check("TOC").notEmpty().run(req);
+  // await check("description").notEmpty().run(req);
   await check("price").notEmpty().run(req);
   await check("corporate_price").notEmpty().run(req);
   await check("upto10").notEmpty().run(req);
@@ -105,6 +105,7 @@ exports.addReport = async (req, res, next) => {
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
+  const reference_url = req.body.reference_url || "";
 
   const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -112,9 +113,21 @@ exports.addReport = async (req, res, next) => {
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
 
   try {
+    const [name_check] = await Report.findById(
+      "products",
+      "*",
+      `product_name='${product_name}' OR alias='${alias}'`,
+      "id DESC"
+    );
+    console.log(name_check);
+    if (name_check.length > 0) {
+      return res.status(500).json({
+        error: "Product exists already",
+      });
+    }
     const field =
-      "(product_name,alias,category_id,product_description,product_specification,is_set_toc,price,corporate_price,upto10,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,slug,publisher_name,modified,is_upcoming,share_with_reseller)";
-    const value = `('${product_name}', '${alias}', '2', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${date}','${is_upcoming}','${share_with_reseller}')`;
+      "(product_name,alias,category_id,product_description,product_specification,is_set_toc,price,corporate_price,upto10,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,slug,publisher_name,modified,is_upcoming,reference_url,share_with_reseller)";
+    const value = `('${product_name}', '${alias}', '2', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${date}','${is_upcoming}',${reference_url},'${share_with_reseller}')`;
 
     const [report] = await Report.addData("products", field, value);
     const lastReportId = report.insertId.toString();
@@ -131,6 +144,7 @@ exports.addReport = async (req, res, next) => {
 
     res.status(200).json({
       message: "success",
+      id: report.insertId,
     });
   } catch (err) {
     return res.status(500).json({
@@ -144,8 +158,8 @@ exports.editReport = async (req, res, next) => {
   await check("alias").notEmpty().run(req);
   await check("publisher_name").notEmpty().run(req);
   await check("category_id").notEmpty().run(req);
-  await check("product_specification").notEmpty().run(req);
-  await check("product_description").notEmpty().run(req);
+  // await check("product_specification").notEmpty().run(req);
+  // await check("product_description").notEmpty().run(req);
   await check("price").notEmpty().run(req);
   await check("corporate_price").notEmpty().run(req);
   await check("upto10").notEmpty().run(req);
@@ -181,6 +195,7 @@ exports.editReport = async (req, res, next) => {
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
+  const reference_url = req.body.reference_url;
 
   const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -188,7 +203,7 @@ exports.editReport = async (req, res, next) => {
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
 
   try {
-    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',share_with_reseller='${share_with_reseller}'`;
+    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',reference_url='${reference_url}',share_with_reseller='${share_with_reseller}'`;
 
     const [products] = await Report.editData("products", obj, id);
 
