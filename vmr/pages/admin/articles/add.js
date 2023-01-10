@@ -9,21 +9,21 @@ import notify from "../../../components/helpers/Notification";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-// import JoditEditor from "jodit-react";
+import { CKEditor } from "ckeditor4-react";
 import dynamic from "next/dynamic";
-const importJodit = () => import("jodit-react");
+// const importJodit = () => import("jodit-react");
 
-const JoditEditor = dynamic(importJodit, {
-  ssr: false,
-});
+// const JoditEditor = dynamic(importJodit, {
+//   ssr: false,
+// });
 
 const AddArticle = () => {
   const { data } = useSession();
   const navigate = useRouter();
 
-  const [descError, setDescError] = useState(false);
-  const [description, setDescription] = useState(null);
-  const descriptionEditor = useRef(null);
+  // const [descError, setDescError] = useState(false);
+  const [description, setDescription] = useState("");
+  // const descriptionEditor = useRef(null);
   //   const [imageURL, setImage] = useState(null);
 
   const [mounted, setMounted] = useState(false);
@@ -31,15 +31,15 @@ const AddArticle = () => {
     setMounted(true);
   }, []);
 
-  const handleSetDescription = (value) => {
-    setDescription(value);
+  // const handleSetDescription = (value) => {
+  //   setDescription(value);
 
-    if (description === "" || description === "<p><br></p>") {
-      setDescError(true);
-    } else {
-      setDescError(false);
-    }
-  };
+  //   if (description === "" || description === "<p><br></p>") {
+  //     setDescError(true);
+  //   } else {
+  //     setDescError(false);
+  //   }
+  // };
 
   const {
     register,
@@ -55,14 +55,14 @@ const AddArticle = () => {
   };
 
   const onSubmit = (reportData) => {
-    if (
-      description === "<p><br></p>" ||
-      description === "" ||
-      description === null
-    ) {
-      setDescError(true);
-      return;
-    }
+    // if (
+    //   description === "<p><br></p>" ||
+    //   description === "" ||
+    //   description === null
+    // ) {
+    //   setDescError(true);
+    //   return;
+    // }
 
     const finalData = { ...reportData, description };
 
@@ -154,7 +154,7 @@ const AddArticle = () => {
                               Description
                             </label>
                             <div className="col-sm-12">
-                              <JoditEditor
+                              {/* <JoditEditor
                                 ref={descriptionEditor}
                                 value={description}
                                 config={config}
@@ -165,7 +165,14 @@ const AddArticle = () => {
                                 <div className="error text-danger text-sm">
                                   <p>This field is required</p>
                                 </div>
-                              )}
+                              )} */}
+                              <CKEditor
+                                initData={description}
+                                onChange={(evt) => {
+                                  setDescription(evt.editor.getData());
+                                }}
+                                type="classic"
+                              />
                             </div>
                           </div>
                         </div>

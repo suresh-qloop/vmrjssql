@@ -1,43 +1,17 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-// import JoditEditor from "jodit-react";
 import moment from "moment/moment";
 import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
 import notify from "../../helpers/Notification";
-import dynamic from "next/dynamic";
-const importJodit = () => import("jodit-react");
-
-// const importJodit = dynamic(() => import("jodit-react"), {
-//   ssr: false,
-// });
-const JoditEditor = dynamic(importJodit, {
-  ssr: false,
-});
-
-// const JoditEditor = dynamic(
-//   {
-//     loader: () => import("jodit-react").then((mod) => mod.importJodit),
-//     render: (props, importJodit) => {
-//       const term = importJodit();
-//       // Add logic with `term`
-//       return term;
-//     },
-//   },
-//   {
-//     ssr: false,
-//   }
-// );
-
-// const JoditEditor = dynamic(() => import("jodit-react"), {
-//   ssr: false,
-// });
+import { CKEditor } from "ckeditor4-react";
+// import dynamic from "next/dynamic";
 
 const Report = ({ preLoadedValues }) => {
   const { status, data } = useSession();
@@ -45,26 +19,10 @@ const Report = ({ preLoadedValues }) => {
   const { id } = router.query;
 
   const [categoryList, setCategoryList] = useState();
-  const [TOC, setTOC] = useState(null);
-  const [description, setDescription] = useState(null);
-  const tocEditor = useRef(null);
-  const descriptionEditor = useRef(null);
-
-  const handleSetToc = (value) => {
-    setTOC(value);
-  };
-
-  const handleSetDescription = (value) => {
-    setDescription(value);
-  };
-
-  const config = {
-    allowResizeX: false,
-    allowResizeY: false,
-    askBeforePasteFromWord: false,
-    askBeforePasteHTML: false,
-    height: "400",
-  };
+  const [TOC, setTOC] = useState(preLoadedValues.product_specification);
+  const [description, setDescription] = useState(
+    preLoadedValues.product_description
+  );
 
   const {
     register,
@@ -72,6 +30,30 @@ const Report = ({ preLoadedValues }) => {
     control,
     formState: { errors },
   } = useForm({ defaultValues: preLoadedValues, mode: "onChange" });
+
+  const SubmitAndEditFaqs = async (e) => {
+    e.preventDefault();
+
+    handleSubmit(async (reportData) => {
+      reportData.product_specification = TOC;
+      reportData.product_description = description;
+      axios
+        .put(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, reportData, {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        })
+        .then((res) => {
+          getCategoryList();
+          notify("success", "Report Created Successfully");
+          router.push(`/admin/reports/addfaqs/${res.data.id}`);
+        })
+        .catch(function (error) {
+          console.log(error);
+          notify("error", error.response.data.error);
+        });
+    })();
+  };
 
   const onSubmit = (reportData) => {
     reportData.product_specification = TOC;
@@ -98,27 +80,8 @@ const Report = ({ preLoadedValues }) => {
       return;
     }
     getCategoryList();
-    getEditData();
     // eslint-disable-next-line
   }, [status, id]);
-
-  const getEditData = async () => {
-    if (status === "authenticated") {
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, {
-          headers: {
-            Authorization: `Bearer ${data.user.token}`,
-          },
-        })
-        .then((res) => {
-          setTOC(res.data.product_specification);
-          setDescription(res.data.product_description);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
 
   const getCategoryList = async () => {
     if (status === "authenticated") {
@@ -271,7 +234,7 @@ const Report = ({ preLoadedValues }) => {
                             />
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <div className="form-group ">
                             <label
                               htmlFor="TOC"
@@ -280,17 +243,17 @@ const Report = ({ preLoadedValues }) => {
                               TOC
                             </label>
                             <div className="col-sm-12">
-                              <JoditEditor
-                                ref={tocEditor}
-                                value={TOC}
-                                config={config}
-                                tabIndex={1}
-                                onBlur={handleSetToc}
+                              <CKEditor
+                                initData={preLoadedValues.product_specification}
+                                onChange={(evt) => {
+                                  setTOC(evt.editor.getData());
+                                }}
+                                type="classic"
                               />
                             </div>
                           </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                           <div className="form-group">
                             <label
                               htmlFor="description"
@@ -299,12 +262,12 @@ const Report = ({ preLoadedValues }) => {
                               Description
                             </label>
                             <div className="col-sm-12">
-                              <JoditEditor
-                                ref={descriptionEditor}
-                                value={description}
-                                config={config}
-                                tabIndex={1}
-                                onBlur={handleSetDescription}
+                              <CKEditor
+                                initData={preLoadedValues.product_description}
+                                onChange={(evt) => {
+                                  setDescription(evt.editor.getData());
+                                }}
+                                type="classic"
                               />
                             </div>
                           </div>
@@ -720,8 +683,15 @@ const Report = ({ preLoadedValues }) => {
                       </div>
                     </div>
                     <div className="card-footer">
+                      <button
+                        type="button"
+                        className="btn btn-success mr-3"
+                        onClick={SubmitAndEditFaqs}
+                      >
+                        Save & Edit FAQs
+                      </button>
                       <button type="submit" className="btn btn-info">
-                        Save
+                        Save & Back to List
                       </button>
                       <Link
                         href="/admin/reports"

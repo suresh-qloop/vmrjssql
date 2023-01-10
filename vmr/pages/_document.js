@@ -87,6 +87,12 @@ class MyDocument extends Document {
             src={`${process.env.NEXT_PUBLIC_URL}/dist/js/pages/dashboard.js`}
           />
           <script src={`${process.env.NEXT_PUBLIC_URL}/dist/js/demo.js`} />
+          {/* <script
+            src={`${process.env.NEXT_PUBLIC_URL}/dist/js/ckeditor/ckeditor.js`}
+            type="text/javascript"
+          /> */}
+
+          {/* <Script type="text/javascript">CKEDITOR.replace("editor1")</Script> */}
         </body>
       </Html>
     );

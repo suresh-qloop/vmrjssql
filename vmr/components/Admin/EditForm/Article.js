@@ -8,35 +8,36 @@ import notify from "../../helpers/Notification";
 import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
-import dynamic from "next/dynamic";
-const importJodit = () => import("jodit-react");
+import { CKEditor } from "ckeditor4-react";
+// import dynamic from "next/dynamic";
+// const importJodit = () => import("jodit-react");
 
-const JoditEditor = dynamic(importJodit, {
-  ssr: false,
-});
+// const JoditEditor = dynamic(importJodit, {
+//   ssr: false,
+// });
 
 const Article = ({ preLoadedValues }) => {
   const { status, data } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  const [descError, setDescError] = useState(false);
+  // const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState(null);
-  const descriptionEditor = useRef(null);
+  // const descriptionEditor = useRef(null);
 
-  const config = {
-    allowResizeX: false,
-    allowResizeY: false,
-    height: "400",
-  };
+  // const config = {
+  //   allowResizeX: false,
+  //   allowResizeY: false,
+  //   height: "400",
+  // };
 
-  const handleSetDescription = (value) => {
-    setDescription(value);
-    if (description === "" || description === "<p><br></p>") {
-      setDescError(true);
-    } else {
-      setDescError(false);
-    }
-  };
+  // const handleSetDescription = (value) => {
+  //   setDescription(value);
+  //   if (description === "" || description === "<p><br></p>") {
+  //     setDescError(true);
+  //   } else {
+  //     setDescError(false);
+  //   }
+  // };
 
   const {
     register,
@@ -54,14 +55,14 @@ const Article = ({ preLoadedValues }) => {
   }, [status, id]);
 
   const onSubmit = (reportData) => {
-    if (
-      description === "<p><br></p>" ||
-      description === "" ||
-      description === null
-    ) {
-      setDescError(true);
-      return;
-    }
+    // if (
+    //   description === "<p><br></p>" ||
+    //   description === "" ||
+    //   description === null
+    // ) {
+    //   setDescError(true);
+    //   return;
+    // }
     reportData.description = description;
     axios
       .put(`${process.env.NEXT_PUBLIC_NEXT_API}/article/${id}`, reportData, {
@@ -152,7 +153,7 @@ const Article = ({ preLoadedValues }) => {
                             Description
                           </label>
                           <div className="col-sm-12">
-                            <JoditEditor
+                            {/* <JoditEditor
                               ref={descriptionEditor}
                               value={description}
                               config={config}
@@ -163,7 +164,14 @@ const Article = ({ preLoadedValues }) => {
                               <div className="error text-danger text-sm">
                                 <p>This field is required</p>
                               </div>
-                            )}
+                            )} */}
+                            <CKEditor
+                              initData={preLoadedValues.description}
+                              onChange={(evt) => {
+                                setDescription(evt.editor.getData());
+                              }}
+                              type="classic"
+                            />
                           </div>
                         </div>
                       </div>

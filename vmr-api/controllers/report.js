@@ -105,7 +105,7 @@ exports.addReport = async (req, res, next) => {
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
-  const reference_url = req.body.reference_url || "";
+  const reference_url = req.body.reference_url || null;
 
   const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -216,6 +216,7 @@ exports.editReport = async (req, res, next) => {
 
     res.status(200).json({
       message: "success",
+      id: id,
     });
   } catch (err) {
     return res.status(500).json({

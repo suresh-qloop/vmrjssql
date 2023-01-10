@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 
 import { useForm } from "react-hook-form";
@@ -9,13 +9,8 @@ import notify from "../../../components/helpers/Notification";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-// import JoditEditor from "jodit-react";
-import dynamic from "next/dynamic";
-const importJodit = () => import("jodit-react");
 
-const JoditEditor = dynamic(importJodit, {
-  ssr: false,
-});
+import { CKEditor } from "ckeditor4-react";
 
 const AddReport = () => {
   const { status, data } = useSession();
@@ -23,24 +18,12 @@ const AddReport = () => {
 
   const [categoryList, setCategoryList] = useState();
 
-  const [TOC, setTOC] = useState(null);
-  const [description, setDescription] = useState(null);
-  const tocEditor = useRef(null);
-  const descriptionEditor = useRef(null);
-  //   const [imageURL, setImage] = useState(null);
-
+  const [TOC, setTOC] = useState("");
+  const [description, setDescription] = useState("");
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleSetToc = (value) => {
-    setTOC(value);
-  };
-
-  const handleSetDescription = (value) => {
-    setDescription(value);
-  };
 
   useEffect(() => {
     getCategoryList();
@@ -70,18 +53,42 @@ const AddReport = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const config = {
-    allowResizeX: false,
-    allowResizeY: false,
-    askBeforePasteFromWord: false,
-    askBeforePasteHTML: false,
-    height: "400",
+  // const config = {
+  //   allowResizeX: false,
+  //   allowResizeY: false,
+  //   askBeforePasteFromWord: false,
+  //   askBeforePasteHTML: false,
+  //   height: "400",
+  // };
+
+  const SubmitAndAddFaqs = async (e) => {
+    e.preventDefault();
+
+    handleSubmit(async (reportData) => {
+      const finalData = { ...reportData, TOC, description };
+      console.log(finalData, "onBackSubmit");
+      axios
+        .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        })
+        .then((res) => {
+          getCategoryList();
+          console.log(res.data.id);
+          notify("success", "Report Created Successfully");
+          navigate.push(`/admin/reports/addfaqs/${res.data.id}`);
+        })
+        .catch(function (error) {
+          console.log(error);
+          notify("error", error.response.data.error);
+        });
+    })();
   };
 
   const onSubmit = (reportData) => {
     const finalData = { ...reportData, TOC, description };
-    console.log(finalData);
-
+    console.log(finalData, "onSubmit");
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
         headers: {
@@ -90,36 +97,14 @@ const AddReport = () => {
       })
       .then((res) => {
         getCategoryList();
-        console.log(res.data.id);
         notify("success", "Report Created Successfully");
-        navigate.push(`/admin/reports/addfaqs/${res.data.id}`);
+        navigate.push(`/admin/reports`);
       })
       .catch(function (error) {
         console.log(error);
         notify("error", error.response.data.error);
       });
   };
-
-  // const onBackSubmit = (e, reportData) => {
-  //   const finalData = { ...reportData, TOC, description };
-  //   console.log(finalData);
-
-  //   axios
-  //     .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
-  //       headers: {
-  //         Authorization: `Bearer ${data.user.token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       getCategoryList();
-  //       notify("success", "Report Created Successfully");
-  //       navigate.push(`/admin/reports`);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //       notify("error", error.response.data.error);
-  //     });
-  // };
   return (
     mounted && (
       <div>
@@ -257,42 +242,40 @@ const AddReport = () => {
                               />
                             </div>
                           </div>
-                          <div className="col-md-6">
+                          <div className="col-md-12">
                             <div className="form-group ">
                               <label
-                                htmlFor="TOC"
+                                htmlFor="toc"
                                 className="col-sm-2 col-form-label"
                               >
                                 TOC
                               </label>
                               <div className="col-sm-12">
-                                <JoditEditor
-                                  ref={tocEditor}
-                                  value={TOC}
-                                  height="600px"
-                                  config={config}
-                                  tabIndex={1}
-                                  onBlur={handleSetToc}
-                                  // {...register("content")}
+                                <CKEditor
+                                  initData={TOC}
+                                  onChange={(evt) => {
+                                    setTOC(evt.editor.getData());
+                                  }}
+                                  type="classic"
                                 />
                               </div>
                             </div>
                           </div>
-                          <div className="col-md-6">
+                          <div className="col-md-12">
                             <div className="form-group ">
                               <label
-                                htmlFor="description"
+                                htmlFor="editor2"
                                 className="col-sm-2 col-form-label"
                               >
                                 Description
                               </label>
                               <div className="col-sm-12">
-                                <JoditEditor
-                                  ref={descriptionEditor}
-                                  value={description}
-                                  config={config}
-                                  tabIndex={1}
-                                  onBlur={handleSetDescription}
+                                <CKEditor
+                                  initData={description}
+                                  onChange={(evt) => {
+                                    setDescription(evt.editor.getData());
+                                  }}
+                                  type="classic"
                                 />
                               </div>
                             </div>
@@ -619,7 +602,7 @@ const AddReport = () => {
                                 htmlFor="meta_desc"
                                 className="col-sm-4 col-form-label"
                               >
-                                Meta Description
+                                Meta Descriptionmm
                               </label>
                               <div className="col-sm-12">
                                 <textarea
@@ -672,19 +655,19 @@ const AddReport = () => {
                       </div>
                       <div className="card-footer">
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-success mr-3"
-                          // onSubmit={handleSubmit(onBackSubmit)}
+                          onClick={SubmitAndAddFaqs}
                         >
                           Save & Add FAQs
                         </button>
-                        {/* <button
+                        <button
                           type="submit"
                           className="btn btn-info"
-                          onSubmit={handleSubmit(onBackSubmit)}
+                          // onClick={onSubmit}
                         >
                           Save & Back to List
-                        </button> */}
+                        </button>
                         <Link
                           href="/admin/reports"
                           className="btn btn-default float-right"
