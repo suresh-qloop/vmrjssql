@@ -36,8 +36,8 @@ export default function Testimonials() {
           </div>
           <div className="row justify-content-center">
             {testimonialList?.map((article, i) => (
-              <div className="col-md-6 mb-4 p-3">
-                <div key={i} className="">
+              <div className="col-md-6 mb-4 p-3" key={i + 1}>
+                <div key={i + 1} className="">
                   <div className="d-block ">
                     <p>
                       <i className="fas fa-quote-left text-lg mr-3"></i>"

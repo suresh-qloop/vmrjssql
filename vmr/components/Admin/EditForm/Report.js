@@ -23,6 +23,7 @@ const Report = ({ preLoadedValues }) => {
   const [description, setDescription] = useState(
     preLoadedValues.product_description
   );
+  const [is_active, setIsActive] = useState(preLoadedValues.is_active);
 
   const {
     register,
@@ -37,6 +38,7 @@ const Report = ({ preLoadedValues }) => {
     handleSubmit(async (reportData) => {
       reportData.product_specification = TOC;
       reportData.product_description = description;
+      reportData.is_active = is_active;
       axios
         .put(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, reportData, {
           headers: {
@@ -45,7 +47,7 @@ const Report = ({ preLoadedValues }) => {
         })
         .then((res) => {
           getCategoryList();
-          notify("success", "Report Created Successfully");
+          notify("success", "Report Updated Successfully");
           router.push(`/admin/reports/addfaqs/${res.data.id}`);
         })
         .catch(function (error) {
@@ -58,6 +60,7 @@ const Report = ({ preLoadedValues }) => {
   const onSubmit = (reportData) => {
     reportData.product_specification = TOC;
     reportData.product_description = description;
+    reportData.is_active = is_active;
     axios
       .put(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, reportData, {
         headers: {
@@ -221,7 +224,7 @@ const Report = ({ preLoadedValues }) => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-md-6 pt-5">
+                        <div className="col-md-6 d-flex pt-5">
                           <div className="form-check d-flex ml-3 mr-3 ">
                             <label className=" form-label" htmlFor="is_set_toc">
                               Request TOC
@@ -231,6 +234,21 @@ const Report = ({ preLoadedValues }) => {
                               className="form-check-input"
                               id="is_set_toc"
                               {...register("is_set_toc")}
+                            />
+                          </div>
+                          <div className="form-check d-flex ml-3 mr-3 ">
+                            <label className="form-label" htmlFor="is_active">
+                              Make this Report Ready To Active
+                            </label>
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              id="is_active"
+                              defaultChecked={is_active == 2 ? true : false}
+                              // {...register("is_active")}
+                              onChange={(e) => {
+                                setIsActive(e.target.checked);
+                              }}
                             />
                           </div>
                         </div>

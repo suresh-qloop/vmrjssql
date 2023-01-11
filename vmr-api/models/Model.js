@@ -24,6 +24,7 @@ module.exports = class Model {
   }
 
   static editData(table, obj, id) {
+    // console.log(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
     return db.execute(`UPDATE ${table} SET ${obj} WHERE id = ${id}`);
   }
 

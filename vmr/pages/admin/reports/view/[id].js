@@ -225,7 +225,7 @@ const ViewReport = () => {
                     </p>
                     <p>
                       <strong>Meta Description:</strong> &nbsp; &nbsp;
-                      <span>{reportData.metaDescription}</span>
+                      <span>{reportData.meta_desc}</span>
                     </p>
                     <p>
                       <strong>Publisher Name:</strong> &nbsp; &nbsp;

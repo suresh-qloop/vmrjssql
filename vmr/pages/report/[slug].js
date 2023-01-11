@@ -45,7 +45,7 @@ const ReportDetails = ({ reportData }) => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name={reportData.alias} />
+      <Breadcrumb name={reportData.category_name} />
       <div className=" bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">

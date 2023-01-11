@@ -167,11 +167,16 @@ exports.getReport = async (req, res, next) => {
   const slug = req.params.slug;
 
   try {
-    const [report] = await Model.getOne(
-      "products p,categories c",
-      "p.*,c.category_name",
-      `p.category_id = c.id AND p.slug='${slug}'`
+    const [report] = await Model.getOne("products", "*", `slug='${slug}'`);
+
+    const [c] = await Model.findById(
+      "product_categories pc, categories c",
+      "pc.*,c.category_name",
+      `pc.category_id = c.id AND pc.product_id=${report[0].id}`,
+      "pc.id DESC"
     );
+
+    report[0].category_name = await c[0].category_name;
     res.status(200).json(report[0]);
   } catch (err) {
     return res.status(500).json({

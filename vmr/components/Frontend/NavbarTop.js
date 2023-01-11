@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 
 const NavbarTop = () => {
+  const [email, setEmail] = useState("sales@valuemarketresearch.com");
   return (
     <div className=" dark-background">
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-sm-12">
             <div className="nav-link d-flex text-light">
-              <a
-                className="text-light"
-                href="mailto:sales@valuemarketresearch.com"
-              >
+              <Link className="text-light" href={`mailto:${email}`}>
                 <i className="fas fa-envelope-open-text mr-2 mt-1"></i>
-                &nbsp; sales@valuemarketresearch.com
-              </a>
+                &nbsp; {email}
+              </Link>
             </div>
           </div>
           <div className="col-md-6 col-sm-12 text-right ">

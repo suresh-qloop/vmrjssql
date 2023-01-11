@@ -63,8 +63,15 @@ const Footer = () => {
               <li>
                 <p>
                   401/402, TFM, Nagras Road, Aundh, Pune-7. Maharashtra, INDIA
-                  <br /> sales@valuemarketresearch.com +1-888-294-1147
                 </p>
+              </li>
+              <li>
+                <Link href="mailto:sales@valuemarketresearch.com">
+                  sales@valuemarketresearch.com
+                </Link>
+              </li>
+              <li>
+                <p> +1-888-294-1147 </p>
               </li>
             </ul>
           </div>

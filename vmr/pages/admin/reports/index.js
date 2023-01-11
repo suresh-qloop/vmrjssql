@@ -115,13 +115,13 @@ const ReportList = () => {
             <span className="badge bg-success ">Active</span>
           )}
           {report.is_active === 2 && (
-            <span className="badge  bg-info">InProgress</span>
+            <span className="badge  bg-info">ReadyToActive</span>
           )}
           {report.is_active === 0 && (
             <span className="badge  bg-warning">Inactive</span>
           )}
           {report.is_active === 4 && (
-            <span className="badge  bg-primary">ReadyToActive</span>
+            <span className="badge  bg-primary">InProgress</span>
           )}
         </Fragment>
       ),
@@ -549,7 +549,7 @@ const ReportList = () => {
                                         className="optionChild"
                                         value={Elem.id}
                                       >
-                                        {Elem.category_name}
+                                        {Elem.name}
                                       </option>
                                     );
                                   })}

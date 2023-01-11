@@ -21,6 +21,10 @@ const AddReport = () => {
   const [TOC, setTOC] = useState("");
   const [description, setDescription] = useState("");
   const [mounted, setMounted] = useState(false);
+
+  let curr = new Date();
+  let date = curr.toISOString().substring(0, 10);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -226,7 +230,7 @@ const AddReport = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-md-6 pt-5">
+                          <div className="col-md-6 d-flex pt-5">
                             <div className="form-check d-flex ml-3 mr-3 ">
                               <label
                                 className=" form-label"
@@ -239,6 +243,20 @@ const AddReport = () => {
                                 className="form-check-input"
                                 id="is_set_toc"
                                 {...register("is_set_toc")}
+                              />
+                            </div>
+                            <div className="form-check d-flex ml-3 mr-3 ">
+                              <label
+                                className=" form-label"
+                                htmlFor="readyToActive"
+                              >
+                                Make this Report Ready To Active
+                              </label>
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id="readyToActive"
+                                {...register("readyToActive")}
                               />
                             </div>
                           </div>
@@ -439,6 +457,7 @@ const AddReport = () => {
                                     errors.pub_date ? "is-invalid" : ""
                                   }`}
                                   id="pub_date"
+                                  defaultValue={date}
                                   placeholder="Publish Date"
                                   {...register("pub_date", {
                                     required: "This field is required",

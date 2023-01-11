@@ -55,9 +55,9 @@ const EnquiriesList = () => {
   const message = (enquirie) => {
     return enquirie.message;
   };
-  const remark = (enquirie) => {
-    return enquirie.remark;
-  };
+  // const remark = (enquirie) => {
+  //   return enquirie.remark;
+  // };
 
   const visited_ip = (enquirie) => {
     return enquirie.visited_ip;
@@ -132,16 +132,35 @@ const EnquiriesList = () => {
       name: "Progress",
       selector: e_status,
       sortable: true,
-      width: "140px",
+      width: "150px",
       cell: (enquirie) => (
         <Fragment>
-          {enquirie.status === 0 && <div>No Status</div>}
-          {enquirie.status === 1 && <div>Closed</div>}
-          {enquirie.status === 2 && <div>Waiting</div>}
-          {enquirie.status === 3 && <div>DnD</div>}
-          {enquirie.status === 4 && <div>Not Interested</div>}
-          {enquirie.status === 5 && <div>Junk</div>}
-          {enquirie.status === 6 && <div>Lost</div>}
+          {/* {enquirie.status === 0 && <div className="text-sm">No Status</div>}
+          {enquirie.status === 1 && <div className="text-sm">Closed</div>}
+          {enquirie.status === 2 && <div className="text-sm">Waiting</div>}
+          {enquirie.status === 3 && <div className="text-sm">DnD</div>}
+          {enquirie.status === 4 && (
+            <div className="text-sm">Not Interested</div>
+          )}
+          {enquirie.status === 5 && <div className="text-sm">Junk</div>}
+          {enquirie.status === 6 && <div className="text-sm">Lost</div>} */}
+
+          <select
+            className="form-control-sm"
+            id="eStatus"
+            defaultValue={enquirie.status}
+            onChange={(e) => {
+              statusHandler(e, enquirie.id);
+            }}
+          >
+            <option value={0}>No Status</option>
+            <option value={1}>Closed</option>
+            <option value={2}>Waiting</option>
+            <option value={3}>DnD</option>
+            <option value={4}>Not Interested</option>
+            <option value={5}>Junk</option>
+            <option value={6}>Lost</option>
+          </select>
         </Fragment>
       ),
     },
@@ -152,11 +171,26 @@ const EnquiriesList = () => {
       width: "140px",
       cell: (enquirie) => (
         <Fragment>
-          {enquirie.rating === 0 && <div>No Status</div>}
+          {/* {enquirie.rating === 0 && <div>No Status</div>}
           {enquirie.rating === 1 && <div>Hot</div>}
           {enquirie.rating === 2 && <div>Warm</div>}
           {enquirie.rating === 3 && <div>Cold</div>}
-          {enquirie.rating === 4 && <div>Very Hot</div>}
+          {enquirie.rating === 4 && <div>Very Hot</div>} */}
+
+          <select
+            className="form-control-sm"
+            id="eStatus"
+            defaultValue={enquirie.rating}
+            onChange={(e) => {
+              ratingHandler(e, enquirie.id);
+            }}
+          >
+            <option value={0}>No Status</option>
+            <option value={1}>Hot</option>
+            <option value={2}>Warm</option>
+            <option value={3}>Cold</option>
+            <option value={4}>Very Hot</option>
+          </select>
         </Fragment>
       ),
     },
@@ -166,12 +200,12 @@ const EnquiriesList = () => {
       sortable: true,
       width: "140px",
     },
-    {
-      name: "Remark",
-      selector: remark,
-      sortable: true,
-      width: "140px",
-    },
+    // {
+    //   name: "Remark",
+    //   selector: remark,
+    //   sortable: true,
+    //   width: "140px",
+    // },
     {
       name: "Visited IP",
       selector: visited_ip,
@@ -195,25 +229,6 @@ const EnquiriesList = () => {
       selector: country,
       sortable: true,
       width: "140px",
-    },
-    {
-      name: "Action",
-      button: true,
-      grow: 1,
-      width: "80px",
-      cell: (client) => (
-        <div>
-          <button
-            type="button"
-            onClick={() => {
-              deleteClient(client.id);
-            }}
-            className="btn btn-sm btn-outline-danger mr-2"
-          >
-            Delete
-          </button>
-        </div>
-      ),
     },
   ];
 
@@ -262,13 +277,17 @@ const EnquiriesList = () => {
     }
   };
 
-  const statusHandler = async (id) => {
+  const statusHandler = async (e, id) => {
     await axios
-      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/client/status/${id}`, {
-        headers: {
-          Authorization: `Bearer ${data.user.token}`,
-        },
-      })
+      .put(
+        `${process.env.NEXT_PUBLIC_NEXT_API}/enquirie/status/${id}`,
+        { status: e.target.value },
+        {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        }
+      )
       .then((res) => {
         getEnquirieData();
         notify("success", "Status Updated Successfully");
@@ -278,33 +297,24 @@ const EnquiriesList = () => {
       });
   };
 
-  const deleteClient = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/enquirie/${id}`, {
-            headers: {
-              Authorization: `Bearer ${data.user.token}`,
-            },
-          })
-          .then((res) => {
-            getEnquirieData();
-            notify("success", "Inquiry Deleted Successfully");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
+  const ratingHandler = async (e, id) => {
+    await axios
+      .put(
+        `${process.env.NEXT_PUBLIC_NEXT_API}/enquirie/rating/${id}`,
+        { rating: e.target.value },
+        {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        getEnquirieData();
+        notify("success", "Ratting Updated Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

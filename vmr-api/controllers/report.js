@@ -25,7 +25,7 @@ exports.getReport = async (req, res, next) => {
 
   try {
     const obj =
-      "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,product_faq,slug,reference_url,share_with_reseller,is_upcoming";
+      "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,is_active,meta_name,meta_keywords,meta_desc,product_faq,slug,reference_url,share_with_reseller,is_upcoming";
     const [report] = await Report.getOne("products", obj, `id=${id}`);
 
     const [c] = await Report.findById(
@@ -105,12 +105,13 @@ exports.addReport = async (req, res, next) => {
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
-  const reference_url = req.body.reference_url || null;
+  const reference_url = req.body.reference_url || "";
 
   const slug = cleanString(req.body.alias);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
+  const readyToActive = req.body.readyToActive ? 2 : 0;
 
   try {
     const [name_check] = await Report.findById(
@@ -126,8 +127,8 @@ exports.addReport = async (req, res, next) => {
       });
     }
     const field =
-      "(product_name,alias,category_id,product_description,product_specification,is_set_toc,price,corporate_price,upto10,data_pack_price,pub_date,meta_name,meta_keywords,meta_desc,slug,publisher_name,modified,is_upcoming,reference_url,share_with_reseller)";
-    const value = `('${product_name}', '${alias}', '2', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${date}','${is_upcoming}',${reference_url},'${share_with_reseller}')`;
+      "(product_name,alias,category_id,product_description,product_specification,is_set_toc,price,corporate_price,upto10,data_pack_price,pub_date,is_active,meta_name,meta_keywords,meta_desc,slug,publisher_name,modified,is_upcoming,reference_url,share_with_reseller)";
+    const value = `('${product_name}', '${alias}', '2', '${product_description}', '${product_specification}', '${is_set_toc}','${price}','${corporate_price}','${upto10}','${data_pack_price}','${pub_date}','${readyToActive}','${meta_name}','${meta_keywords}','${meta_desc}','${slug}','${publisher_name}','${date}','${is_upcoming}','${reference_url}','${share_with_reseller}')`;
 
     const [report] = await Report.addData("products", field, value);
     const lastReportId = report.insertId.toString();
@@ -197,13 +198,14 @@ exports.editReport = async (req, res, next) => {
   const meta_desc = req.body.meta_desc;
   const reference_url = req.body.reference_url;
 
-  const slug = cleanString(req.body.alias);
+  const slug = req.body.slug;
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
+  const is_active = req.body.is_active ? 2 : 0;
 
   try {
-    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',reference_url='${reference_url}',share_with_reseller='${share_with_reseller}'`;
+    const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',is_active='${is_active}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',slug='${slug}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',reference_url='${reference_url}',share_with_reseller='${share_with_reseller}'`;
 
     const [products] = await Report.editData("products", obj, id);
 
@@ -249,7 +251,7 @@ exports.reportStatus = async (req, res, next) => {
   try {
     const [report] = await Report.getOne("products", "is_active", `id=${id}`);
 
-    if (report[0].is_active === 0) {
+    if (report[0].is_active === 0 || report[0].is_active === 2) {
       obj = `is_active = 1`;
       const [sql] = await Report.editData("products", obj, id);
       return res.status(201).json({
