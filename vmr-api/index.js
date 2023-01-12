@@ -11,6 +11,7 @@ const clientRoutes = require("./routers/client");
 const articleRoutes = require("./routers/article");
 const settingRoutes = require("./routers/setting");
 const enquirieRoutes = require("./routers/enquirie");
+const dashboardRoutes = require("./routers/dashboard");
 const frontRoutes = require("./routers/front");
 
 const app = express();
@@ -44,8 +45,9 @@ app.use("/testimonial", testimonialRoutes);
 app.use("/client", clientRoutes);
 app.use("/article", articleRoutes);
 app.use("/setting", settingRoutes);
-app.use("/front", frontRoutes);
 app.use("/enquirie", enquirieRoutes);
+app.use("/dashboard", dashboardRoutes);
+app.use("/front", frontRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;

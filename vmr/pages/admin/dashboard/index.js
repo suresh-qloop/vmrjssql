@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
+import Badges from "../../../components/Admin/Dashboard/Badges";
 
 const DashBoard = () => {
   return (
@@ -30,7 +31,9 @@ const DashBoard = () => {
         </div>
 
         <section className="content">
-          <div className="container-fluid"></div>
+          <div className="container-fluid">
+            <Badges />
+          </div>
         </section>
       </div>
       <Footer />
