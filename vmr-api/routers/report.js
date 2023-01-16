@@ -12,6 +12,18 @@ router.get("/search", authPage([1]), reportRoute.searchReport);
 router.get("/:id", authPage([1]), reportRoute.getReport);
 router.get("/view/:id", authPage([1]), reportRoute.getViewReport);
 router.post("/", upload.none(), authPage([1]), reportRoute.addReport);
+router.post(
+  "/report-check",
+  upload.none(),
+  authPage([1]),
+  reportRoute.checkReport
+);
+router.post(
+  "/alias-check",
+  upload.none(),
+  authPage([1]),
+  reportRoute.checkAlias
+);
 router.put("/:id", upload.none(), authPage([1]), reportRoute.editReport);
 router.delete("/:id", authPage([1]), reportRoute.deleteReport);
 router.delete("/status/:id", authPage([1]), reportRoute.reportStatus);

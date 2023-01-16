@@ -56,7 +56,6 @@ const AddFaq = () => {
       (r, { question, answer }) => ((r[question] = answer), r),
       {}
     );
-    console.log(result);
     await axios
       .post(
         `${process.env.NEXT_PUBLIC_NEXT_API}/report/faq/${id}`,

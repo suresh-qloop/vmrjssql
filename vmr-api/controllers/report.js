@@ -120,7 +120,6 @@ exports.addReport = async (req, res, next) => {
       `product_name='${product_name}' OR alias='${alias}'`,
       "id DESC"
     );
-    console.log(name_check);
     if (name_check.length > 0) {
       return res.status(500).json({
         error: "Product exists already",
@@ -330,6 +329,74 @@ exports.searchReport = async (req, res, next) => {
     );
 
     return res.status(200).json(reports);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.checkReport = async (req, res, next) => {
+  await check("product_name").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
+  const product_name = toUpperCase(req.body.product_name);
+
+  try {
+    const [name_check] = await Report.findById(
+      "products",
+      "*",
+      `product_name='${product_name}'`,
+      "id DESC"
+    );
+
+    if (name_check.length > 0) {
+      return res.status(500).json({
+        error: "Report exists already",
+      });
+    }
+
+    res.status(200).json({
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.checkAlias = async (req, res, next) => {
+  await check("alias").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+
+  const alias = toUpperCase(req.body.alias);
+
+  try {
+    const [name_check] = await Report.findById(
+      "products",
+      "*",
+      `alias='${alias}'`,
+      "id DESC"
+    );
+
+    if (name_check.length > 0) {
+      return res.status(500).json({
+        error: "Alias exists already",
+      });
+    }
+
+    res.status(200).json({
+      message: "success",
+    });
   } catch (err) {
     return res.status(500).json({
       error: err.message,

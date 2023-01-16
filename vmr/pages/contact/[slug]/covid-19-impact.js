@@ -62,6 +62,7 @@ const Covid19Impact = () => {
     data.slug = reportData.slug;
     data.price = reportData.price;
     data.product_id = reportData.id;
+    data.alias = reportData.alias;
     const finalData = {
       ...data,
       mobile,
@@ -380,7 +381,7 @@ const Covid19Impact = () => {
                     </div>
                     <button
                       className="btn btn-info justify-content-center mt-3"
-                      disabled={!isVerified}
+                      // disabled={!isVerified}
                       onClick={() => {
                         if (mobile.length !== 10) {
                           setMobileError(true);

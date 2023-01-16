@@ -21,6 +21,8 @@ const AddReport = () => {
   const [TOC, setTOC] = useState("");
   const [description, setDescription] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [productCheck, setProductCheck] = useState(false);
+  const [aliasCheck, setAliasCheck] = useState(false);
 
   let curr = new Date();
   let date = curr.toISOString().substring(0, 10);
@@ -51,6 +53,60 @@ const AddReport = () => {
     }
   };
 
+  const HandleName = async (e) => {
+    setProductCheck(false);
+    if (status === "authenticated") {
+      if (e.target.value) {
+        await axios
+          .post(
+            `${process.env.NEXT_PUBLIC_NEXT_API}/report/report-check`,
+            {
+              product_name: e.target.value,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${data.user.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            setProductCheck(false);
+          })
+          .catch((err) => {
+            setProductCheck(true);
+            console.log(err);
+          });
+      }
+    }
+  };
+
+  const HandleAlias = async (e) => {
+    setAliasCheck(false);
+    if (status === "authenticated") {
+      if (e.target.value) {
+        await axios
+          .post(
+            `${process.env.NEXT_PUBLIC_NEXT_API}/report/alias-check`,
+            {
+              alias: e.target.value,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${data.user.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            setAliasCheck(false);
+          })
+          .catch((err) => {
+            setAliasCheck(true);
+            console.log(err);
+          });
+      }
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -67,10 +123,37 @@ const AddReport = () => {
 
   const SubmitAndAddFaqs = async (e) => {
     e.preventDefault();
+    if (productCheck || aliasCheck) {
+      return;
+    } else {
+      handleSubmit(async (reportData) => {
+        const finalData = { ...reportData, TOC, description };
 
-    handleSubmit(async (reportData) => {
+        axios
+          .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
+            headers: {
+              Authorization: `Bearer ${data.user.token}`,
+            },
+          })
+          .then((res) => {
+            getCategoryList();
+            notify("success", "Report Created Successfully");
+            navigate.push(`/admin/reports/addfaqs/${res.data.id}`);
+          })
+          .catch(function (error) {
+            console.log(error);
+            notify("error", error.response.data.error);
+          });
+      })();
+    }
+  };
+
+  const onSubmit = (reportData) => {
+    if (productCheck || aliasCheck) {
+      return;
+    } else {
       const finalData = { ...reportData, TOC, description };
-      console.log(finalData, "onBackSubmit");
+
       axios
         .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
           headers: {
@@ -79,35 +162,14 @@ const AddReport = () => {
         })
         .then((res) => {
           getCategoryList();
-          console.log(res.data.id);
           notify("success", "Report Created Successfully");
-          navigate.push(`/admin/reports/addfaqs/${res.data.id}`);
+          navigate.push(`/admin/reports`);
         })
         .catch(function (error) {
           console.log(error);
           notify("error", error.response.data.error);
         });
-    })();
-  };
-
-  const onSubmit = (reportData) => {
-    const finalData = { ...reportData, TOC, description };
-    console.log(finalData, "onSubmit");
-    axios
-      .post(`${process.env.NEXT_PUBLIC_NEXT_API}/report/`, finalData, {
-        headers: {
-          Authorization: `Bearer ${data.user.token}`,
-        },
-      })
-      .then((res) => {
-        getCategoryList();
-        notify("success", "Report Created Successfully");
-        navigate.push(`/admin/reports`);
-      })
-      .catch(function (error) {
-        console.log(error);
-        notify("error", error.response.data.error);
-      });
+    }
   };
   return (
     mounted && (
@@ -159,16 +221,22 @@ const AddReport = () => {
                                   type="text"
                                   className={`form-control ${
                                     errors.product_name ? "is-invalid" : ""
-                                  }`}
+                                  } ${productCheck ? "is-invalid" : ""}`}
                                   id="product_name"
                                   placeholder="Name"
                                   {...register("product_name", {
                                     required: "This field is required",
                                   })}
+                                  onBlur={HandleName}
                                 />
                                 {errors.product_name && (
                                   <div className="error invalid-feedback">
                                     <p>{errors.product_name.message}</p>
+                                  </div>
+                                )}
+                                {productCheck === true && (
+                                  <div className="error invalid-feedback">
+                                    <p>Report exists already</p>
                                   </div>
                                 )}
                               </div>
@@ -187,16 +255,22 @@ const AddReport = () => {
                                   type="text"
                                   className={`form-control ${
                                     errors.alias ? "is-invalid" : ""
-                                  }`}
+                                  }  ${aliasCheck ? "is-invalid" : ""}`}
                                   id="alias"
                                   placeholder="Alias"
                                   {...register("alias", {
                                     required: "This field is required",
                                   })}
+                                  onBlur={HandleAlias}
                                 />
                                 {errors.alias && (
                                   <div className="error invalid-feedback">
                                     <p>{errors.alias.message}</p>
+                                  </div>
+                                )}
+                                {aliasCheck === true && (
+                                  <div className="error invalid-feedback">
+                                    <p>Alias exists already</p>
                                   </div>
                                 )}
                               </div>
@@ -221,6 +295,7 @@ const AddReport = () => {
                                   {...register("publisher_name", {
                                     required: "This field is required",
                                   })}
+                                  defaultValue={"Value Market Research"}
                                 />
                                 {errors.publisher_name && (
                                   <div className="error invalid-feedback">

@@ -7,7 +7,6 @@ import Breadcrumb from "../components/Frontend/Breadcrumb";
 import Navbar from "../components/Frontend/Navbar";
 import NavbarTop from "../components/Frontend/NavbarTop";
 import Footer from "../components/Frontend/Footer";
-// import { currencyInrFormat } from "../utils/utils.js";
 import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
@@ -23,13 +22,13 @@ const Reports = () => {
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  const [categoryId, setCategoryId] = useState();
+
+  // const [categoryId, setCategoryId] = useState();
 
   useEffect(() => {
     getCategoryList();
 
     getReportList();
-
     // eslint-disable-next-line
   }, [router.asPath]);
   useEffect(() => {
@@ -47,20 +46,20 @@ const Reports = () => {
       });
   };
 
-  const getCategoryReportsHandler = async (catId) => {
-    setCategoryId(catId);
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
-      )
-      .then((res) => {
-        setReportList(res.data.reports);
-        setCount(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getCategoryReportsHandler = async (catId) => {
+  //   setCategoryId(catId);
+  //   await axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
+  //     )
+  //     .then((res) => {
+  //       setReportList(res.data.reports);
+  //       setCount(res.data.count);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const getReportList = async () => {
     await axios
@@ -75,33 +74,33 @@ const Reports = () => {
   };
 
   const getMoreReport = async () => {
-    if (categoryId) {
-      await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
-        )
-        .then((res) => {
-          const reports = res.data.reports;
-          setReportList((reportList) => [...reportList, ...reports]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // if (categoryId) {
+    //   await axios
+    //     .get(
+    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
+    //     )
+    //     .then((res) => {
+    //       const reports = res.data.reports;
+    //       setReportList((reportList) => [...reportList, ...reports]);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
 
-    if (!categoryId) {
-      await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
-        )
-        .then((res) => {
-          const reports = res.data.reports;
-          setReportList((reportList) => [...reportList, ...reports]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // if (!categoryId) {
+    await axios
+      .get(
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
+      )
+      .then((res) => {
+        const reports = res.data.reports;
+        setReportList((reportList) => [...reportList, ...reports]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // }
   };
 
   return (
@@ -145,7 +144,7 @@ const Reports = () => {
                           ) : (
                             <i className="far fa-minus-square text-info "></i>
                           )}
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() =>
                               getCategoryReportsHandler(curElem.id)
@@ -153,7 +152,13 @@ const Reports = () => {
                             className="text-info btn btn-white text-sm"
                           >
                             {curElem.name} ({curElem.reports})
-                          </button>
+                          </button> */}
+                          <Link
+                            href={`industries/${curElem.id}`}
+                            className="text-info btn btn-white  text-sm"
+                          >
+                            {curElem.name} ({curElem.reports})
+                          </Link>
                         </div>
                         <hr className="m-0 dashed" />
                         <div
@@ -164,7 +169,7 @@ const Reports = () => {
                         >
                           {curElem.children.map((Elem, i) => (
                             <Fragment key={Elem.id}>
-                              <button
+                              {/* <button
                                 type="button"
                                 className="btn btn-white text-sm text-info ml-3"
                                 onClick={() =>
@@ -172,7 +177,13 @@ const Reports = () => {
                                 }
                               >
                                 {Elem.name} ({Elem.reports})
-                              </button>
+                              </button> */}
+                              <Link
+                                href={`industries/${Elem.id}`}
+                                className="btn btn-white text-sm text-info ml-3"
+                              >
+                                {Elem.name} ({Elem.reports})
+                              </Link>
 
                               <hr className="m-0 dashed" />
                             </Fragment>
@@ -184,6 +195,7 @@ const Reports = () => {
                 </div>
               </div>
             </div>
+
             <div className="col-md-9">
               <div className="row">
                 <InfiniteScroll

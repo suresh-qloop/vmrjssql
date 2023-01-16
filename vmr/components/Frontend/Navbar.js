@@ -105,7 +105,7 @@ const Navbar = (props) => {
                       <Fragment key={i + 1}>
                         <Link
                           className="dropdown-item"
-                          href={`industries/${curElem.id}`}
+                          href={`../industries/${curElem.id}`}
                           key={curElem.id}
                         >
                           {curElem.name}

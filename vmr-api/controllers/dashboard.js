@@ -8,7 +8,7 @@ exports.EnquiriesCount = async (req, res, next) => {
     const [sql1] = await Enquirie.findById(
       "enquiries e",
       "*",
-      "e.created = DATE(NOW())",
+      `e.created >= DATE(NOW() - INTERVAL 0 DAY)`,
       "e.id DESC"
     );
     const Todays = sql1.length;
@@ -31,7 +31,6 @@ exports.EnquiriesCount = async (req, res, next) => {
       todays: Todays,
       thirtyDays: thirtyDays,
     };
-    console.log(data);
     return res.status(201).json(data);
   } catch (err) {
     return res.status(500).json({

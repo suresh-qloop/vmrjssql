@@ -14,7 +14,7 @@ exports.AllEnquiries = async (req, res, next) => {
       "e.user_id = u.id AND e.product_id = p.id",
       "e.id DESC"
     );
-    // console.log(enquiries);
+
     return res.status(201).json(enquiries);
   } catch (err) {
     return res.status(500).json({
@@ -26,7 +26,6 @@ exports.AllEnquiries = async (req, res, next) => {
 exports.enquirieStatus = async (req, res, next) => {
   const id = req.params.id;
   const status = req.body.status;
-  console.log(status);
 
   try {
     // const [enquirie] = await Enquirie.getOne("enquiries", "status", `id=${id}`);
@@ -52,7 +51,7 @@ exports.enquirieStatus = async (req, res, next) => {
       if (status == "6") {
         obj = "status = 6";
       }
-      console.log(obj);
+
       const [sql] = await Enquirie.editData("enquiries", obj, id);
       return res.status(201).json({
         message: "success",
@@ -113,10 +112,6 @@ exports.enquirieFilters = async (req, res, next) => {
   if (filterStatus) {
     status = filterStatus.split(",");
   }
-  // console.log(ratting);
-  // console.log(status);
-  // console.log(productName);
-  // console.log(createDate);
 
   try {
     let rattingObj = ``;
@@ -144,8 +139,7 @@ exports.enquirieFilters = async (req, res, next) => {
         }
       }
     }
-    console.log(rattingObj);
-    console.log(statusObj);
+
     let obj = ` e.user_id = u.id AND e.product_id = p.id`;
     if (rattingObj) {
       obj += ` AND `;
@@ -155,18 +149,15 @@ exports.enquirieFilters = async (req, res, next) => {
       obj += ` AND `;
       obj += statusObj;
     }
-    console.log(productName);
     if (productName && productName !== "undefined") {
       obj += ` AND p.product_name LIKE '%${productName}%' `;
     }
-    console.log(createDate);
-    console.log(createDateCheck);
+
     // if (createDate) {
     if (createDateCheck === "true") {
       obj += ` AND e.created LIKE '%${createDate}%'`;
     }
     // }
-    console.log(obj);
 
     // const [sql] = await Enquirie.editData("enquiries", obj, id);
     const [enquiries] = await Enquirie.findById(
@@ -240,7 +231,6 @@ exports.getCSVData = async (req, res, next) => {
         .slice(0, 19)
         .replace("T", " ");
     });
-    console.log(enquiries, "ddd");
     return res.status(201).json(enquiries);
   } catch (err) {
     return res.status(500).json({

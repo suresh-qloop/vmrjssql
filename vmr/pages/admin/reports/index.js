@@ -167,6 +167,7 @@ const ReportList = () => {
               }}
               className="btn btn-sm btn-outline-primary mr-2"
               style={{ width: 101 }}
+              disabled={report.is_active === 2 ? false : true}
             >
               Activate
             </button>

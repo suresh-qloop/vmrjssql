@@ -10,6 +10,7 @@ const Badges = () => {
   useEffect(() => {
     getEnquirieData();
   }, [status]);
+
   const getEnquirieData = async () => {
     if (status === "authenticated") {
       await axios
@@ -20,7 +21,6 @@ const Badges = () => {
         })
         .then((res) => {
           setEnquire(res.data);
-          console.log(enquire);
         })
         .catch((err) => {
           console.log(err);
@@ -29,49 +29,40 @@ const Badges = () => {
   };
 
   return (
-    <div class="row">
-      <div class="col-lg-4 col-6">
-        <div class="small-box bg-info">
-          <div class="inner">
+    <div className="row">
+      <div className="col-lg-4 col-6">
+        <div className="small-box bg-info">
+          <div className="inner">
             <h3>{enquire?.todays}</h3>
             <p>Total Leads Today</p>
           </div>
-          <div class="icon">
-            <i class="ion fas fa-check-circle"></i>
+          <div className="icon">
+            <i className="ion fas fa-check-circle"></i>
           </div>
-          {/* <Link href="admin/enquiries/todays" class="small-box-footer">
-            More info <i class="fas fa-arrow-circle-right"></i>
-          </Link> */}
         </div>
       </div>
 
-      <div class="col-lg-4 col-6">
-        <div class="small-box bg-success">
-          <div class="inner">
+      <div className="col-lg-4 col-6">
+        <div className="small-box bg-success">
+          <div className="inner">
             <h3>{enquire?.sevenDays}</h3>
             <p>Total Leads in Last 7 Days</p>
           </div>
-          <div class="icon">
-            <i class="ion fas fa-check-circle"></i>
+          <div className="icon">
+            <i className="ion fas fa-check-circle"></i>
           </div>
-          {/* <Link href="#" class="small-box-footer">
-            More info <i class="fas fa-arrow-circle-right"></i>
-          </Link> */}
         </div>
       </div>
 
-      <div class="col-lg-4 col-6">
-        <div class="small-box bg-warning">
-          <div class="inner">
+      <div className="col-lg-4 col-6">
+        <div className="small-box bg-warning">
+          <div className="inner">
             <h3>{enquire?.thirtyDays}</h3>
             <p>Total Leads in Last 30 Days</p>
           </div>
-          <div class="icon">
-            <i class="ion fas fa-check-circle"></i>
+          <div className="icon">
+            <i className="ion fas fa-check-circle"></i>
           </div>
-          {/* <Link href="#" class="small-box-footer">
-            More info <i class="fas fa-arrow-circle-right"></i>
-          </Link> */}
         </div>
       </div>
     </div>

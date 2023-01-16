@@ -12,11 +12,10 @@ import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const ReportDetails = () => {
-  // console.log(data, "context");
   const [count, setCount] = useState(null);
   const [reportList, setReportList] = useState([]);
   const [categoryList, setCategoryList] = useState();
-  const [categoryId, setCategoryId] = useState();
+  // const [categoryId, setCategoryId] = useState();
   const [hasMore, setHasMore] = useState(true);
 
   // setReportData(data);
@@ -38,20 +37,20 @@ const ReportDetails = () => {
       });
   };
 
-  const getCategoryReportsHandler = async (catId) => {
-    setCategoryId(catId);
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/category/${catId}?start=0&limit=2`
-      )
-      .then((res) => {
-        setReportList(res.data.reports);
-        setCount(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getCategoryReportsHandler = async (catId) => {
+  //   setCategoryId(catId);
+  //   await axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_NEXT_API}/category/${catId}?start=0&limit=2`
+  //     )
+  //     .then((res) => {
+  //       setReportList(res.data.reports);
+  //       setCount(res.data.count);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const getCategoryList = async () => {
     await axios
@@ -65,19 +64,19 @@ const ReportDetails = () => {
   };
 
   const getMoreReport = async () => {
-    if (categoryId) {
-      await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
-        )
-        .then((res) => {
-          const reports = res.data.reports;
-          setReportList((reportList) => [...reportList, ...reports]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    // if (categoryId) {
+    //   await axios
+    //     .get(
+    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
+    //     )
+    //     .then((res) => {
+    //       const reports = res.data.reports;
+    //       setReportList((reportList) => [...reportList, ...reports]);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
     if (key) {
       await axios
         .get(
@@ -91,7 +90,7 @@ const ReportDetails = () => {
           console.log(err);
         });
     }
-    if (!key && !categoryId) {
+    if (!key) {
       await axios
         .get(
           `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
@@ -151,7 +150,7 @@ const ReportDetails = () => {
                           ) : (
                             <i className="far fa-minus-square text-info "></i>
                           )}
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() =>
                               getCategoryReportsHandler(curElem._id)
@@ -159,7 +158,13 @@ const ReportDetails = () => {
                             className="text-info btn btn-white text-sm"
                           >
                             {curElem.name}
-                          </button>
+                          </button> */}
+                          <Link
+                            href={`../industries/${curElem.id}`}
+                            className="text-info btn btn-white  text-sm"
+                          >
+                            {curElem.name} ({curElem.reports})
+                          </Link>
                         </div>
                         <hr className="m-0 dashed" />
                         <div
@@ -173,7 +178,7 @@ const ReportDetails = () => {
                               {Elem.isDeleted === false && (
                                 <Fragment key={Elem._id}>
                                   {/* <i className="far fa-minus-square text-info "></i> */}
-                                  <button
+                                  {/* <button
                                     type="button"
                                     className="btn btn-white text-sm text-info ml-3"
                                     onClick={() =>
@@ -181,7 +186,13 @@ const ReportDetails = () => {
                                     }
                                   >
                                     {Elem.name}
-                                  </button>
+                                  </button> */}
+                                  <Link
+                                    href={`../industries/${Elem.id}`}
+                                    className="btn btn-white text-sm text-info ml-3"
+                                  >
+                                    {Elem.name} ({Elem.reports})
+                                  </Link>
 
                                   <hr className="m-0 dashed" />
                                 </Fragment>

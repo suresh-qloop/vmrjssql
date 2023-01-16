@@ -19,17 +19,19 @@ import { useRouter } from "next/router";
 const Reports = () => {
   const router = useRouter();
   const catId = router.query.id;
+
   const [categoryList, setCategoryList] = useState();
 
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  const [categoryId, setCategoryId] = useState();
+  // const [categoryId, setCategoryId] = useState();
 
   useEffect(() => {
-    getCategoryList();
-    getCategoryList();
-    getReportList();
+    if (catId) {
+      getCategoryList();
+      getReportList();
+    }
     // eslint-disable-next-line
   }, [catId]);
   useEffect(() => {
@@ -61,26 +63,26 @@ const Reports = () => {
       });
   };
 
-  const getCategoryReportsHandler = async (catId) => {
-    setCategoryId(catId);
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
-      )
-      .then((res) => {
-        setReportList(res.data.reports);
-        setCount(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getCategoryReportsHandler = async (catId) => {
+  //   setCategoryId(catId);
+  //   await axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
+  //     )
+  //     .then((res) => {
+  //       setReportList(res.data.reports);
+  //       setCount(res.data.count);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const getMoreReport = async () => {
-    if (categoryId) {
+    if (catId) {
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=${reportList.length}&limit=10`
         )
         .then((res) => {
           const reports = res.data.reports;
@@ -132,15 +134,15 @@ const Reports = () => {
                           ) : (
                             <i className="far fa-minus-square text-info "></i>
                           )}
-                          <button
-                            type="button"
-                            onClick={() =>
-                              getCategoryReportsHandler(curElem.id)
-                            }
-                            className="text-info btn btn-white text-sm"
+
+                          <Link
+                            href={`../industries/${curElem.id}`}
+                            className={`btn btn-white text-sm ${
+                              catId == curElem.id ? "text-dark" : "text-info"
+                            }   `}
                           >
                             {curElem.name} ({curElem.reports})
-                          </button>
+                          </Link>
                         </div>
                         <hr className="m-0 dashed" />
                         <div
@@ -151,16 +153,16 @@ const Reports = () => {
                         >
                           {curElem.children.map((Elem, i) => (
                             <Fragment key={Elem.id}>
-                              {/* <i className="far fa-minus-square text-info "></i> */}
-                              <button
-                                type="button"
-                                className="btn btn-white text-sm text-info ml-3"
-                                onClick={() =>
-                                  getCategoryReportsHandler(Elem.id)
-                                }
+                              <i className="far fa-minus-square text-info "></i>
+
+                              <Link
+                                href={`../industries/${Elem.id}`}
+                                className={`btn btn-white text-sm ${
+                                  catId == Elem.id ? "text-dark" : "text-info"
+                                }   ml-3`}
                               >
                                 {Elem.name} ({Elem.reports})
-                              </button>
+                              </Link>
 
                               <hr className="m-0 dashed" />
                             </Fragment>
@@ -197,7 +199,7 @@ const Reports = () => {
                   }
                   endMessage={
                     <p className="mt-2" style={{ textAlign: "center" }}>
-                      <b></b>
+                      <b>No More Records Found</b>
                     </p>
                   }
                 >

@@ -312,6 +312,7 @@ exports.contactFormController = async (req, res, next) => {
   const email = req.body.email;
   const number = req.body.number;
   const message = req.body.message;
+  const ip = req.socket.remoteAddress;
 
   try {
     const [smtpUser] = await Model.findById(
@@ -336,12 +337,12 @@ exports.contactFormController = async (req, res, next) => {
     let from = `Value Market Research  <${smtpUser[0].value}>`;
 
     let transporter = nodemailer.createTransport({
-      service: "Gmail",
+      service: "Mailgun",
+      port: 587,
+      secure: false,
       auth: {
         user: smtpUser[0].value,
         pass: smtpPassword[0].value,
-        // user: "prince.queueloop@gmail.com",
-        // pass: "vkezezfceqphsmqg",
       },
     });
 
@@ -352,6 +353,7 @@ exports.contactFormController = async (req, res, next) => {
         email,
         number,
         message,
+        ip,
       },
       function (err, html) {
         if (err) {
@@ -381,6 +383,7 @@ exports.contactFormController = async (req, res, next) => {
                   email,
                   number,
                   message,
+                  ip,
                 },
                 function (err, html) {
                   if (err) {
@@ -463,11 +466,18 @@ exports.MailController = async (req, res, next) => {
   const price = req.body.price;
   const ip = req.socket.remoteAddress;
   const product_id = req.body.product_id;
+  const alias = req.body.alias;
   let first_name = fullName[0];
   let last_name = fullName[1];
   let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
+    // const to_emails = [
+    //   "vaibhavkgupta@gmail.com",
+    //   "sales@valuemarketresearch.com",
+    //   "vaibhav@decisiondatabases.com",
+    //   "sackshig@decisiondatabases.com",
+    // ];
     const [smtpUser] = await Model.findById(
       "settings",
       "*",
@@ -480,15 +490,27 @@ exports.MailController = async (req, res, next) => {
       `\`key\`='smtpPassword'`,
       "id ASC"
     );
-    const [mailToUser] = await Model.findById(
+    const [r] = await Model.findById(
       "settings",
       "*",
       `\`key\`='mailToUser'`,
       "id ASC"
     );
+    let mailToUser = r[0].value.split(",");
     let from = `Value Market Research  <${smtpUser[0].value}>`;
+    let userSubject = `Regarding your inquiry for ${alias}`;
+    let adminSubject = `New Lead Recieved`;
+    if (subject == "Download Sample") {
+      adminSubject = `New Sample Request: ${alias}`;
+    }
+    if (subject == "Covid 19 Impact") {
+      adminSubject = `New Covid Lead: ${alias}`;
+    }
+
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "Mailgun",
+      port: 587,
+      secure: false,
       auth: {
         user: smtpUser[0].value,
         pass: smtpPassword[0].value,
@@ -503,7 +525,6 @@ exports.MailController = async (req, res, next) => {
     );
 
     if (user.length > 0) {
-      console.log("yes");
       const userId = user[0].id;
       const value2 = `(${user[0].id},${product_id}, 'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}','${date}')`;
 
@@ -527,7 +548,116 @@ exports.MailController = async (req, res, next) => {
             let userMailOptions = {
               from: from,
               to: confirmEmail,
-              subject: subject,
+              subject: userSubject,
+              generateTextFromHtml: true,
+              html: html,
+            };
+
+            //Execute this to send the mail
+            transporter.sendMail(userMailOptions, function (error, response) {
+              if (error) {
+                console.log(error);
+                res.send("Mail Error! Try again");
+              } else {
+                res.render(
+                  "admin-question-email",
+                  {
+                    report,
+                    leadId,
+                    name,
+                    corporateEmail,
+                    mobile,
+                    subject,
+                    organization,
+                    designation,
+                    country,
+                    remarks,
+                    ip,
+                    ref_page,
+                    price,
+                    userId,
+                    slug,
+                    publisher_name,
+                  },
+                  function (err, html) {
+                    if (err) {
+                      return res.status(500).json({
+                        error: err.message,
+                      });
+                    } else {
+                      //Setting up Email settings
+                      let adminMailOptions = {
+                        from: from,
+                        // to: mailToUser[0].value,
+                        to: mailToUser,
+                        subject: adminSubject,
+                        generateTextFromHtml: true,
+                        html: html,
+                      };
+
+                      //Execute this to send the mail
+                      transporter.sendMail(
+                        adminMailOptions,
+                        function (error, response) {
+                          if (error) {
+                            console.log(error);
+                            // res.send("Mail Error! Try again");
+                            return res.status(500).json({
+                              error: "Mail Error! Try again",
+                            });
+                          } else {
+                            res.status(201).json({
+                              message: "Mail Send successfully",
+                            });
+                          }
+                        }
+                      );
+                    }
+                  }
+                );
+              }
+            });
+          }
+        }
+      );
+    } else {
+      let hashPassword = md5(
+        "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789"
+      );
+
+      const value = `('${first_name}','${last_name}','${confirmEmail}','${hashPassword}',2,'${organization}','${designation}',
+      '${country}','${mobile}','${ip}','${date}')`;
+
+      const [newUser] = await Model.addData(
+        "users",
+        "(first_name,last_name,email,password,role,organisation,job_title,country,mobile,visited_ip,modified)",
+        value
+      );
+      const userId = newUser.insertId;
+
+      const value2 = `(${newUser.insertId},${product_id},'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}','${date}')`;
+
+      const [newEnquirie] = await Model.addData(
+        "enquiries",
+        "(user_id,product_id,subject,message,visited_ip,ref_page,created,modified)",
+        value2
+      );
+      let leadId = newEnquirie.insertId;
+
+      res.render(
+        "user-question-email",
+        { report, name, organization },
+        function (err, html) {
+          if (err) {
+            return res.status(500).json({
+              error: err.message,
+            });
+          } else {
+            //Setting up Email settings
+            let userMailOptions = {
+              from: from,
+              to: confirmEmail,
+              subject: userSubject,
               generateTextFromHtml: true,
               html: html,
             };
@@ -566,8 +696,9 @@ exports.MailController = async (req, res, next) => {
                       //Setting up Email settings
                       let adminMailOptions = {
                         from: from,
-                        to: mailToUser[0].value,
-                        subject: subject,
+                        // to: mailToUser[0].value,
+                        to: mailToUser,
+                        subject: adminSubject,
                         generateTextFromHtml: true,
                         html: html,
                       };
@@ -597,111 +728,6 @@ exports.MailController = async (req, res, next) => {
           }
         }
       );
-    } else {
-      console.log("no");
-
-      let hashPassword = md5(
-        "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789"
-      );
-
-      const value = `('${first_name}','${last_name}', '${confirmEmail}',"${hashPassword}',2,'${organization}','${designation}',
-      "${country}","${mobile}","${ip}","${date}")`;
-
-      const [newUser] = await Model.addData(
-        "users",
-        "(first_name,last_name,email,password,role,organisation,job_title,country,mobile,visited_ip,modified)",
-        value
-      );
-      const userId = newUser.insertId;
-
-      const value2 = `('${newUser.insertId}','${product_id}', 'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}'`;
-
-      const [newEnquirie] = await Model.addData(
-        "enquiries",
-        "(user_id,product_id,subject,message,visited_ip,ref_page,modified)",
-        value2
-      );
-      let leadId = newEnquirie.insertId;
-
-      res.render("user-question-email", {}, function (err, html) {
-        if (err) {
-          return res.status(500).json({
-            error: err.message,
-          });
-        } else {
-          //Setting up Email settings
-          let userMailOptions = {
-            from: from,
-            to: confirmEmail,
-            subject: subject,
-            generateTextFromHtml: true,
-            html: html,
-          };
-
-          //Execute this to send the mail
-          transporter.sendMail(userMailOptions, function (error, response) {
-            if (error) {
-              res.send("Mail Error! Try again");
-            } else {
-              res.render(
-                "admin-question-email",
-                {
-                  report,
-                  leadId,
-                  name,
-                  corporateEmail,
-                  mobile,
-                  subject,
-                  organization,
-                  designation,
-                  country,
-                  remarks,
-                  ip,
-                  ref_page,
-                  price,
-                  userId,
-                  slug,
-                  publisher_name,
-                },
-                function (err, html) {
-                  if (err) {
-                    return res.status(500).json({
-                      error: err.message,
-                    });
-                  } else {
-                    //Setting up Email settings
-                    let adminMailOptions = {
-                      from: from,
-                      to: mailToUser[0].value,
-                      subject: subject,
-                      generateTextFromHtml: true,
-                      html: html,
-                    };
-
-                    //Execute this to send the mail
-                    transporter.sendMail(
-                      adminMailOptions,
-                      function (error, response) {
-                        if (error) {
-                          console.log(error);
-                          // res.send("Mail Error! Try again");
-                          return res.status(500).json({
-                            error: "Mail Error! Try again",
-                          });
-                        } else {
-                          res.status(201).json({
-                            message: "Mail Send successfully",
-                          });
-                        }
-                      }
-                    );
-                  }
-                }
-              );
-            }
-          });
-        }
-      });
     }
   } catch (err) {
     return res.status(500).json({

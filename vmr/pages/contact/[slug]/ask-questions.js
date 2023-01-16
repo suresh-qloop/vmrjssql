@@ -56,7 +56,6 @@ const AskQuestions = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(mobile);
     if (mobile.length !== 10) {
       setMobileError(true);
       return false;
@@ -67,11 +66,11 @@ const AskQuestions = () => {
     data.slug = reportData.slug;
     data.price = reportData.price;
     data.product_id = reportData.id;
+    data.alias = reportData.alias;
     const finalData = {
       ...data,
       mobile,
     };
-    console.log(finalData);
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
       // .then((res) => {

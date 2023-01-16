@@ -63,6 +63,7 @@ const RequestCustomization = () => {
     data.slug = reportData.slug;
     data.price = reportData.price;
     data.product_id = reportData.id;
+    data.alias = reportData.alias;
     const finalData = {
       ...data,
       mobile,

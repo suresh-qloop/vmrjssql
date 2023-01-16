@@ -86,7 +86,6 @@ export default ArticleDetails;
 
 ArticleDetails.getInitialProps = async (ctx) => {
   const { query } = ctx;
-  // console.log(query);
   const res = await axios(
     `${process.env.NEXT_PUBLIC_NEXT_API}/front/article/${query.id}`
   );
