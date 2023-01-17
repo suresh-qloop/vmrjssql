@@ -86,9 +86,12 @@ const UserList = () => {
       cell: (user) => (
         <Fragment>
           {user.role === 1 && <div>SuperAdmin</div>}
-          {user.role === 2 && <div>User</div>}
-          {user.role === 3 && <div>User</div>}
+          {user.role === 2 && <div>Analyst</div>}
+          {user.role === 3 && <div>SEO</div>}
+          {user.role === 4 && <div>Content</div>}
+          {user.role === 5 && <div>Jr Analyst</div>}
           {user.role === 11 && <div>User</div>}
+          {user.role === 12 && <div>Sales Team</div>}
         </Fragment>
       ),
     },
@@ -171,7 +174,9 @@ const UserList = () => {
             onClick={() => {
               deleteUser(user.id);
             }}
-            className="btn btn-sm btn-outline-danger mr-2"
+            className={`btn btn-sm btn-outline-danger mr-2 ${
+              data.user.role === 1 ? "" : "d-none"
+            }`}
           >
             Delete
           </button>

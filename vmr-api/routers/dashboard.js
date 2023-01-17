@@ -7,10 +7,10 @@ const router = express.Router();
 
 const upload = multer();
 
-router.get("/enquiriesCount", authPage([1]), dashboardRoute.EnquiriesCount);
-// router.get("/search", authPage([1]), enquirieRoute.enquirieFilters);
-// router.put("/status/:id", authPage([1]), enquirieRoute.enquirieStatus);
-// router.put("/rating/:id", authPage([1]), enquirieRoute.enquirieRating);
-// router.get("/csv", authPage([1]), enquirieRoute.getCSVData);
+router.get(
+  "/enquiriesCount",
+  authPage([1, 2, 3, 4, 11, 12]),
+  dashboardRoute.EnquiriesCount
+);
 
 module.exports = router;

@@ -7,12 +7,17 @@ const router = express.Router();
 
 const upload = multer();
 
-router.get("/", authPage([1]), testimonialRoute.AllTestimonial);
-router.get("/:id", authPage([1]), testimonialRoute.getTestimonial);
-router.post("/", upload.none(), authPage([1]), testimonialRoute.addTestimonial);
+router.get("/", authPage([1, 2]), testimonialRoute.AllTestimonial);
+router.get("/:id", authPage([1, 2]), testimonialRoute.getTestimonial);
+router.post(
+  "/",
+  upload.none(),
+  authPage([1, 2]),
+  testimonialRoute.addTestimonial
+);
 router.put(
   "/:id",
-  authPage([1]),
+  authPage([1, 2]),
   upload.none(),
   testimonialRoute.editTestimonial
 );
@@ -22,6 +27,10 @@ router.delete(
   authPage([1]),
   testimonialRoute.deleteTestimonial
 );
-router.delete("/status/:id", authPage([1]), testimonialRoute.TestimonialStatus);
+router.delete(
+  "/status/:id",
+  authPage([1, 2]),
+  testimonialRoute.TestimonialStatus
+);
 
 module.exports = router;

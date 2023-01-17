@@ -196,14 +196,14 @@ const AddUser = () => {
                             {...register("role", {
                               required: "This field is required",
                             })}
+                            defaultValue={11}
                           >
                             <option value={1}>Super Admin</option>
                             <option value={2}>Analyst</option>
-                            <option value={2}>SEO</option>
-                            <option value={2}>Content</option>
-                            <option value={2}>Jr Analyst</option>
-                            <option value={2}>User</option>
-                            <option value={2}>Sales Team</option>
+                            <option value={3}>SEO</option>
+                            <option value={4}>Content</option>
+                            <option value={11}>User</option>
+                            <option value={12}>Sales Team</option>
                           </select>
                           {errors.role && (
                             <div className="error invalid-feedback">

@@ -54,21 +54,26 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-router.get("/", authPage([1]), clientRoute.AllClientsRoute);
+router.get("/", authPage([1, 2]), clientRoute.AllClientsRoute);
 router.get("/:id", authPage([1]), clientRoute.getClient);
 router.post(
   "/",
   upload.fields([{ name: "logo", maxCount: 1 }]),
-  authPage([1]),
+  authPage([1, 2]),
   clientRoute.addClient
 );
 router.put(
   "/:id",
   upload.fields([{ name: "logo", maxCount: 1 }]),
-  authPage([1]),
+  authPage([1, 2]),
   clientRoute.editClient
 );
-router.delete("/:id", upload.none(), authPage([1]), clientRoute.deleteClient);
-router.delete("/status/:id", authPage([1]), clientRoute.clientStatus);
+router.delete(
+  "/:id",
+  upload.none(),
+  authPage([1]),
+  clientRoute.deleteClient
+);
+router.delete("/status/:id", authPage([1, 2]), clientRoute.clientStatus);
 
 module.exports = router;

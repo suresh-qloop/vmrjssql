@@ -26,7 +26,7 @@ exports.getUser = async (req, res, next) => {
   try {
     const [user] = await Admin.getOne(
       "users",
-      "id,first_name,last_name,email,is_active",
+      "id,first_name,last_name,email,role,is_active",
       `id=${id}`
     );
     res.status(200).json(user[0]);

@@ -29,7 +29,7 @@ const ViewReport = () => {
   const getEditData = async () => {
     if (status === "authenticated") {
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/view/${id}`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/seo-report/view/${id}`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
@@ -44,52 +44,6 @@ const ViewReport = () => {
           }
         });
     }
-  };
-
-  const deleteReport = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, {
-            headers: {
-              Authorization: `Bearer ${data.user.token}`,
-            },
-          })
-          .then((res) => {
-            getEditData();
-            notify("success", "Report Deleted Successfully");
-            router.push("/admin/reports");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  };
-
-  const statusHandler = async (id) => {
-    await axios
-      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/report/status/${id}`, {
-        headers: {
-          Authorization: `Bearer ${data.user.token}`,
-        },
-      })
-      .then((res) => {
-        getEditData();
-        notify("success", "Status Updated Successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return reportData ? (
@@ -244,65 +198,13 @@ const ViewReport = () => {
                   <div className="card-body">
                     <div>
                       <Link
-                        href={`/admin/reports/edit/${id}`}
+                        href={`/admin/seo_reports/edit/${id}`}
                         style={{ marginRight: "5px" }}
                         className="btn btn-sm btn-outline-info mr-2"
                       >
                         Edit
                       </Link>
-
-                      {reportData.is_active === 1 ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            statusHandler(id);
-                          }}
-                          className="btn btn-sm btn-outline-warning mr-2"
-                          style={{ width: 101 }}
-                        >
-                          Deactivate
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            statusHandler(id);
-                          }}
-                          className="btn btn-sm btn-outline-primary mr-2"
-                          style={{ width: 101 }}
-                        >
-                          Activate
-                        </button>
-                      )}
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          deleteReport(id);
-                        }}
-                        className={`btn btn-sm btn-outline-danger mr-2 ${
-                          data.user.role === 1 ? "" : "d-none"
-                        }`}
-                      >
-                        Delete
-                      </button>
-                      <Link
-                        href={`/admin/reports/addfaqs/${id}`}
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-sm btn-outline-primary mr-2"
-                      >
-                        FAQs
-                      </Link>
                     </div>
-                  </div>
-                  <div className="card-footer"></div>
-                </div>
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Report Image</h3>
-                  </div>
-                  <div className="card-body text-center">
-                    <img src={reportData.imageURL} alt="" width={100} />
                   </div>
                   <div className="card-footer"></div>
                 </div>

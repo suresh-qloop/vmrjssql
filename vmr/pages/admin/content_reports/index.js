@@ -1,25 +1,17 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { CSVLink } from "react-csv";
 import axios from "axios";
-// import { currencyInrFormat } from "../../../utils/utils";
-import { currencyInrFormat } from "../../../utils/currencyInrFormat";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
-import notify from "../../../components/helpers/Notification";
-
-import Swal from "sweetalert2";
 
 const ReportList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
   const [reportData, setReportData] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [reportName, setReportName] = useState("");
@@ -36,9 +28,6 @@ const ReportList = () => {
   const product_name = (report) => {
     return report.product_name;
   };
-  const publisher_name = (report) => {
-    return report.publisher_name;
-  };
   const meta_name = (report) => {
     return report.meta_name;
   };
@@ -47,12 +36,6 @@ const ReportList = () => {
   };
   const meta_keywords = (report) => {
     return report.meta_keywords;
-  };
-  const price = (report) => {
-    return report.price;
-  };
-  const is_active = (report) => {
-    return report.is_active;
   };
 
   const customStyles = {
@@ -69,62 +52,26 @@ const ReportList = () => {
       name: "Name",
       selector: product_name,
       sortable: true,
-      width: "200px",
-    },
-    {
-      name: "Publisher Name",
-      selector: publisher_name,
-      sortable: true,
-      width: "180px",
+      width: "300px",
     },
     {
       name: "Meta Title",
       selector: meta_name,
       sortable: true,
-      width: "200px",
+      width: "300px",
     },
     {
       name: "Meta Description",
       selector: meta_desc,
       sortable: true,
-      width: "180px",
+      width: "300px",
     },
     {
       name: "Meta Keywords",
       selector: meta_keywords,
       sortable: true,
-      width: "180px",
+      width: "300px",
       title: meta_keywords,
-    },
-    {
-      name: "Single User Price",
-      selector: price,
-      sortable: true,
-      width: "130px",
-      cell: (report) => <div>{currencyInrFormat(report.price)}</div>,
-      // cell: (report) => <div>{report.price}</div>,
-    },
-    {
-      name: "Status",
-      selector: is_active,
-      sortable: true,
-      width: "130px",
-      cell: (report) => (
-        <Fragment>
-          {report.is_active === 1 && (
-            <span className="badge bg-success ">Active</span>
-          )}
-          {report.is_active === 2 && (
-            <span className="badge  bg-info">ReadyToActive</span>
-          )}
-          {report.is_active === 0 && (
-            <span className="badge  bg-warning">Inactive</span>
-          )}
-          {report.is_active === 4 && (
-            <span className="badge  bg-primary">InProgress</span>
-          )}
-        </Fragment>
-      ),
     },
     {
       name: "Action",
@@ -134,58 +81,21 @@ const ReportList = () => {
       cell: (report) => (
         <div>
           <Link
-            href={`/admin/reports/view/${report.id}`}
+            href={`/admin/content_reports/view/${report.id}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-success mr-2"
           >
             View
           </Link>
           <Link
-            href={`/admin/reports/edit/${report.id}`}
+            href={`/admin/content_reports/edit/${report.id}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-info mr-2"
           >
             Edit
           </Link>
-
-          {report.is_active === 1 ? (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(report.id);
-              }}
-              className="btn btn-sm btn-outline-warning mr-2"
-              style={{ width: 101 }}
-            >
-              Deactivate
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                statusHandler(report.id);
-              }}
-              className="btn btn-sm btn-outline-primary mr-2"
-              style={{ width: 101 }}
-              disabled={report.is_active === 2 ? false : true}
-            >
-              Activate
-            </button>
-          )}
-
-          <button
-            type="button"
-            onClick={() => {
-              deleteReport(report._id);
-            }}
-            className={`btn btn-sm btn-outline-danger mr-2 ${
-              data.user.role === 1 ? "" : "d-none"
-            }`}
-          >
-            Delete
-          </button>
           <Link
-            href={`/admin/reports/addfaqs/${report.id}`}
+            href={`/admin/content_reports/addfaqs/${report.id}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-primary mr-2"
           >
@@ -196,23 +106,7 @@ const ReportList = () => {
     },
   ];
 
-  // useEffect(() => {
-  const temp_rows = reportData.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
-      -1
-  );
-
-  const rows_data_for_export = temp_rows.map((d1) =>
-    columns
-      .slice(0, columns.length - 1)
-      .map((d2) => d2.selector.name)
-      .map((d3) => d1[d3])
-  );
-
-  const columns_data_for_export = columns
-    .slice(0, columns.length - 1)
-    .map((d) => d.name);
+  const temp_rows = reportData;
 
   useEffect(() => {
     getReportData();
@@ -225,7 +119,7 @@ const ReportList = () => {
     if (status === "authenticated") {
       setLoading(true);
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/content-report`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
@@ -260,51 +154,6 @@ const ReportList = () => {
     }
   };
 
-  const statusHandler = async (id) => {
-    await axios
-      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/report/status/${id}`, {
-        headers: {
-          Authorization: `Bearer ${data.user.token}`,
-        },
-      })
-      .then((res) => {
-        getReportData();
-        notify("success", "Status Updated Successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteReport = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/report/${id}`, {
-            headers: {
-              Authorization: `Bearer ${data.user.token}`,
-            },
-          })
-          .then((res) => {
-            getReportData();
-            notify("success", "Report Deleted Successfully");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  };
-
   const searchHandler = async (e) => {
     if (status === "authenticated") {
       // e.preventDefault();
@@ -332,28 +181,6 @@ const ReportList = () => {
     }
   };
 
-  // const searchHandler = async (e) => {
-  //   e.preventDefault();
-  //   await axios
-  //     .get(
-  //       `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${data.user.token}`,
-  //         },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       setReportData(res.data);
-  //       setLoading(false);
-  //       if (reportData.length < 0) {
-  //         setNoRecords(true);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
   return (
     <div className="wrapper">
       <Header />
@@ -370,7 +197,7 @@ const ReportList = () => {
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Reports - </li>
+                  <li className="breadcrumb-item active">All Reports</li>
                 </ol>
               </div>
             </div>
@@ -389,42 +216,15 @@ const ReportList = () => {
                 <div className="row my-3">
                   <div className="col-md-8 col-sm-8  text-left">
                     <Link
-                      href="/admin/reports/add"
+                      href="/admin/content_reports/add"
                       style={{ marginRight: "5px" }}
                       className="btn btn-primary mb-2"
                     >
                       Add Report
                     </Link>
                   </div>
-                  {/* <div className="col-md-3 col-sm-3 ">
-                    <label className="d-flex ">
-                      <input
-                        type="search"
-                        placeholder="Enter text for search"
-                        className="form-control ml-3  "
-                        onChange={(e) => setSearchValue(e.target.value)}
-                      />
-                    </label>
-                  </div> */}
-                  <div className="col-md-4 col-sm-4  text-right">
-                    <div className="dt-buttons btn-group flex-wrap">
-                      <button
-                        className="btn btn-secondary buttons-csv buttons-html5"
-                        tabIndex="0"
-                        aria-controls="example1"
-                        type="button"
-                      >
-                        <CSVLink
-                          className="text-decoration-none"
-                          data={rows_data_for_export}
-                          headers={columns_data_for_export}
-                          filename={"client_list.csv"}
-                        >
-                          <span className="text-light">Export to CSV</span>
-                        </CSVLink>
-                      </button>
-                    </div>
-                  </div>
+
+                  <div className="col-md-4 col-sm-4  text-right"></div>
                 </div>
                 <form onSubmit={searchHandler}>
                   <div className="row">

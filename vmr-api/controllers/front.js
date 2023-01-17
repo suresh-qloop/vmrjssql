@@ -625,7 +625,7 @@ exports.MailController = async (req, res, next) => {
         "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789"
       );
 
-      const value = `('${first_name}','${last_name}','${confirmEmail}','${hashPassword}',2,'${organization}','${designation}',
+      const value = `('${first_name}','${last_name}','${confirmEmail}','${hashPassword}',11,'${organization}','${designation}',
       '${country}','${mobile}','${ip}','${date}')`;
 
       const [newUser] = await Model.addData(

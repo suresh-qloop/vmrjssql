@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
 import Badges from "../../../components/Admin/Dashboard/Badges";
+import { ROLES } from "../../../utils/roles";
 
 const DashBoard = () => {
+  const { status, data } = useSession();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isManager, setIsManager] = useState(false);
+  const [isSalesTeam, setIsSalesTeam] = useState(false);
+
+  useEffect(() => {
+    setRole();
+    // eslint-disable-next-line
+  }, [status]);
+
+  const setRole = () => {
+    if (status === "authenticated") {
+      const role = data.user.role;
+      if (role === ROLES.SuperAdmin) {
+        setIsAdmin(true);
+      }
+      if (role === ROLES.Manager) {
+        setIsManager(true);
+      }
+      if (role === ROLES.SalesTeam) {
+        setIsSalesTeam(true);
+      }
+    }
+  };
   return (
     <div className="wrapper">
       <Header />
@@ -32,7 +58,7 @@ const DashBoard = () => {
 
         <section className="content">
           <div className="container-fluid">
-            <Badges />
+            {(isAdmin || isManager || isSalesTeam) && <Badges />}
           </div>
         </section>
       </div>

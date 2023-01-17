@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { ROLES } from "../../utils/roles";
 
 const Menu = () => {
   const { status, data } = useSession();
@@ -9,16 +10,19 @@ const Menu = () => {
     setMounted(true);
   }, []);
 
-  const ROLES = {
-    SuperAdmin: 1,
-    Analyst: 2,
-    SEO: 2,
-    Content: 2,
-    JrAnalyst: 2,
-    User: 2,
-    SalesTeam: 2,
-  };
+  // const ROLES = {
+  //   SuperAdmin: 1,
+  //   Manager: 2,
+  //   SEO: 3,
+  //   Content: 4,
+  //   User: 11,
+  //   SalesTeam: 12,
+  // };
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isManager, setIsManager] = useState(false);
+  const [isSeo, setSeo] = useState(false);
+  const [isContent, setIsContent] = useState(false);
+  const [isSalesTeam, setIsSalesTeam] = useState(false);
 
   useEffect(() => {
     setRole();
@@ -30,6 +34,18 @@ const Menu = () => {
       const role = data.user.role;
       if (role === ROLES.SuperAdmin) {
         setIsAdmin(true);
+      }
+      if (role === ROLES.Manager) {
+        setIsManager(true);
+      }
+      if (role === ROLES.SEO) {
+        setSeo(true);
+      }
+      if (role === ROLES.Content) {
+        setIsContent(true);
+      }
+      if (role === ROLES.SalesTeam) {
+        setIsSalesTeam(true);
       }
     }
   };
@@ -60,7 +76,7 @@ const Menu = () => {
                   </Link>
                 </li>
 
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/users" className="nav-link">
                       <i className="nav-icon fas fa-users mr-2"></i>
@@ -68,7 +84,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/categories" className="nav-link">
                       <i className="nav-icon fas fa-filter mr-2"></i>
@@ -76,7 +92,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/reports" className="nav-link">
                       <i className="nav-icon fas fa-book mr-2"></i>
@@ -84,7 +100,23 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {isSeo && (
+                  <li className="nav-item">
+                    <Link href="/admin/seo_reports" className="nav-link">
+                      <i className="nav-icon fas fa-book mr-2"></i>
+                      <p>Reports</p>
+                    </Link>
+                  </li>
+                )}
+                {isContent && (
+                  <li className="nav-item">
+                    <Link href="/admin/content_reports" className="nav-link">
+                      <i className="nav-icon fas fa-book mr-2"></i>
+                      <p>Reports</p>
+                    </Link>
+                  </li>
+                )}
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/articles" className="nav-link">
                       <i className="nav-icon fas fa-newspaper mr-2"></i>
@@ -92,7 +124,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/testimonials" className="nav-link">
                       <i className="nav-icon fas fa-quote-left mr-2"></i>
@@ -100,7 +132,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/clients" className="nav-link">
                       <i className="nav-icon fas fa-user-friends mr-2"></i>
@@ -108,7 +140,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager || isSalesTeam) && (
                   <li className="nav-item">
                     <Link href="/admin/enquiries" className="nav-link">
                       <i className="nav-icon fas fa-question mr-2"></i>
@@ -116,7 +148,7 @@ const Menu = () => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {(isAdmin || isManager) && (
                   <li className="nav-item">
                     <Link href="/admin/settings" className="nav-link">
                       <i className="nav-icon fas fa-wrench mr-2"></i>

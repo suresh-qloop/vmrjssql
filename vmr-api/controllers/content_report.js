@@ -3,11 +3,12 @@ const moment = require("moment/moment");
 const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 
-exports.AllReports = async (req, res, next) => {
+exports.AllContentReports = async (req, res, next) => {
+  console.log(req);
   try {
     const [reports] = await Report.findById(
       "products",
-      "id,product_name,publisher_name,meta_name,meta_desc,meta_keywords,price,is_active",
+      "id,product_name,meta_name,meta_desc,meta_keywords",
       "is_deleted = 0",
       "id DESC"
     );
@@ -20,10 +21,9 @@ exports.AllReports = async (req, res, next) => {
   }
 };
 
-
 exports.getReport = async (req, res, next) => {
   const id = req.params.id;
-
+  console.log(id);
   try {
     const obj =
       "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,is_active,meta_name,meta_keywords,meta_desc,product_faq,slug,reference_url,share_with_reseller,is_upcoming";
@@ -38,6 +38,53 @@ exports.getReport = async (req, res, next) => {
 
     report[0].category_id = await c[0].category_id;
     res.status(200).json(report[0]);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.searchReport = async (req, res, next) => {
+  const name = req.query.name;
+  const price = req.query.price;
+  const status = req.query.status;
+  const reseller = req.query.reseller;
+  const category_id = req.query.category_id;
+
+  try {
+    let condition = "p.is_deleted = 0";
+    let table = "products p";
+
+    if (name) {
+      condition += ` AND p.product_name LIKE '%${name}%'`;
+    }
+
+    if (price) {
+      condition += ` AND p.price LIKE '${price}%'`;
+    }
+
+    if (status && status != 3) {
+      condition += ` AND p.is_active=${status}`;
+    }
+
+    if (reseller && reseller != 3) {
+      condition += ` AND p.share_with_reseller=${reseller}`;
+    }
+
+    if (category_id && category_id != 3) {
+      table += `, product_categories pc`;
+      condition += ` AND p.id = pc.product_id AND pc.category_id=${category_id}`;
+    }
+
+    const [reports] = await Report.findById(
+      table,
+      "p.id,p.product_name,p.publisher_name,p.meta_name,p.meta_desc,p.meta_keywords,p.price,p.is_active",
+      condition,
+      "p.id DESC"
+    );
+
+    return res.status(200).json(reports);
   } catch (err) {
     return res.status(500).json({
       error: err.message,
@@ -227,51 +274,6 @@ exports.editReport = async (req, res, next) => {
   }
 };
 
-exports.deleteReport = async (req, res, next) => {
-  const id = req.params.id;
-  try {
-    const [report] = await Report.softDelete("products", "is_deleted = 1", id);
-    const [remove] = await Report.hardDelete(
-      "product_categories",
-      `product_id=${id}`
-    );
-    res.status(200).json({
-      message: "success",
-    });
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
-
-exports.reportStatus = async (req, res, next) => {
-  const id = req.params.id;
-
-  try {
-    const [report] = await Report.getOne("products", "is_active", `id=${id}`);
-
-    if (report[0].is_active === 0 || report[0].is_active === 2) {
-      obj = `is_active = 1`;
-      const [sql] = await Report.editData("products", obj, id);
-      return res.status(201).json({
-        message: "success",
-      });
-    }
-    if (report[0].is_active === 1) {
-      obj2 = `is_active = 0`;
-      const [sql2] = await Report.editData("products", obj2, id);
-      return res.status(201).json({
-        message: "success",
-      });
-    }
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
-
 exports.addReportFaqs = async (req, res, next) => {
   const id = req.params.id;
   const faqs = JSON.stringify(req.body.faqs);
@@ -281,121 +283,6 @@ exports.addReportFaqs = async (req, res, next) => {
     const [faq] = await Report.editData("products", obj, id);
 
     res.status(201).json({
-      message: "success",
-    });
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
-
-exports.searchReport = async (req, res, next) => {
-  const name = req.query.name;
-  const price = req.query.price;
-  const status = req.query.status;
-  const reseller = req.query.reseller;
-  const category_id = req.query.category_id;
-
-  try {
-    let condition = "p.is_deleted = 0";
-    let table = "products p";
-
-    if (name) {
-      condition += ` AND p.product_name LIKE '%${name}%'`;
-    }
-
-    if (price) {
-      condition += ` AND p.price LIKE '${price}%'`;
-    }
-
-    if (status && status != 3) {
-      condition += ` AND p.is_active=${status}`;
-    }
-
-    if (reseller && reseller != 3) {
-      condition += ` AND p.share_with_reseller=${reseller}`;
-    }
-
-    if (category_id && category_id != 3) {
-      table += `, product_categories pc`;
-      condition += ` AND p.id = pc.product_id AND pc.category_id=${category_id}`;
-    }
-
-    const [reports] = await Report.findById(
-      table,
-      "p.id,p.product_name,p.publisher_name,p.meta_name,p.meta_desc,p.meta_keywords,p.price,p.is_active",
-      condition,
-      "p.id DESC"
-    );
-
-    return res.status(200).json(reports);
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
-
-exports.checkReport = async (req, res, next) => {
-  await check("product_name").notEmpty().run(req);
-
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
-  }
-
-  const product_name = toUpperCase(req.body.product_name);
-
-  try {
-    const [name_check] = await Report.findById(
-      "products",
-      "*",
-      `product_name='${product_name}'`,
-      "id DESC"
-    );
-
-    if (name_check.length > 0) {
-      return res.status(500).json({
-        error: "Report exists already",
-      });
-    }
-
-    res.status(200).json({
-      message: "success",
-    });
-  } catch (err) {
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
-
-exports.checkAlias = async (req, res, next) => {
-  await check("alias").notEmpty().run(req);
-
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
-  }
-
-  const alias = toUpperCase(req.body.alias);
-
-  try {
-    const [name_check] = await Report.findById(
-      "products",
-      "*",
-      `alias='${alias}'`,
-      "id DESC"
-    );
-
-    if (name_check.length > 0) {
-      return res.status(500).json({
-        error: "Alias exists already",
-      });
-    }
-
-    res.status(200).json({
       message: "success",
     });
   } catch (err) {

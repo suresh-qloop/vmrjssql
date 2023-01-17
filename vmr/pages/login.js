@@ -18,7 +18,7 @@ const Login = () => {
         redirect: false,
       });
     } else {
-      navigate.push("/admin/reports");
+      navigate.push("/admin/dashboard");
     }
   }
 
@@ -36,11 +36,11 @@ const Login = () => {
       email: data.email,
       password: data.password,
       redirect: false,
-      callbackUrl: "/admin/reports",
+      callbackUrl: "/admin/dashboard",
     });
 
     if (status.ok) {
-      navigate.push("/admin/reports");
+      navigate.push("/admin/dashboard");
     }
     if (!status.ok) {
       setError(true);

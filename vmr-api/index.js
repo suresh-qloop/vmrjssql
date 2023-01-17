@@ -6,6 +6,8 @@ const path = require("path");
 const adminRoutes = require("./routers/user");
 const categoryRoutes = require("./routers/category");
 const reportRoutes = require("./routers/report");
+const seoReportRoutes = require("./routers/seo_report");
+const contentReportRoutes = require("./routers/content_report");
 const testimonialRoutes = require("./routers/testimonial");
 const clientRoutes = require("./routers/client");
 const articleRoutes = require("./routers/article");
@@ -41,6 +43,8 @@ app.get("/", (req, res) => {
 app.use("/user", adminRoutes);
 app.use("/category", categoryRoutes);
 app.use("/report", reportRoutes);
+app.use("/seo-report", seoReportRoutes);
+app.use("/content-report", contentReportRoutes);
 app.use("/testimonial", testimonialRoutes);
 app.use("/client", clientRoutes);
 app.use("/article", articleRoutes);

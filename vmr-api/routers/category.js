@@ -11,11 +11,11 @@ const upload = multer();
 //   res.send("home");
 // });
 
-router.get("/", authPage([1]), categoryRoute.AllCategory);
+router.get("/", authPage([1, 2]), categoryRoute.AllCategory);
 router.get("/drop-list", categoryRoute.dropListCategory);
-router.get("/:id", authPage([1]), categoryRoute.getCategory);
-router.post("/", upload.none(), authPage([1]), categoryRoute.addCategory);
-router.put("/:id", upload.none(), authPage([1]), categoryRoute.editCategory);
+router.get("/:id", authPage([1, 2]), categoryRoute.getCategory);
+router.post("/", upload.none(), authPage([1, 2]), categoryRoute.addCategory);
+router.put("/:id", upload.none(), authPage([1, 2]), categoryRoute.editCategory);
 router.delete(
   "/:id",
   upload.none(),
@@ -25,15 +25,15 @@ router.delete(
 router.delete(
   "/status/:id",
   upload.none(),
-  authPage([1]),
+  authPage([1, 2]),
   categoryRoute.categoryStatus
 );
 
-router.get("/child/:id", authPage([1]), categoryRoute.AllChildCategory);
+router.get("/child/:id", authPage([1, 2]), categoryRoute.AllChildCategory);
 router.post(
   "/add-child/:id",
   upload.none(),
-  authPage([1]),
+  authPage([1, 2]),
   categoryRoute.addChildCategory
 );
 router.delete(

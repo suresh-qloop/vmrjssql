@@ -63,9 +63,6 @@ const EnquiriesList = () => {
   const message = (enquirie) => {
     return enquirie.message;
   };
-  // const remark = (enquirie) => {
-  //   return enquirie.remark;
-  // };
 
   const visited_ip = (enquirie) => {
     return enquirie.visited_ip;
@@ -147,16 +144,6 @@ const EnquiriesList = () => {
       width: "150px",
       cell: (enquirie) => (
         <Fragment>
-          {/* {enquirie.status === 0 && <div className="text-sm">No Status</div>}
-          {enquirie.status === 1 && <div className="text-sm">Closed</div>}
-          {enquirie.status === 2 && <div className="text-sm">Waiting</div>}
-          {enquirie.status === 3 && <div className="text-sm">DnD</div>}
-          {enquirie.status === 4 && (
-            <div className="text-sm">Not Interested</div>
-          )}
-          {enquirie.status === 5 && <div className="text-sm">Junk</div>}
-          {enquirie.status === 6 && <div className="text-sm">Lost</div>} */}
-
           <select
             className="form-control-sm"
             id="eStatus"
@@ -183,12 +170,6 @@ const EnquiriesList = () => {
       width: "140px",
       cell: (enquirie) => (
         <Fragment>
-          {/* {enquirie.rating === 0 && <div>No Status</div>}
-          {enquirie.rating === 1 && <div>Hot</div>}
-          {enquirie.rating === 2 && <div>Warm</div>}
-          {enquirie.rating === 3 && <div>Cold</div>}
-          {enquirie.rating === 4 && <div>Very Hot</div>} */}
-
           <select
             className="form-control-sm"
             id="eStatus"
@@ -212,12 +193,6 @@ const EnquiriesList = () => {
       sortable: true,
       width: "140px",
     },
-    // {
-    //   name: "Remark",
-    //   selector: remark,
-    //   sortable: true,
-    //   width: "140px",
-    // },
     {
       name: "Visited IP",
       selector: visited_ip,
