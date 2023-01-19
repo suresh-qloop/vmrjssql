@@ -21,14 +21,8 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
             rel="stylesheet"
           /> */}
-          <meta
-            property="og:image"
-            content="https://www.valuemarketresearch.com/img/reports/report1.webp"
-          />
-          <meta
-            property="og:url"
-            content="https://www.valuemarketresearch.com/report/nylon-6-market"
-          ></meta>
+          <meta property="og:image" content="/dist/img/favicon.ico" />
+          <meta property="og:url" content="/dist/img/favicon.ico"></meta>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
@@ -40,7 +34,10 @@ class MyDocument extends Document {
             href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
           />
         </Head>
-        <body className="hold-transition sidebar-mini layout-fixed">
+        <body
+          className="hold-transition sidebar-mini layout-fixed"
+          id="cust_sidebar"
+        >
           <Main />
           <NextScript />
           <script

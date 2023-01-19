@@ -28,7 +28,7 @@ export default function Latest() {
   const getArticleList = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/latest-articles?start=0&limit=5`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/latest-articles?start=0&limit=4`
       )
       .then((res) => {
         setArticleList(res.data);
@@ -42,7 +42,7 @@ export default function Latest() {
       <div className="container py-5">
         <div className="row">
           <div className="col-md-8">
-            <h3>Latest Publications</h3>
+            <h4>Latest Publications</h4>
             <hr className="m-2 dashed" />
             <div className="row">
               {reportList?.map((report, i) => (
@@ -52,20 +52,16 @@ export default function Latest() {
                     style={{ borderBottom: "1px dashed #ccc" }}
                   >
                     <div className="card-body d-flex flex-column align-items-start ">
-                      <p>
-                        <i className="far fa-calendar-alt mr-2"></i>
-                        <span>
-                          {moment(report.pub_date).format("YYYY-MM-D H:MM:SS")}
-                        </span>
+                      <p className="mb-0">
+                        <strong>
+                          <Link
+                            className="text-dark"
+                            href={`/report/${report.slug}`}
+                          >
+                            {report.product_name}
+                          </Link>
+                        </strong>
                       </p>
-                      <h5 className="mb-0">
-                        <Link
-                          className="text-dark"
-                          href={`/report/${report.slug}`}
-                        >
-                          {report.product_name}
-                        </Link>
-                      </h5>
 
                       <p
                         className="card-text text-secondary mb-auto my-3 dangerously"
@@ -85,7 +81,7 @@ export default function Latest() {
             </Link>
           </div>
           <div className="col-md-4">
-            <h3>Latest Articles</h3>
+            <h4>Latest Articles</h4>
             <hr className="m-2 dashed" />
             {articleList?.map((article, i) => (
               <div className="col-md-12" key={i + 1}>

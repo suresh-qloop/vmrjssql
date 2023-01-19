@@ -109,7 +109,7 @@ const ArticleList = () => {
               deleteArticle(article.id);
             }}
             className={`btn btn-sm btn-outline-danger mr-2 ${
-              data.user.role === 1 ? "" : "d-none"
+              data?.user.role === 1 ? "" : "d-none"
             }`}
           >
             Delete
@@ -137,21 +137,21 @@ const ArticleList = () => {
     .slice(0, columns.length - 1)
     .map((d) => d.name);
 
-  const download_pdf = () => {
-    const doc = new jsPDF();
+  // const download_pdf = () => {
+  //   const doc = new jsPDF();
 
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
+  //   const temp_rowData = temp_rows.map((d1) =>
+  //     columns
+  //       .slice(0, columns.length - 1)
+  //       .map((d2) => d2.selector.name)
+  //       .map((d3) => d1[d3])
+  //   );
+  //   doc.autoTable({
+  //     head: [columns_data_for_export],
+  //     body: temp_rowData,
+  //   });
+  //   doc.save("client_list.pdf");
+  // };
 
   useEffect(() => {
     getArticleData();

@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }) {
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="https://www.valuemarketresearch.com/img/reports/report1.webp"
+          href="/dist/img/favicon.ico"
         />
         <meta
           name="keywords"

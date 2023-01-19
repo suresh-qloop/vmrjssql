@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="main-footer1">
+    <div className="main-footer1 ">
       <div className="container bottom_border">
         <div className="row">
           <div className=" col-sm-12 col-md-3 ">
@@ -11,7 +11,7 @@ const Footer = () => {
 
             <ul className="footer_ul_amrc">
               <li>
-                <Link href="/about">About Us</Link>
+                <Link href="/about-us">About Us</Link>
               </li>
               <li>
                 <Link href="/reports">Reports</Link>
@@ -39,13 +39,16 @@ const Footer = () => {
                 <Link href="/articles">Analyses</Link>
               </li>
               <li>
-                <Link href="/">Privacy Policy</Link>
+                <Link href="/privacy-policy">Privacy Policy</Link>
               </li>
               <li>
-                <Link href="/">Terms & Conditions</Link>
+                <Link href="/refund-policy">Refund Policy</Link>
               </li>
               <li>
-                <Link href="/">FAQ</Link>
+                <Link href="/terms-and-conditions">Terms & Conditions</Link>
+              </li>
+              <li>
+                <Link href="/faq">FAQ</Link>
               </li>
               <li>
                 <Link href="/">Disclaimer</Link>
@@ -98,25 +101,31 @@ const Footer = () => {
         </p>
         <ul className="social_footer_ul">
           <li>
-            <Link href="/">
+            <Link
+              href="https://www.facebook.com/valuemarketresearch/"
+              target="_blank"
+            >
               <i className="fab fa-facebook-f"></i>
             </Link>
           </li>
           <li>
-            <Link href="/">
+            <Link href="https://twitter.com/vmr_reports" target="_blank">
               <i className="fab fa-twitter"></i>
             </Link>
           </li>
           <li>
-            <Link href="/">
+            <Link
+              href="https://www.linkedin.com/company/value-market-research/"
+              target="_blank"
+            >
               <i className="fab fa-linkedin"></i>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/">
               <i className="fab fa-instagram"></i>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

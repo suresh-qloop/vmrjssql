@@ -179,7 +179,7 @@ const ReportList = () => {
               deleteReport(report._id);
             }}
             className={`btn btn-sm btn-outline-danger mr-2 ${
-              data.user.role === 1 ? "" : "d-none"
+              data?.user.role === 1 ? "" : "d-none"
             }`}
           >
             Delete
@@ -370,7 +370,7 @@ const ReportList = () => {
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Reports - </li>
+                  <li className="breadcrumb-item active">All Reports</li>
                 </ol>
               </div>
             </div>

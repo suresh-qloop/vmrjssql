@@ -4,12 +4,11 @@ const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 
 exports.AllSEOReports = async (req, res, next) => {
-  console.log(req);
   try {
     const [reports] = await Report.findById(
       "products",
-      "id,product_name,meta_name,meta_desc,meta_keywords",
-      "is_deleted = 0",
+      "id,product_name,meta_name,meta_desc,meta_keywords,is_active",
+      "is_deleted = 0 AND is_Active = 1 OR is_Active = 2",
       "id DESC"
     );
 
@@ -48,11 +47,12 @@ exports.searchReport = async (req, res, next) => {
   const name = req.query.name;
   const price = req.query.price;
   const status = req.query.status;
-  const reseller = req.query.reseller;
+
   const category_id = req.query.category_id;
 
   try {
-    let condition = "p.is_deleted = 0";
+    let condition =
+      "p.is_deleted = 0  AND (p.is_Active = 1 OR p.is_Active = 2)";
     let table = "products p";
 
     if (name) {
@@ -65,10 +65,6 @@ exports.searchReport = async (req, res, next) => {
 
     if (status && status != 3) {
       condition += ` AND p.is_active=${status}`;
-    }
-
-    if (reseller && reseller != 3) {
-      condition += ` AND p.share_with_reseller=${reseller}`;
     }
 
     if (category_id && category_id != 3) {
@@ -140,6 +136,26 @@ exports.editReport = async (req, res, next) => {
       message: "success",
       id: id,
     });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.reportStatus = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const [report] = await Report.getOne("products", "is_active", `id=${id}`);
+
+    if (report[0].is_active === 2) {
+      obj = `is_active = 1`;
+      const [sql] = await Report.editData("products", obj, id);
+      return res.status(201).json({
+        message: "success",
+      });
+    }
   } catch (err) {
     return res.status(500).json({
       error: err.message,

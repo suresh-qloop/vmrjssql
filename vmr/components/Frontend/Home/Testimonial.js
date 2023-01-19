@@ -21,7 +21,7 @@ export default function Testimonial() {
   };
   return (
     <div className="col-md-6 pb-3">
-      <h3>Clients Testimonials</h3>
+      <h4>Clients Testimonials</h4>
       <div
         id="carouselExampleIndicators1"
         className="carousel slide my-4"

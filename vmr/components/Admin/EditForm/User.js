@@ -13,7 +13,6 @@ const User = ({ preLoadedValues }) => {
   const { data } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  // console.log(preLoadedValues);
   const {
     register,
     handleSubmit,
@@ -202,7 +201,7 @@ const User = ({ preLoadedValues }) => {
                             })}
                           >
                             <option value={1}>Super Admin</option>
-                            <option value={2}>Analyst</option>
+                            <option value={2}>Manager</option>
                             <option value={3}>SEO</option>
                             <option value={4}>Content</option>
                             <option value={11}>User</option>

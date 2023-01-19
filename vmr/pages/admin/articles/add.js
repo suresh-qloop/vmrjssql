@@ -293,7 +293,7 @@ const AddArticle = () => {
                           Save
                         </button>
                         <Link
-                          href="/admin/users"
+                          href="/admin/articles"
                           className="btn btn-default float-right"
                         >
                           Cancel

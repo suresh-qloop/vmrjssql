@@ -21,6 +21,10 @@ import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
 import BackTop from "../../components/common/BackTop";
 
 const ReportDetails = ({ reportData }) => {
+  const [singleUser, setSingleUser] = useState(true);
+  const [upTo10User, setUpTo10User] = useState(false);
+  const [corporateUser, setCorporateUser] = useState(false);
+  const [datapack, setDatapack] = useState(false);
   let output;
   if (reportData.product_faq) {
     const obj = JSON.parse(reportData.product_faq);
@@ -49,14 +53,14 @@ const ReportDetails = ({ reportData }) => {
       <div className=" bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">
-            <div className="col-md-9 ">
+            <div className="col-lg-9 col-md-12 col-sm-12">
               <div className="row">
                 <div className="col-md-2">
                   <div className="img-box">
                     <img
                       className=" "
                       alt=""
-                      src="https://www.valuemarketresearch.com/img/reports/report1.webp"
+                      src="/dist/img/reports/report1.webp"
                       //   style={{ width: 500 }}
                     />
                   </div>
@@ -65,59 +69,71 @@ const ReportDetails = ({ reportData }) => {
                   <p>
                     <strong>{reportData.product_name}</strong>
                   </p>
-                  <div className="row ">
-                    <div className="col-md-3">
+                  <div className="row text-left">
+                    <div className="col-md-6  text-sm">
+                      <i className="far fa-calendar-alt mr-2"></i>
+                      <span>{reportData.product_no}</span>
+                    </div>
+                    <div className="col-md-6  text-sm">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span>
                         {moment(reportData.pub_date).format("MMMM YYYY")}
                       </span>
                     </div>
-                    <div className="col-md-9">
-                      <span>
+                    <div className="col-md-12 pt-2">
+                      <span className="text-sm">
                         <strong> REPORT FORMATS:</strong> ELECTRONIC (PDF), MS
                         EXCEL
                       </span>
                     </div>
-
-                    <Link
-                      href={`/contact/${reportData.slug}/download-sample`}
-                      className="btn btn-success btn-sm mr-3 mt-3"
-                      style={{ width: 180 }}
-                    >
-                      <i className="fas fa-download"></i> Download Sample
-                    </Link>
-
-                    <Link
-                      href={`/contact/${reportData.slug}/ask-questions`}
-                      className="btn btn-info btn-sm mr-3  mt-3"
-                      style={{ width: 150 }}
-                    >
-                      <i className="fas fa-question-circle"></i> Ask Questions
-                    </Link>
-
-                    <Link
-                      href={`/contact/${reportData.slug}/request-customization`}
-                      className="btn btn-warning text-light mr-3 btn-sm  mt-3"
-                      style={{ width: 200 }}
-                    >
-                      <i className="fas fa-edit "></i> Request Customization
-                    </Link>
-
-                    <Link
-                      href={`/contact/${reportData.slug}/request-for-discount`}
-                      className="btn btn-primary btn-sm mr-3  mt-3"
-                      style={{ width: 150 }}
-                    >
-                      <i className="fas fa-edit"></i> Request Discount
-                    </Link>
-
-                    <Link
-                      href={`/contact/${reportData.slug}/covid-19-impact`}
-                      className="btn btn-danger btn-sm mr-3  mt-3"
-                      style={{ width: 150 }}
-                    >
-                      COVID-19 Impact
-                    </Link>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-4 col-md-6 ">
+                      <Link
+                        href={`/contact/${reportData.slug}/download-sample`}
+                        className="btn btn-success btn-sm mr-3 mt-3 btn-block"
+                        // style={{ width: 180 }}
+                      >
+                        <i className="fas fa-download"></i> Download Sample
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6">
+                      <Link
+                        href={`/contact/${reportData.slug}/ask-questions`}
+                        className="btn btn-info btn-sm mr-3  mt-3 btn-block"
+                        // style={{ width: 150 }}
+                      >
+                        <i className="fas fa-question-circle"></i> Ask Questions
+                      </Link>
+                    </div>
+                    <div className="col-lg-4 col-md-6">
+                      <Link
+                        href={`/contact/${reportData.slug}/request-customization`}
+                        className="btn btn-warning text-light mr-3 btn-sm  mt-3 btn-block"
+                        // style={{ width: 200 }}
+                      >
+                        <i className="fas fa-edit "></i> Request Customization
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6">
+                      <Link
+                        href={`/contact/${reportData.slug}/request-for-discount`}
+                        className="btn btn-primary btn-sm mr-3  mt-3 btn-block"
+                        // style={{ width: 150 }}
+                      >
+                        <i className="fas fa-edit"></i> Request Discount
+                      </Link>
+                    </div>
+                    <div className="col-lg-3 col-md-6">
+                      <Link
+                        href={`/contact/${reportData.slug}/covid-19-impact`}
+                        className="btn btn-danger btn-sm mr-3  mt-3 btn-block"
+                        // style={{ width: 150 }}
+                      >
+                        COVID-19 Impact
+                      </Link>
+                    </div>
+                    {/* <div className="col-md-3"></div> */}
                   </div>
                 </div>
                 <div className="col-md-12">
@@ -197,7 +213,7 @@ const ReportDetails = ({ reportData }) => {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-lg-3 col-md-12 col-sm-12">
               <div className="card">
                 <div className="card-header  text-center p-2">
                   <strong> Choose your Buying Option</strong>
@@ -214,6 +230,10 @@ const ReportDetails = ({ reportData }) => {
                           value=""
                           name="todo1"
                           id="todoCheck1"
+                          onChange={(e) => {
+                            setSingleUser(e.target.checked);
+                          }}
+                          defaultChecked={true}
                         />
                         <label htmlFor="todoCheck1" className="text-xs">
                           Single User License:&nbsp;
@@ -233,6 +253,9 @@ const ReportDetails = ({ reportData }) => {
                           value=""
                           name="todo1"
                           id="todoCheck2"
+                          onChange={(e) => {
+                            setUpTo10User(e.target.checked);
+                          }}
                         />
                         <label htmlFor="todoCheck2" className="text-xs">
                           Upto 10 Users License:&nbsp;
@@ -252,6 +275,9 @@ const ReportDetails = ({ reportData }) => {
                           value=""
                           name="todo1"
                           id="todoCheck3"
+                          onChange={(e) => {
+                            setCorporateUser(e.target.checked);
+                          }}
                         />
                         <label htmlFor="todoCheck3" className="text-xs">
                           Corporate User License:&nbsp;
@@ -271,6 +297,9 @@ const ReportDetails = ({ reportData }) => {
                           value=""
                           name="todo1"
                           id="todoCheck4"
+                          onChange={(e) => {
+                            setDatapack(e.target.checked);
+                          }}
                         />
                         <label htmlFor="todoCheck4" className="text-xs ">
                           DataPack License:&nbsp;
@@ -286,7 +315,15 @@ const ReportDetails = ({ reportData }) => {
                   </ul>
                   <Link
                     className="btn btn-success text-center mt-3  form-control"
-                    href="/reports"
+                    href={{
+                      pathname: `/contact/${reportData.slug}/buy-now`,
+                      query: {
+                        singleUser,
+                        upTo10User,
+                        corporateUser,
+                        datapack,
+                      },
+                    }}
                   >
                     <i className="fas fa-shopping-basket"></i> Buy Now
                   </Link>
@@ -303,14 +340,15 @@ const ReportDetails = ({ reportData }) => {
                 <div className="row my-5">
                   <div className="col-md-2"></div>
                   <div className="col-md-8 ">
-                    <div className="bg-success text-light py-3 border rounded text-center">
-                      <Link
-                        href={`/contact/download-sample/${reportData.slug}`}
-                      >
-                        <i className="fas fa-download text-lg mr-2"></i>Download
-                        Sample
-                      </Link>
-                    </div>
+                    {/* <div className="bg-success text-light py-3 border rounded text-center"> */}
+                    <Link
+                      href={`/contact/download-sample/${reportData.slug}`}
+                      className="btn btn-success btn-block py-2 text-center"
+                    >
+                      <i className="fas fa-download text-lg mr-2"></i>Download
+                      Sample
+                    </Link>
+                    {/* </div> */}
                   </div>
                   <div className="col-md-2"></div>
                 </div>

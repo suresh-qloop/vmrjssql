@@ -11,7 +11,7 @@ router.get("/", authPage([3]), seoReportRoute.AllSEOReports);
 router.get("/search", authPage([3]), seoReportRoute.searchReport);
 router.get("/:id", authPage([3]), seoReportRoute.getReport);
 router.get("/view/:id", authPage([3]), seoReportRoute.getViewReport);
-
+router.delete("/status/:id", authPage([3]), seoReportRoute.reportStatus);
 router.put("/:id", upload.none(), authPage([3]), seoReportRoute.editReport);
 
 module.exports = router;

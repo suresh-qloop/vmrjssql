@@ -4,7 +4,6 @@ const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 
 exports.AllContentReports = async (req, res, next) => {
-  console.log(req);
   try {
     const [reports] = await Report.findById(
       "products",
@@ -23,7 +22,6 @@ exports.AllContentReports = async (req, res, next) => {
 
 exports.getReport = async (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
   try {
     const obj =
       "product_name,alias,publisher_name,is_set_toc,category_id,product_description,product_specification,price,upto10,corporate_price,data_pack_price,pub_date,is_active,meta_name,meta_keywords,meta_desc,product_faq,slug,reference_url,share_with_reseller,is_upcoming";

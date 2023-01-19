@@ -13,7 +13,7 @@ const Navbar = (props) => {
 
   const searchHandler = async (e) => {
     e.preventDefault();
-    navigate.push(`/search-results/${name}`);
+    navigate.push(`/search-results?q=${name}`);
   };
   const autoSearchHandler = async (e) => {
     // e.preventDefault();
@@ -54,9 +54,9 @@ const Navbar = (props) => {
         <nav className="navbar navbar-expand-lg navbar-white bg-white">
           <Link className="navbar-brand" href="/">
             <img
-              src="https://www.valuemarketresearch.com/img/logos/vmr-logo.webp"
-              width="150"
-              height="50"
+              src="/dist/img/logos/vmr-logo.webp"
+              width="176"
+              height="65"
               alt=""
             />
           </Link>
@@ -152,9 +152,9 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    navigate.pathname === "/about" ? "active" : ""
+                    navigate.pathname === "/about-us" ? "active" : ""
                   }`}
-                  href="/about"
+                  href="/about-us"
                 >
                   About Us
                 </Link>

@@ -122,18 +122,10 @@ const Client = ({ preLoadedValues }) => {
                             className="form-control"
                             id="logo"
                             placeholder="Logo"
-                            // {...register("logo", {
-                            //   //   required: "This field is required",
-                            // })}
                             onChange={(e) => {
                               setLogoImage(e.target.files[0]);
                             }}
                           />
-                          {/* {errors.logo && (
-                            <div className="error invalid-feedback">
-                              <p>{errors.logo.message}</p>
-                            </div>
-                          )} */}
                         </div>
                         <img
                           src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${preLoadedValues.logo}`}

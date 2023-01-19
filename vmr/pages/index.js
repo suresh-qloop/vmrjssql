@@ -8,13 +8,14 @@ import Testimonial from "../components/Frontend/Home/Testimonial";
 import Research from "../components/Frontend/Home/Research";
 import Client from "../components/Frontend/Home/Client";
 import BackTop from "../components/common/BackTop";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="wrapper">
       <NavbarTop />
       <Navbar />
-      <section className=" bg-white  p-md-5 p-3">
+      <section className=" bg-white carosal  p-md-5 p-3">
         <div className="container p-md-5 py-3">
           <div className="row">
             <div className="col-md-8 col-sm-12">
@@ -22,9 +23,9 @@ export default function Home() {
               <h1 className="banner_title">
                 Customized and Syndicate Market Research Reports
               </h1>
-              <button className="btn btn-info  mt-md-3">
-                Try Compass for Free
-              </button>
+              <Link href="/reports" className="btn btn-info  mt-md-3">
+                Click to learn More
+              </Link>
             </div>
             <div className="col-md-4 col-sm-12"></div>
           </div>
@@ -36,7 +37,7 @@ export default function Home() {
           <div className="row">
             <Testimonial />
             <div className="col-md-6 choose">
-              <h3>Why Choose Us</h3>
+              <h4>Why Choose Us</h4>
               <ul className="my-4" style={{ paddingLeft: 0 }}>
                 <li className="my-2">
                   Our team of 400+ Industry Experts, Analysts and SME's work

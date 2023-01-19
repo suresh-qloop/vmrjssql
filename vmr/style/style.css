@@ -402,3 +402,12 @@ hr.dashed {
 .carousel-control-custom-icon {
   color: rgb(205, 205, 205) !important;
 }
+
+.carosal {
+  background-image: url("../public/dist/img/slider.webp");
+}
+
+.visa_logo {
+  height: 32px;
+  width: 145px;
+}

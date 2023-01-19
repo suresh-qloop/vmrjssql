@@ -281,7 +281,7 @@ const ViewReport = () => {
                           deleteReport(id);
                         }}
                         className={`btn btn-sm btn-outline-danger mr-2 ${
-                          data.user.role === 1 ? "" : "d-none"
+                          data?.user.role === 1 ? "" : "d-none"
                         }`}
                       >
                         Delete

@@ -21,12 +21,12 @@ const ReportDetails = () => {
   // setReportData(data);
 
   const router = useRouter();
-  const { key } = router.query;
+  const { q } = router.query;
 
   const getReportData = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/search?q=${key}&start=0&limit=10`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/search?q=${q}&start=0&limit=10`
       )
       .then((res) => {
         setReportList(res.data.reports);
@@ -77,10 +77,10 @@ const ReportDetails = () => {
     //       console.log(err);
     //     });
     // }
-    if (key) {
+    if (q) {
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/search?q=${key}&start=${reportList.length}&limit=2`
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/search?q=${q}&start=${reportList.length}&limit=2`
         )
         .then((res) => {
           const reports = res.data.reports;
@@ -90,7 +90,7 @@ const ReportDetails = () => {
           console.log(err);
         });
     }
-    if (!key) {
+    if (!q) {
       await axios
         .get(
           `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
@@ -109,12 +109,12 @@ const ReportDetails = () => {
   }, [reportList]);
 
   useEffect(() => {
-    if (!key) {
+    if (!q) {
       return;
     }
     getReportData();
     getCategoryList();
-  }, [key]);
+  }, [q]);
 
   return (
     <Fragment>
@@ -276,7 +276,7 @@ const ReportDetails = () => {
                           </p>
                           <div className="d-flax ">
                             <Link
-                              href={`/contact/download-sample/${report.slug}`}
+                              href={`/contact/${report.slug}/download-sample/`}
                               className="btn btn-success btn-sm mr-3  mt-3"
                               style={{ width: 180 }}
                             >
@@ -285,7 +285,7 @@ const ReportDetails = () => {
                             </Link>
 
                             <Link
-                              href={`/contact/ask-questions/${report.slug}`}
+                              href={`/contact/${report.slug}/ask-questions`}
                               className="btn btn-info btn-sm mt-3"
                               style={{ width: 150 }}
                             >

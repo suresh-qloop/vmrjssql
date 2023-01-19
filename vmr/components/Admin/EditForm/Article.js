@@ -9,35 +9,12 @@ import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
 import { CKEditor } from "ckeditor4-react";
-// import dynamic from "next/dynamic";
-// const importJodit = () => import("jodit-react");
-
-// const JoditEditor = dynamic(importJodit, {
-//   ssr: false,
-// });
 
 const Article = ({ preLoadedValues }) => {
   const { status, data } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  // const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState(null);
-  // const descriptionEditor = useRef(null);
-
-  // const config = {
-  //   allowResizeX: false,
-  //   allowResizeY: false,
-  //   height: "400",
-  // };
-
-  // const handleSetDescription = (value) => {
-  //   setDescription(value);
-  //   if (description === "" || description === "<p><br></p>") {
-  //     setDescError(true);
-  //   } else {
-  //     setDescError(false);
-  //   }
-  // };
 
   const {
     register,
@@ -55,14 +32,6 @@ const Article = ({ preLoadedValues }) => {
   }, [status, id]);
 
   const onSubmit = (reportData) => {
-    // if (
-    //   description === "<p><br></p>" ||
-    //   description === "" ||
-    //   description === null
-    // ) {
-    //   setDescError(true);
-    //   return;
-    // }
     reportData.description = description;
     axios
       .put(`${process.env.NEXT_PUBLIC_NEXT_API}/article/${id}`, reportData, {
@@ -71,7 +40,7 @@ const Article = ({ preLoadedValues }) => {
         },
       })
       .then((res) => {
-        notify("success", "User Updated Successfully");
+        notify("success", "Article Updated Successfully");
         router.push("/admin/articles");
       })
       .catch((error) => {
@@ -153,18 +122,6 @@ const Article = ({ preLoadedValues }) => {
                             Description
                           </label>
                           <div className="col-sm-12">
-                            {/* <JoditEditor
-                              ref={descriptionEditor}
-                              value={description}
-                              config={config}
-                              tabIndex={1}
-                              onBlur={handleSetDescription}
-                            />
-                            {descError && (
-                              <div className="error text-danger text-sm">
-                                <p>This field is required</p>
-                              </div>
-                            )} */}
                             <CKEditor
                               initData={preLoadedValues.description}
                               onChange={(evt) => {
@@ -316,7 +273,7 @@ const Article = ({ preLoadedValues }) => {
                         Save
                       </button>
                       <Link
-                        href="/admin/users"
+                        href="/admin/articles"
                         className="btn btn-default float-right"
                       >
                         Cancel

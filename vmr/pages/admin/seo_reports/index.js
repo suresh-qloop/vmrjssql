@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
+
 import "jspdf-autotable";
-import { CSVLink } from "react-csv";
+
 import axios from "axios";
-// import { currencyInrFormat } from "../../../utils/utils";
-import { currencyInrFormat } from "../../../utils/currencyInrFormat";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Header from "../../../components/Admin/Header";
@@ -13,25 +11,22 @@ import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
-import Swal from "sweetalert2";
-
 const ReportList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
   const [reportData, setReportData] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [reportName, setReportName] = useState("");
   const [cPrice, setCPrice] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
-  const [shareWithReseller, setShareWithReseller] = useState("");
+
   const [category, setCategory] = useState("");
   const [categoryList, setCategoryList] = useState();
 
   useEffect(() => {
     searchHandler();
-  }, [reportName, cPrice, searchStatus, shareWithReseller, category]);
+  }, [reportName, cPrice, searchStatus, category]);
 
   const product_name = (report) => {
     return report.product_name;
@@ -44,6 +39,9 @@ const ReportList = () => {
   };
   const meta_keywords = (report) => {
     return report.meta_keywords;
+  };
+  const is_active = (report) => {
+    return report.is_active;
   };
 
   const customStyles = {
@@ -66,26 +64,48 @@ const ReportList = () => {
       name: "Meta Title",
       selector: meta_name,
       sortable: true,
-      width: "350px",
+      width: "300px",
     },
     {
       name: "Meta Description",
       selector: meta_desc,
       sortable: true,
-      width: "350px",
+      width: "300px",
     },
     {
       name: "Meta Keywords",
       selector: meta_keywords,
       sortable: true,
-      width: "350px",
+      width: "300px",
       title: meta_keywords,
+    },
+    {
+      name: "Status",
+      selector: is_active,
+      sortable: true,
+      width: "130px",
+      cell: (report) => (
+        <Fragment>
+          {report.is_active === 1 && (
+            <span className="badge bg-success ">Active</span>
+          )}
+          {report.is_active === 2 && (
+            <span className="badge  bg-info">ReadyToActive</span>
+          )}
+          {report.is_active === 0 && (
+            <span className="badge  bg-warning">Inactive</span>
+          )}
+          {report.is_active === 4 && (
+            <span className="badge  bg-primary">InProgress</span>
+          )}
+        </Fragment>
+      ),
     },
     {
       name: "Action",
       button: true,
       grow: 1,
-      width: "180px",
+      width: "220px",
       cell: (report) => (
         <div>
           <Link
@@ -102,17 +122,32 @@ const ReportList = () => {
           >
             Edit
           </Link>
+          {report.is_active === 1 ? (
+            <button
+              type="button"
+              className="btn btn-sm  mr-2"
+              style={{ width: 101 }}
+            ></button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                statusHandler(report.id);
+              }}
+              className="btn btn-sm btn-outline-primary mr-2"
+              style={{ width: 101 }}
+              disabled={report.is_active === 2 ? false : true}
+            >
+              Activate
+            </button>
+          )}
         </div>
       ),
     },
   ];
 
   // useEffect(() => {
-  const temp_rows = reportData.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
-      -1
-  );
+  const temp_rows = reportData;
 
   useEffect(() => {
     getReportData();
@@ -131,7 +166,6 @@ const ReportList = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setReportData(res.data);
           setLoading(false);
           if (reportData.length < 0) {
@@ -161,6 +195,22 @@ const ReportList = () => {
     }
   };
 
+  const statusHandler = async (id) => {
+    await axios
+      .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/seo-report/status/${id}`, {
+        headers: {
+          Authorization: `Bearer ${data.user.token}`,
+        },
+      })
+      .then((res) => {
+        getReportData();
+        notify("success", "Status Updated Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const searchHandler = async (e) => {
     if (status === "authenticated") {
       // e.preventDefault();
@@ -168,7 +218,7 @@ const ReportList = () => {
       setReportData([]);
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
+          `${process.env.NEXT_PUBLIC_NEXT_API}/seo-report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&category_id=${category}`,
           {
             headers: {
               Authorization: `Bearer ${data.user.token}`,
@@ -204,7 +254,7 @@ const ReportList = () => {
                   <li className="breadcrumb-item">
                     <Link href="/admin/dashboard">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">All Reports - </li>
+                  <li className="breadcrumb-item active">All Reports</li>
                 </ol>
               </div>
             </div>
@@ -222,7 +272,7 @@ const ReportList = () => {
               >
                 <form onSubmit={searchHandler}>
                   <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <div className="form-group ">
                         <label
                           htmlFor="reportName"
@@ -239,7 +289,7 @@ const ReportList = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <div className="form-group ">
                         <label
                           htmlFor="price"
@@ -265,7 +315,7 @@ const ReportList = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <div className="form-group ">
                         <label
                           htmlFor="searchStatus"
@@ -283,32 +333,11 @@ const ReportList = () => {
                           </option>
                           {/* <option value="readyToActive">Ready To Active</option> */}
                           <option value={1}>Active</option>
-                          <option value={0}>InActive</option>
+                          <option value={2}>Ready To Active</option>
                         </select>
                       </div>
                     </div>
-                    <div className="col-md-2">
-                      <div className="form-group ">
-                        <label
-                          htmlFor="shareWithReseller"
-                          className="col-sm-12 col-form-label "
-                        >
-                          Share with reseller?
-                        </label>
-                        <select
-                          className="form-control"
-                          id="shareWithReseller"
-                          onChange={(e) => setShareWithReseller(e.target.value)}
-                        >
-                          <option defaultValue={3} value={3}>
-                            All
-                          </option>
-                          <option value={0}>No</option>
-                          <option value={1}>Yes</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <div className="form-group ">
                         <label
                           htmlFor="category"
@@ -365,9 +394,7 @@ const ReportList = () => {
                       <div
                         className="spinner-border text-danger text-center"
                         role="status"
-                      >
-                        <span className="sr-only">Loading...</span>
-                      </div>
+                      ></div>
                     </div>
                   </div>
                 )}

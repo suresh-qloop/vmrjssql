@@ -4,7 +4,7 @@ import Link from "next/link";
 const NavbarTop = () => {
   const [email, setEmail] = useState("sales@valuemarketresearch.com");
   return (
-    <div className=" dark-background">
+    <div className=" dark-background d-md-block d-xl-block d-none">
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-sm-12">

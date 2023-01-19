@@ -9,11 +9,9 @@ const Footer = () => {
   }, []);
 
   return (
-    <div>
-      <footer className="main-footer">
-        <strong>Copyright © {codate}</strong>&nbsp; All rights reserved.
-      </footer>
-    </div>
+    <footer className="main-footer">
+      <strong>Copyright © {codate}</strong>&nbsp; All rights reserved.
+    </footer>
   );
 };
 
