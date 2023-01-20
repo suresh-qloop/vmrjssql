@@ -54,7 +54,7 @@ exports.addArticle = async (req, res, next) => {
   const meta_desc = req.body.meta_desc;
   const meta_keywords = req.body.meta_keywords;
 
-  const slug = cleanString(headline);
+  const slug = cleanString(req.body.slug);
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {

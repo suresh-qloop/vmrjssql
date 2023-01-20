@@ -13,12 +13,13 @@ import moment from "moment/moment";
 import { Fragment } from "react";
 import BackTop from "../../components/common/BackTop";
 import { useRouter } from "next/router";
+import { urlString } from "../../utils/urlString";
 
 // import { useSession } from "next-auth/react";
 
 const Reports = () => {
   const router = useRouter();
-  const catId = router.query.id;
+  const catName = router.query.name;
 
   const [categoryList, setCategoryList] = useState();
 
@@ -28,12 +29,12 @@ const Reports = () => {
   // const [categoryId, setCategoryId] = useState();
 
   useEffect(() => {
-    if (catId) {
+    if (catName) {
       getCategoryList();
       getReportList();
     }
     // eslint-disable-next-line
-  }, [catId]);
+  }, [catName]);
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
@@ -52,7 +53,7 @@ const Reports = () => {
   const getReportList = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catName}?start=0&limit=10`
       )
       .then((res) => {
         setReportList(res.data.reports);
@@ -79,10 +80,10 @@ const Reports = () => {
   // };
 
   const getMoreReport = async () => {
-    if (catId) {
+    if (catName) {
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=${reportList.length}&limit=10`
+          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catName}?start=${reportList.length}&limit=10`
         )
         .then((res) => {
           const reports = res.data.reports;
@@ -136,9 +137,11 @@ const Reports = () => {
                           )}
 
                           <Link
-                            href={`../industries/${curElem.id}`}
+                            href={`../industries/${urlString(curElem.name)}`}
                             className={`btn btn-white text-sm ${
-                              catId == curElem.id ? "text-dark" : "text-info"
+                              catName == curElem.name
+                                ? "text-dark"
+                                : "text-info"
                             }   `}
                           >
                             {curElem.name} ({curElem.reports})
@@ -156,9 +159,9 @@ const Reports = () => {
                               <i className="far fa-minus-square text-info "></i>
 
                               <Link
-                                href={`../industries/${Elem.id}`}
+                                href={`../industries/${urlString(Elem.name)}`}
                                 className={`btn btn-white text-sm ${
-                                  catId == Elem.id ? "text-dark" : "text-info"
+                                  catName == Elem.id ? "text-dark" : "text-info"
                                 }   ml-3`}
                               >
                                 {Elem.name} ({Elem.reports})
@@ -216,30 +219,14 @@ const Reports = () => {
                               {moment(report.pub_date).format("MMMM YYYY")}
                             </span>
                           </p>
-                          <h5 className="mb-0">
+                          <p className="mb-0 report-heading">
                             <Link
                               className="text-dark"
                               href={`/report/${report.slug}`}
                             >
                               {report.product_name}
                             </Link>
-                            {/* <hr />
-                            <p
-                              className="text-dark"
-                              onClick={() => {
-                                router.push(
-                                  `/report/${report.slug}`,
-                                  `/report/${report.slug}`,
-                                  {
-                                    shallow: true,
-                                  }
-                                );
-                              }}
-                              // href={`/report/${report.slug}`}
-                            >
-                              {report.name}
-                            </p> */}
-                          </h5>
+                          </p>
 
                           <p
                             className="card-text text-secondary mb-auto my-3 dangerously"
@@ -268,14 +255,6 @@ const Reports = () => {
                               Questions
                             </Link>
                           </div>
-                        </div>
-                        <div className="card-footer bg-white d-flex flex-column align-items-start">
-                          <strong className="d-inline-block my-2 text-dark">
-                            Price
-                          </strong>
-                          <h4 className="text-primary">
-                            {currencyInrFormat(report.price)}
-                          </h4>
                         </div>
                       </div>
                     </div>

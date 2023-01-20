@@ -132,7 +132,6 @@ const Article = ({ preLoadedValues }) => {
                           </div>
                         </div>
                       </div>
-
                       <div className="form-group ">
                         <label
                           htmlFor="meta_title"

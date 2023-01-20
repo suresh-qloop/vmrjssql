@@ -18,7 +18,7 @@ import Objectives from "../../components/Frontend/SideBar/Objectives";
 import Link from "next/link";
 import BackTop from "../../components/common/BackTop";
 
-const ArticleDetails = ({ articleData }) => {
+const AnalysisDetails = ({ articleData }) => {
   return (
     <Fragment>
       <Head>
@@ -82,12 +82,12 @@ const ArticleDetails = ({ articleData }) => {
   );
 };
 
-export default ArticleDetails;
+export default AnalysisDetails;
 
-ArticleDetails.getInitialProps = async (ctx) => {
+AnalysisDetails.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const res = await axios(
-    `${process.env.NEXT_PUBLIC_NEXT_API}/front/article/${query.id}`
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/analysis/${query.slug}`
   );
   const json = res.data;
   return { articleData: json };

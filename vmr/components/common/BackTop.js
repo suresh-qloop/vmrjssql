@@ -6,7 +6,7 @@ export default function BackTop() {
     <Link
       id="back-to-top"
       href="#"
-      className="btn btn-primary back-to-top"
+      className="btn btn-info back-to-top"
       role="button"
       aria-label="Scroll to top"
     >

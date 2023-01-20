@@ -27,6 +27,8 @@ import moment from "moment/moment";
 import axios from "axios";
 import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import InfiniteScroll from "react-infinite-scroll-component";
+import BackTop from "../../components/common/BackTop";
+import { urlString } from "../../utils/urlString";
 
 const ReportDetails = () => {
   const [count, setCount] = useState(null);
@@ -178,7 +180,7 @@ const ReportDetails = () => {
                             {curElem.name}
                           </button> */}
                           <Link
-                            href={`../industries/${curElem.id}`}
+                            href={`../industries/${urlString(curElem.name)}`}
                             className="text-info btn btn-white  text-sm"
                           >
                             {curElem.name} ({curElem.reports})
@@ -206,7 +208,9 @@ const ReportDetails = () => {
                                     {Elem.name}
                                   </button> */}
                                   <Link
-                                    href={`../industries/${Elem.id}`}
+                                    href={`../industries/${urlString(
+                                      Elem.name
+                                    )}`}
                                     className="btn btn-white text-sm text-info ml-3"
                                   >
                                     {Elem.name} ({Elem.reports})
@@ -259,30 +263,14 @@ const ReportDetails = () => {
                               {moment(report.pub_date).format("MMMM YYYY")}
                             </span>
                           </p>
-                          <h5 className="mb-0">
+                          <p className="mb-0 report-heading">
                             <Link
                               className="text-dark"
                               href={`/report/${report.slug}`}
                             >
                               {report.product_name}
                             </Link>
-                            {/* <hr />
-                            <p
-                              className="text-dark"
-                              onClick={() => {
-                                router.push(
-                                  `/report/${report.slug}`,
-                                  `/report/${report.slug}`,
-                                  {
-                                    shallow: true,
-                                  }
-                                );
-                              }}
-                              // href={`/report/${report.slug}`}
-                            >
-                              {report.name}
-                            </p> */}
-                          </h5>
+                          </p>
 
                           <p
                             className="card-text text-secondary mb-auto my-3 dangerously"
@@ -312,14 +300,6 @@ const ReportDetails = () => {
                             </Link>
                           </div>
                         </div>
-                        <div className="card-footer bg-white d-flex flex-column align-items-start">
-                          <strong className="d-inline-block my-2 text-dark">
-                            Price
-                          </strong>
-                          <h4 className="text-primary">
-                            {currencyInrFormat(report.price)}
-                          </h4>
-                        </div>
                       </div>
                     </div>
                   ))}
@@ -329,7 +309,7 @@ const ReportDetails = () => {
           </div>
         </div>
       </div>
-
+      <BackTop />
       <Footer />
     </Fragment>
   );

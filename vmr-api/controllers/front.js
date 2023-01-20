@@ -1,6 +1,10 @@
 const Model = require("../models/Model");
 const moment = require("moment/moment");
-const { toUpperCase, cleanString } = require("../utils/utils");
+const {
+  toUpperCase,
+  cleanString,
+  convertURlString,
+} = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 const { query } = require("../models/config");
@@ -186,21 +190,29 @@ exports.getReport = async (req, res, next) => {
 };
 
 exports.getCategoryReports = async (req, res, next) => {
-  const id = req.params.id;
+  const name = req.params.id;
   const start = req.query.start || 0;
   const limit = req.query.limit || 10;
+
   try {
+    const [cat] = await Model.findById(
+      "categories",
+      "*",
+      `slug='${name}'`,
+      `id DESC`
+    );
+
     const [reports] = await Model.findById(
       "products p,product_categories pc",
       "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
-      `pc.category_id=${id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+      `pc.category_id=${cat[0].id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
       `p.id DESC LIMIT ${start},${limit}`
     );
 
     const [c] = await Model.findById(
       "products p,product_categories pc",
       "p.*",
-      `pc.category_id=${id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+      `pc.category_id=${cat[0].id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
       "p.id DESC"
     );
     const count = c.length;
@@ -246,13 +258,33 @@ exports.getLatestReports = async (req, res, next) => {
   }
 };
 
-exports.getLatestArticles = async (req, res, next) => {
+exports.getLatestPressReleases = async (req, res, next) => {
   const start = req.query.start || 0;
   const limit = req.query.limit || 3;
   try {
-    const [articles] = await Model.fetchAll(
+    const [articles] = await Model.findById(
       "articles",
       "id,headline,article_type,description,category_id,slug",
+      "article_type = 'press-releases'",
+      `id DESC LIMIT ${start},${limit}`
+    );
+
+    res.status(200).json(articles);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.getLatestAnalysis = async (req, res, next) => {
+  const start = req.query.start || 0;
+  const limit = req.query.limit || 3;
+  try {
+    const [articles] = await Model.findById(
+      "articles",
+      "id,headline,article_type,description,category_id,slug",
+      "article_type = 'analysis'",
       `id DESC LIMIT ${start},${limit}`
     );
 
@@ -736,16 +768,22 @@ exports.MailController = async (req, res, next) => {
   }
 };
 
-exports.AllArticles = async (req, res, next) => {
+exports.AllPressReleases = async (req, res, next) => {
   const start = req.query.start || 0;
   const limit = req.query.limit || 10;
   try {
-    const [articles] = await Model.fetchAll(
+    const [articles] = await Model.findById(
       "articles",
       "*",
+      "article_type = 'press-releases'",
       `id DESC LIMIT ${start},${limit}`
     );
-    const [c] = await Model.fetchAll("articles", "*", "id DESC");
+    const [c] = await Model.findById(
+      "articles",
+      "*",
+      "article_type = 'press-releases'",
+      "id DESC"
+    );
     const count = c.length;
 
     res.status(200).json({ articles, count });
@@ -756,10 +794,11 @@ exports.AllArticles = async (req, res, next) => {
   }
 };
 
-exports.getArticle = async (req, res, next) => {
-  const id = req.params.id;
+exports.getPressReleases = async (req, res, next) => {
+  const slug = req.params.id;
+
   try {
-    const [article] = await Model.getOne("articles", "*", `id='${id}'`);
+    const [article] = await Model.getOne("articles", "*", `slug='${slug}'`);
     res.status(200).json(article[0]);
   } catch (err) {
     return res.status(500).json({
@@ -768,6 +807,43 @@ exports.getArticle = async (req, res, next) => {
   }
 };
 
+exports.AllAnalysis = async (req, res, next) => {
+  const start = req.query.start || 0;
+  const limit = req.query.limit || 10;
+  try {
+    const [articles] = await Model.findById(
+      "articles",
+      "*",
+      "article_type = 'analysis'",
+      `id DESC LIMIT ${start},${limit}`
+    );
+    const [c] = await Model.findById(
+      "articles",
+      "*",
+      "article_type = 'analysis'",
+      "id DESC"
+    );
+    const count = c.length;
+
+    res.status(200).json({ articles, count });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.getAnalysis = async (req, res, next) => {
+  const slug = req.params.id;
+  try {
+    const [article] = await Model.getOne("articles", "*", `slug='${slug}'`);
+    res.status(200).json(article[0]);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 exports.getSettings = async (req, res, next) => {
   try {
     const [settings] = await Model.findById(

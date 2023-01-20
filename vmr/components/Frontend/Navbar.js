@@ -3,6 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
+import { urlString } from "../../utils/urlString";
 
 const Navbar = (props) => {
   const navigate = useRouter();
@@ -88,9 +89,9 @@ const Navbar = (props) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link dropdown-toggle ${
-                    navigate.pathname === "/industries" ? "active" : ""
+                    navigate.pathname === "/category-list" ? "active" : ""
                   }`}
-                  href="/industries"
+                  href="/category-list"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -105,7 +106,7 @@ const Navbar = (props) => {
                       <Fragment key={i + 1}>
                         <Link
                           className="dropdown-item"
-                          href={`../industries/${curElem.id}`}
+                          href={`../industries/${urlString(curElem.name)}`}
                           key={curElem.id}
                         >
                           {curElem.name}
@@ -142,9 +143,9 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    navigate.pathname === "/articles" ? "active" : ""
+                    navigate.pathname === "/pressreleases" ? "active" : ""
                   }`}
-                  href="/articles"
+                  href="/pressreleases"
                 >
                   Press Release
                 </Link>
@@ -162,9 +163,9 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    navigate.pathname === "/contact" ? "active" : ""
+                    navigate.pathname === "/contact-us" ? "active" : ""
                   }`}
-                  href="/contact"
+                  href="/contact-us"
                 >
                   Contact Us
                 </Link>

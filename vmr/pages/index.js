@@ -23,9 +23,9 @@ export default function Home() {
               <h1 className="banner_title">
                 Customized and Syndicate Market Research Reports
               </h1>
-              <Link href="/reports" className="btn btn-info  mt-md-3">
+              {/* <Link href="/reports" className="btn btn-info  mt-md-3">
                 Click to learn More
-              </Link>
+              </Link> */}
             </div>
             <div className="col-md-4 col-sm-12"></div>
           </div>
@@ -67,9 +67,9 @@ export default function Home() {
       <section className="bg-white">
         <div className="container py-5">
           <div className="heading">
-            <h3 className="text-center">
+            <h4 className="text-center">
               Some facts about Value Market Research, Inc.
-            </h3>
+            </h4>
           </div>
           <Fact />
           <Client />

@@ -23,7 +23,7 @@ const Footer = () => {
                 <Link href="/testimonials">Testimonials</Link>
               </li>
               <li>
-                <Link href="/contact">Contact Us</Link>
+                <Link href="/contact-us">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -33,10 +33,10 @@ const Footer = () => {
 
             <ul className="footer_ul_amrc">
               <li>
-                <Link href="/articles">Press Release</Link>
+                <Link href="/pressreleases">Press Release</Link>
               </li>
               <li>
-                <Link href="/articles">Analyses</Link>
+                <Link href="/analysis">Analysis</Link>
               </li>
               <li>
                 <Link href="/privacy-policy">Privacy Policy</Link>

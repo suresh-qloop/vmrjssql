@@ -176,7 +176,6 @@ const AddArticle = () => {
                             </div>
                           </div>
                         </div>
-
                         <div className="form-group ">
                           <label
                             htmlFor="meta_title"
@@ -251,6 +250,32 @@ const AddArticle = () => {
                             {errors.meta_keywords && (
                               <div className="error invalid-feedback">
                                 <p>{errors.meta_keywords.message}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="form-group ">
+                          <label
+                            htmlFor="slug"
+                            className="col-sm-2 col-form-label"
+                          >
+                            Slug
+                          </label>
+                          <div className="col-sm-12">
+                            <input
+                              type="text"
+                              className={`form-control ${
+                                errors.slug ? "is-invalid" : ""
+                              }`}
+                              id="slug"
+                              placeholder="Slug"
+                              {...register("slug", {
+                                required: "This field is required",
+                              })}
+                            />
+                            {errors.slug && (
+                              <div className="error invalid-feedback">
+                                <p>{errors.slug.message}</p>
                               </div>
                             )}
                           </div>

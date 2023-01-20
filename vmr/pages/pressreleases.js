@@ -37,7 +37,7 @@ const Articles = () => {
   const getArticleList = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/articles?start=0&limit=10`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/pressreleases?start=0&limit=10`
       )
       .then((res) => {
         setArticleList(res.data.articles);
@@ -51,7 +51,7 @@ const Articles = () => {
   const getMoreArticle = async () => {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_NEXT_API}/front/articles?start=${articleList.length}&limit=2`
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/pressreleases?start=${articleList.length}&limit=2`
       )
       .then((res) => {
         const articles = res.data.articles;
@@ -126,7 +126,7 @@ const Articles = () => {
                           <h5 className="mb-0 text-primary">
                             <Link
                               className="text-primary"
-                              href={`/article/${article.id}`}
+                              href={`/pressreleases/${article.slug}`}
                             >
                               {article.headline}
                             </Link>

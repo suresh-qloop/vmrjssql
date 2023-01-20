@@ -1,6 +1,6 @@
 const Category = require("../models/Model");
 const moment = require("moment/moment");
-const { toUpperCase } = require("../utils/utils");
+const { toUpperCase, cleanString } = require("../utils/utils");
 const { check, validationResult } = require("express-validator");
 
 exports.AllCategory = async (req, res, next) => {
@@ -56,11 +56,12 @@ exports.addCategory = async (req, res, next) => {
   }
 
   const category_name = toUpperCase(req.body.category_name);
+  const slug = cleanString(category_name);
 
   let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
-    const value = `("${category_name}", "2", "2", "${date}")`;
+    const value = `("${category_name}", "2", "2","${slug}","${date}")`;
     const [category] = await Category.addData(
       "categories",
       "(category_name,parent_category_id,level,modified)",
@@ -87,9 +88,10 @@ exports.editCategory = async (req, res, next) => {
 
   const id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
+  const slug = cleanString(category_name);
 
   try {
-    const obj = `category_name="${category_name}"`;
+    const obj = `category_name="${category_name}",slug="${slug}"`;
 
     const [category] = await Category.editData("categories", obj, id);
 
@@ -194,11 +196,11 @@ exports.addChildCategory = async (req, res, next) => {
   }
   const parent_category_id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
-
+  const slug = cleanString(category_name);
   let created = moment().format().slice(0, 19).replace("T", " ");
 
   try {
-    const value = `("${category_name}", "${parent_category_id}", "3","${created}", "${created}")`;
+    const value = `("${category_name}", "${parent_category_id}", "3","${slug}","${created}", "${created}")`;
     const [category] = await Category.addData(
       "categories",
       "(category_name,parent_category_id,level,created,modified)",

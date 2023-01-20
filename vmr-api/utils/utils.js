@@ -15,6 +15,20 @@ exports.cleanString = (value) => {
   return result;
 };
 
+exports.convertURlString = (value) => {
+  let result;
+  console.log(value);
+  result =
+    value
+      // .replace(/-/g, " ")
+      .replace(/-+/g, " ")
+      .toUpperCase()
+      .charAt(0)
+      .toUpperCase() + value.slice(1);
+
+  return result;
+};
+
 exports.clearImage = (file) => {
   let filePath = path.join(__dirname, "../", "uploads", "logos", file);
   fs.unlink(filePath, (err) => console.log(err));

@@ -12,6 +12,7 @@ import moment from "moment/moment";
 import { Fragment } from "react";
 import BackTop from "../components/common/BackTop";
 import { useRouter } from "next/router";
+import { urlString } from "../utils/urlString";
 
 // import { useSession } from "next-auth/react";
 
@@ -144,17 +145,9 @@ const Reports = () => {
                           ) : (
                             <i className="far fa-minus-square text-info "></i>
                           )}
-                          {/* <button
-                            type="button"
-                            onClick={() =>
-                              getCategoryReportsHandler(curElem.id)
-                            }
-                            className="text-info btn btn-white text-sm"
-                          >
-                            {curElem.name} ({curElem.reports})
-                          </button> */}
+
                           <Link
-                            href={`industries/${curElem.id}`}
+                            href={`industries/${urlString(curElem.name)}`}
                             className="text-info btn btn-white  text-sm"
                           >
                             {curElem.name} ({curElem.reports})
@@ -169,17 +162,8 @@ const Reports = () => {
                         >
                           {curElem.children.map((Elem, i) => (
                             <Fragment key={Elem.id}>
-                              {/* <button
-                                type="button"
-                                className="btn btn-white text-sm text-info ml-3"
-                                onClick={() =>
-                                  getCategoryReportsHandler(Elem.id)
-                                }
-                              >
-                                {Elem.name} ({Elem.reports})
-                              </button> */}
                               <Link
-                                href={`industries/${Elem.id}`}
+                                href={`industries/${urlString(Elem.name)}`}
                                 className="btn btn-white text-sm text-info ml-3"
                               >
                                 {Elem.name} ({Elem.reports})
@@ -231,33 +215,15 @@ const Reports = () => {
                               {moment(report.pub_date).format("MMMM YYYY")}
                             </span>
                           </p>
-                          <h5 className="mb-0">
-                            <Link
-                              className="text-dark"
-                              href={`/report/${report.slug}`}
-                            >
-                              {report.product_name}
-                            </Link>
-                            {/* <hr />
-                            <p
-                              className="text-dark"
-                              onClick={() => {
-                                router.push(
-                                  `/report/${report.slug}`,
-                                  `/report/${report.slug}`,
-                                  {
-                                    shallow: true,
-                                  }
-                                );
-                              }}
-                              // href={`/report/${report.slug}`}
-                            >
-                              {report.name}
-                            </p> */}
-                          </h5>
+                          <Link
+                            className="text-dark mb-0 report-heading"
+                            href={`/report/${report.slug}`}
+                          >
+                            {report.product_name}
+                          </Link>
 
                           <p
-                            className="card-text text-secondary mb-auto my-3 dangerously"
+                            className="card-text text-secondary mb-0 dangerously"
                             dangerouslySetInnerHTML={{
                               __html: report.product_description,
                             }}
@@ -284,14 +250,14 @@ const Reports = () => {
                             </Link>
                           </div>
                         </div>
-                        <div className="card-footer bg-white d-flex flex-column align-items-start">
+                        {/* <div className="card-footer bg-white d-flex flex-column align-items-start">
                           <strong className="d-inline-block my-2 text-dark">
                             Price
                           </strong>
                           <h4 className="text-primary">
                             {currencyInrFormat(report.price)}
                           </h4>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}
