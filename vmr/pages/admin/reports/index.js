@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+
 import { CSVLink } from "react-csv";
 import axios from "axios";
 // import { currencyInrFormat } from "../../../utils/utils";

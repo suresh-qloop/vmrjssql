@@ -23,52 +23,70 @@ export default function Home() {
               <h1 className="banner_title">
                 Customized and Syndicate Market Research Reports
               </h1>
-              {/* <Link href="/reports" className="btn btn-info  mt-md-3">
-                Click to learn More
-              </Link> */}
             </div>
             <div className="col-md-4 col-sm-12"></div>
           </div>
         </div>
       </section>
       {/* <Research /> */}
-      <section className="bg-light">
-        <div className="container py-5">
-          <div className="row">
-            <Testimonial />
-            <div className="col-md-6 choose">
-              <h4>Why Choose Us</h4>
-              <ul className="my-4" style={{ paddingLeft: 0 }}>
-                <li className="my-2">
-                  Our team of 400+ Industry Experts, Analysts and SME's work
-                  across 50+ industries to deliver precise and qualitative data.
-                </li>
-                <li className="my-2">
-                  We give the flexibility to our clients to purchase only
-                  required sections /tables without buying the entire report.
-                </li>
-                <li className="my-2">
-                  We customize the scope of the study to meet the client's
-                  business needs.
-                </li>
-                <li className="my-2">
-                  We provide 24x7 support for all the pre-sales and post-sales
-                  queries.
-                </li>
-                <li className="my-2">
-                  We ensure our clients credentials are kept completely
-                  confidential.
-                </li>
-              </ul>
+      <section className=" choose">
+        <div className="bg-color text-white">
+          <div className="container py-5">
+            <div className="row">
+              <div className="col-md-12 ">
+                <div className="heading">
+                  <h4 className="text-center">Why Choose Us</h4>
+                </div>
+
+                <div className="row text-center mb-4">
+                  <div className="col-md-3">
+                    <div className="bg-box">
+                      <i className="fas fa-user  mb-3"></i>
+                      <h5> CLIENT FIRST POLICY</h5>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="bg-box">
+                      <i className="fas fa-certificate  mb-3"></i>
+                      <h5>EXCELLENT QUALITY</h5>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="bg-box">
+                      <i className="fas fa-handshake  mb-3"></i>
+                      <h5> AFTER SALES SUPPORT</h5>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="bg-box">
+                      <i className="far fa-envelope mb-3"></i>
+                      <h5> 24/7 EMAIL SUPPORT</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      <section className="bg-light">
+        <div className="container py-5">
+          <div className="row">
+            <div className="col-md-1"></div>
+            <div className="col-md-10 pb-3">
+              <Testimonial />
+            </div>
+            <div className="col-md-1"></div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white">
         <div className="container py-5">
           <div className="heading">
             <h4 className="text-center">
-              Some facts about Value Market Research, Inc.
+              Some facts about Value Market Research
             </h4>
           </div>
           <Fact />

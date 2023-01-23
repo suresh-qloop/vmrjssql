@@ -1,6 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 export default function Testimonial() {
   const [testimonialList, setTestimonialList] = useState([]);
@@ -20,8 +20,10 @@ export default function Testimonial() {
       });
   };
   return (
-    <div className="col-md-6 pb-3">
-      <h4>Clients Testimonials</h4>
+    <Fragment>
+      <div className="heading">
+        <h4 className="text-center">Clients Testimonials</h4>
+      </div>
       <div
         id="carouselExampleIndicators1"
         className="carousel slide my-4"
@@ -34,7 +36,7 @@ export default function Testimonial() {
               key={i + 1}
               className={`carousel-item ${i === 0 ? "active" : ""}`}
             >
-              <div className="d-block ">
+              <div className="d-block">
                 <p>
                   <i className="fas fa-quote-left text-lg mr-3"></i>"
                   {article.testimonial_description}"
@@ -51,8 +53,8 @@ export default function Testimonial() {
         </div>
       </div>
       <Link href={`/testimonials`} className="btn btn-info my-2 mb-4">
-        Read More
+        View More
       </Link>
-    </div>
+    </Fragment>
   );
 }

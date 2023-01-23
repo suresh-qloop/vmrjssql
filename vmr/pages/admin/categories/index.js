@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+
 import { CSVLink } from "react-csv";
 import axios from "axios";
 import Link from "next/link";
@@ -148,22 +147,6 @@ const CategoryList = () => {
   const columns_data_for_export = columns
     .slice(0, columns.length - 1)
     .map((d) => d.name);
-
-  const download_pdf = () => {
-    const doc = new jsPDF();
-
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
 
   useEffect(() => {
     getReportCategoryData();

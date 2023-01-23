@@ -63,6 +63,7 @@ export default function Latest() {
               <div
                 className=" flex-md-row shadow-none  rounded-0   mb-0 key={i + 1}"
                 style={{ borderBottom: "1px dashed #ccc" }}
+                key={i + 1}
               >
                 <div className="card-body d-flex flex-column align-items-start ">
                   <p className="mb-0">

@@ -28,6 +28,11 @@
   font-size: 16px !important;
   text-align: justify !important;
 }
+#nav-tabContent h2 {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 18px !important;
+  text-align: justify !important;
+}
 #nav-tabContent ul {
   font-family: "Nunito", sans-serif !important;
   font-size: 16px !important;
@@ -415,4 +420,22 @@ hr.dashed {
 .report-heading {
   font-size: 16px;
   font-weight: 600;
+}
+.choose {
+  background-image: url("../public/dist/img/jDtglUQ.jpg");
+}
+.bg-color {
+  background-color: rgba(0, 0, 0, 0.7);
+  min-height: 330px;
+}
+.bg-box {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #fecd01;
+}
+
+.bg-box i {
+  font-size: 35px !important;
+  color: #fecd01;
 }

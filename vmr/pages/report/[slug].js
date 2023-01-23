@@ -342,7 +342,7 @@ const ReportDetails = ({ reportData }) => {
                   <div className="col-md-8 ">
                     {/* <div className="bg-success text-light py-3 border rounded text-center"> */}
                     <Link
-                      href={`/contact/download-sample/${reportData.slug}`}
+                      href={`/contact/${reportData.slug}/download-sample`}
                       className="btn btn-success btn-block py-2 text-center"
                     >
                       <i className="fas fa-download text-lg mr-2"></i>Download
