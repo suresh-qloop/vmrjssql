@@ -68,8 +68,8 @@ const Articles = () => {
       {/* <Navbar onSubmit={getData} searchName={setData} allCount={getCount} /> */}
       <Navbar />
       <Breadcrumb name="Press Releases" />
-      <div className=" bg-light pb-5 pt-3">
-        <div className="container bg-white py-5">
+      <div className=" bg-light pb-5 pt-2">
+        <div className="container bg-white pb-5 pt-4">
           <div className="row">
             <div className="col-md-12 px-4">
               <h3>PRESS RELEASES</h3>

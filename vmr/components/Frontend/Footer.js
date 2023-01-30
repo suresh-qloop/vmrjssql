@@ -96,7 +96,7 @@ const Footer = () => {
 
       <div className="container">
         <p className="text-center mt-3  ">
-          © 2022, All Rights Reserved,
+          © 2022, All Rights Reserved,&nbsp;
           <Link href="/">Value Market Research</Link>
         </p>
         <ul className="social_footer_ul">
@@ -121,11 +121,6 @@ const Footer = () => {
               <i className="fab fa-linkedin"></i>
             </Link>
           </li>
-          {/* <li>
-            <Link href="/">
-              <i className="fab fa-instagram"></i>
-            </Link>
-          </li> */}
         </ul>
       </div>
     </div>

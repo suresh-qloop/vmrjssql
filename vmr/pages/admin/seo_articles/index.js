@@ -13,7 +13,7 @@ import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
 import notify from "../../../components/helpers/Notification";
 
-const ArticleList = () => {
+const SeoArticleList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
 
@@ -94,24 +94,12 @@ const ArticleList = () => {
             View
           </Link>
           <Link
-            href={`/admin/articles/edit/${article.id}`}
+            href={`/admin/seo_articles/edit/${article.id}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-info mr-2"
           >
             Edit
           </Link>
-
-          <button
-            type="button"
-            onClick={() => {
-              deleteArticle(article.id);
-            }}
-            className={`btn btn-sm btn-outline-danger mr-2 ${
-              data?.user.role === 1 ? "" : "d-none"
-            }`}
-          >
-            Delete
-          </button>
         </div>
       ),
     },
@@ -123,17 +111,6 @@ const ArticleList = () => {
       JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
       -1
   );
-
-  const rows_data_for_export = temp_rows.map((d1) =>
-    columns
-      .slice(0, columns.length - 1)
-      .map((d2) => d2.selector.name)
-      .map((d3) => d1[d3])
-  );
-
-  const columns_data_for_export = columns
-    .slice(0, columns.length - 1)
-    .map((d) => d.name);
 
   // const download_pdf = () => {
   //   const doc = new jsPDF();
@@ -160,7 +137,7 @@ const ArticleList = () => {
     if (status === "authenticated") {
       setLoading(true);
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/article`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/seo-article`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },
@@ -176,35 +153,6 @@ const ArticleList = () => {
           console.log(err);
         });
     }
-  };
-
-  const deleteArticle = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/article/${id}`, {
-            headers: {
-              Authorization: `Bearer ${data.user.token}`,
-            },
-          })
-          .then((res) => {
-            getArticleData();
-            notify("success", "Article Deleted Successfully");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
   };
 
   return (
@@ -240,15 +188,7 @@ const ArticleList = () => {
                 className="dataTables_wrapper dt-bootstrap4"
               >
                 <div className="row my-3">
-                  <div className="col-md-8 col-sm-8  text-left">
-                    <Link
-                      href="/admin/articles/add"
-                      style={{ marginRight: "5px" }}
-                      className="btn btn-primary mb-2"
-                    >
-                      Add Article
-                    </Link>
-                  </div>
+                  <div className="col-md-9 col-sm-8  text-left"></div>
                   <div className="col-md-3 col-sm-3 text-right">
                     <label className="d-flex ">
                       <input
@@ -258,24 +198,6 @@ const ArticleList = () => {
                         onChange={(e) => setSearchValue(e.target.value)}
                       />
                     </label>
-                  </div>
-                  <div className="col-md-1 col-sm-1  text-right">
-                    <button
-                      className="btn btn-secondary buttons-csv buttons-html5"
-                      tabIndex="0"
-                      aria-controls="example1"
-                      type="button"
-                      style={{ width: "130px" }}
-                    >
-                      <CSVLink
-                        className="text-decoration-none"
-                        data={rows_data_for_export}
-                        headers={columns_data_for_export}
-                        filename={"client_list.csv"}
-                      >
-                        <span className="text-light">Export to CSV</span>
-                      </CSVLink>
-                    </button>
                   </div>
                 </div>
                 {loading && (
@@ -315,4 +237,4 @@ const ArticleList = () => {
   );
 };
 
-export default ArticleList;
+export default SeoArticleList;

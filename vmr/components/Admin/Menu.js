@@ -103,6 +103,7 @@ const Menu = () => {
                   </Link>
                 </li>
               )}
+
               {isContent && (
                 <li className="nav-item">
                   <Link href="/admin/content_reports" className="nav-link">
@@ -114,6 +115,14 @@ const Menu = () => {
               {(isAdmin || isManager) && (
                 <li className="nav-item">
                   <Link href="/admin/articles" className="nav-link">
+                    <i className="nav-icon fas fa-newspaper mr-2"></i>
+                    <p>Articles</p>
+                  </Link>
+                </li>
+              )}
+              {isSeo && (
+                <li className="nav-item">
+                  <Link href="/admin/seo_articles" className="nav-link">
                     <i className="nav-icon fas fa-newspaper mr-2"></i>
                     <p>Articles</p>
                   </Link>

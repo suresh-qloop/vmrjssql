@@ -24,7 +24,7 @@ exports.getReport = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const obj = "product_name,meta_name,meta_keywords,meta_desc";
+    const obj = "product_name,meta_name,meta_keywords,meta_desc,slug";
     const [report] = await Report.getOne("products", obj, `id=${id}`);
 
     const [c] = await Report.findById(
@@ -113,6 +113,7 @@ exports.editReport = async (req, res, next) => {
   await check("meta_name").notEmpty().run(req);
   await check("meta_keywords").notEmpty().run(req);
   await check("meta_desc").notEmpty().run(req);
+  await check("slug").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -124,11 +125,12 @@ exports.editReport = async (req, res, next) => {
   const meta_name = req.body.meta_name;
   const meta_keywords = req.body.meta_keywords;
   const meta_desc = req.body.meta_desc;
+  const slug = req.body.slug;
 
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   try {
-    const obj = `meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',modified='${date}'`;
+    const obj = `meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',slug='${slug}',modified='${date}'`;
 
     const [products] = await Report.editData("products", obj, id);
 

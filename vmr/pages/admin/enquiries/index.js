@@ -484,7 +484,7 @@ const EnquiriesList = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                       <div className="form-group ">
                         <label
                           htmlFor="createDate"
@@ -517,7 +517,7 @@ const EnquiriesList = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-1 ">
+                    <div className="col-md-1">
                       <div className="form-group ">
                         <label htmlFor="" className="col-sm-12 col-form-label">
                           &nbsp;&nbsp;
@@ -529,7 +529,7 @@ const EnquiriesList = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-1">
+                    <div className="col-md-2 text-right">
                       <div className="form-group ">
                         <label htmlFor="" className="col-sm-12 col-form-label">
                           &nbsp;&nbsp;

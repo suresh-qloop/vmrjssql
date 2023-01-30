@@ -32,19 +32,44 @@ exports.AllReports = async (req, res, next) => {
   const start = req.query.start || 0;
   const limit = req.query.limit || 10;
   try {
+    // const [reports] = await Model.findById(
+    //   "products p,product_categories pc",
+    //   "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
+    //   `p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+    //   `p.id DESC LIMIT ${start},${limit}`
+    // );
     const [reports] = await Model.findById(
-      "products p,product_categories pc",
-      "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
-      `p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+      "products p",
+      "p.id,p.product_name,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
+      `p.is_deleted = 0 AND p.is_active = 1`,
       `p.id DESC LIMIT ${start},${limit}`
     );
-    const [c] = await Model.findById(
-      "products p,product_categories pc",
+    // const [co] = await Model.findById(
+    //   "products p,product_categories pc",
+    //   "*",
+    //   `p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+    //   "p.id DESC"
+    // );
+    const [co] = await Model.findById(
+      "products p",
       "*",
-      `p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+      `p.is_deleted = 0 AND p.is_active = 1`,
       "p.id DESC"
     );
-    const count = c.length;
+    // const result0 = reports;
+    // Array.prototype.unique = function () {
+    //   var a = this.concat();
+    //   for (var k = 0; k < a.length; ++k) {
+    //     for (var j = k + 1; j < a.length; ++j) {
+    //       if (a[k].id === a[j].id) a.splice(j--, 1);
+    //     }
+    //   }
+    //   return a;
+    // };
+    // let co = c.concat(c).unique();
+    let count = co.length;
+    // let reports = results.concat(results).unique();
+    // console.log(reports);
     res.status(200).json({ reports, count });
   } catch (err) {
     return res.status(500).json({
@@ -111,14 +136,24 @@ exports.AllCategories = async (req, res, next) => {
 
     // let obj = {};
 
+    Array.prototype.unique = function () {
+      var a = this.concat();
+      for (var k = 0; k < a.length; ++k) {
+        for (var j = k + 1; j < a.length; ++j) {
+          if (a[k].id === a[j].id) a.splice(j--, 1);
+        }
+      }
+      return a;
+    };
     await Promise.all(
       arr.map(async (item) => {
-        const [total] = await Model.findById(
-          "product_categories pc",
-          "pc.*",
-          `category_id=${item.id}`,
-          "pc.id ASC"
+        const [pr] = await Model.findById(
+          "products p,product_categories pc",
+          "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
+          `pc.category_id=${item.id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
+          "p.id ASC"
         );
+        let total = pr.concat(pr).unique();
         let reports = total.length;
 
         let [child] = await Model.findById(
@@ -137,12 +172,14 @@ exports.AllCategories = async (req, res, next) => {
         };
         await Promise.all(
           child.map(async (child, i) => {
-            const [t] = await Model.findById(
-              "product_categories pc",
-              "pc.*",
-              `category_id=${child.id}`,
+            const [cr] = await Model.findById(
+              "products p,product_categories pc",
+              "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
+              `pc.category_id=${child.id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
               "pc.id ASC"
             );
+
+            let t = cr.concat(cr).unique();
             const all = t.length;
             let childObj = {
               id: child.id,
@@ -160,7 +197,6 @@ exports.AllCategories = async (req, res, next) => {
 
     res.status(200).json(categories);
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       error: err.message,
     });
@@ -195,6 +231,15 @@ exports.getCategoryReports = async (req, res, next) => {
   const limit = req.query.limit || 10;
 
   try {
+    Array.prototype.unique = function () {
+      var a = this.concat();
+      for (var k = 0; k < a.length; ++k) {
+        for (var j = k + 1; j < a.length; ++j) {
+          if (a[k].id === a[j].id) a.splice(j--, 1);
+        }
+      }
+      return a;
+    };
     const [cat] = await Model.findById(
       "categories",
       "*",
@@ -202,7 +247,7 @@ exports.getCategoryReports = async (req, res, next) => {
       `id DESC`
     );
 
-    const [reports] = await Model.findById(
+    const [results] = await Model.findById(
       "products p,product_categories pc",
       "p.id,p.product_name,p.category_id,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
       `pc.category_id=${cat[0].id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
@@ -215,8 +260,9 @@ exports.getCategoryReports = async (req, res, next) => {
       `pc.category_id=${cat[0].id} AND p.id = pc.product_id AND p.is_deleted = 0 AND p.is_active = 1`,
       "p.id DESC"
     );
-    const count = c.length;
-
+    let co = c.concat(c).unique();
+    let count = co.length;
+    let reports = results.concat(results).unique();
     res.status(200).json({ reports, count });
   } catch (err) {
     return res.status(500).json({

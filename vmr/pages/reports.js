@@ -90,6 +90,7 @@ const Reports = () => {
     // }
 
     // if (!categoryId) {
+    console.log(reportList.length);
     await axios
       .get(
         `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
@@ -110,8 +111,8 @@ const Reports = () => {
       {/* <Navbar onSubmit={getData} searchName={setData} allCount={getCount} /> */}
       <Navbar />
       <Breadcrumb name="Reports" />
-      <div className=" bg-light pb-5 pt-3">
-        <div className="container bg-white py-5">
+      <div className=" bg-light pb-5 pt-2">
+        <div className="container bg-white pb-5 pt-4">
           <div className="row">
             <div className="col-md-12 px-4">
               <h3>REPORTS</h3>

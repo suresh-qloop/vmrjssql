@@ -17,7 +17,6 @@ exports.cleanString = (value) => {
 
 exports.convertURlString = (value) => {
   let result;
-  console.log(value);
   result =
     value
       // .replace(/-/g, " ")
