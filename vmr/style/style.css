@@ -40,6 +40,7 @@
 
 #nav-tabContent img {
   width: 80% !important;
+  height: 30% !important;
 }
 
 body {
@@ -422,7 +423,7 @@ hr.dashed {
   font-weight: 600;
 }
 .choose {
-  background-image: url("../public/dist/img/jDtglUQ.jpg");
+  background-image: url("../public/dist/img/jDtglUQ.webp");
 }
 .bg-color {
   background-color: rgba(0, 0, 0, 0.7);

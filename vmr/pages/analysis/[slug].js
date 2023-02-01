@@ -4,11 +4,10 @@ import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
 import Breadcrumb from "../../components/Frontend/Breadcrumb";
-import { useRouter } from "next/router";
+
 import moment from "moment/moment";
 import axios from "axios";
 
-import Accordion from "react-bootstrap/Accordion";
 import Head from "next/head";
 import WhyChooseUs from "../../components/Frontend/SideBar/WhyChooseUs";
 import Clients from "../../components/Frontend/SideBar/Clients";

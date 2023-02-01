@@ -3,19 +3,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../public/plugins/fontawesome-free/css/all.min.css";
 import "../public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css";
 import "../public/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
-import "../public/plugins/jqvmap/jqvmap.min.css";
+// import "../public/plugins/jqvmap/jqvmap.min.css";
 import "../public/dist/css/adminlte.min.css";
-import "../public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
-import "../public/plugins/daterangepicker/daterangepicker.css";
-import "../public/plugins/summernote/summernote-bs4.css";
+// import "../public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
+// import "../public/plugins/daterangepicker/daterangepicker.css";
+// import "../public/plugins/summernote/summernote-bs4.css";
 import "../style/style.css";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "react-loading-skeleton/dist/skeleton.css";
+// import "react-loading-skeleton/dist/skeleton.css";
+import { usePreserveScroll } from "../utils/usePreserveScroll";
 // import "../public/fonts/ITC Franklin Gothic Std/ITC Franklin Gothic Std Heavy";
 
 function MyApp({ Component, pageProps }) {
+  usePreserveScroll();
   return (
     <>
       <Head>

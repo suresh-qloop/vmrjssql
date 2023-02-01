@@ -5,6 +5,7 @@ const Contact = () => {
   const navigate = useRouter();
   useEffect(() => {
     navigate.push("/contact-us");
+    // eslint-disable-next-line
   }, []);
 
   return <Fragment></Fragment>;

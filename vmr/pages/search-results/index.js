@@ -1,20 +1,3 @@
-// import React, { useEffect } from "react";
-// import { useRouter } from "next/router";
-// import { Route } from "react-router-dom";
-
-// const Search = () => {
-//   const navigate = useRouter();
-//   console.log(navigate.query);
-//   useEffect(() => {
-//     if (navigate.pathname === "/search-results") {
-//       navigate.push("/");
-//     }
-//   }, []);
-
-//   return <div>index</div>;
-// };
-
-// export default Search;
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
@@ -25,7 +8,6 @@ import Breadcrumb from "../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
-import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BackTop from "../../components/common/BackTop";
 import { urlString } from "../../utils/urlString";
@@ -125,6 +107,7 @@ const ReportDetails = () => {
   };
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
+    // eslint-disable-next-line
   }, [reportList]);
 
   useEffect(() => {
@@ -134,6 +117,7 @@ const ReportDetails = () => {
     }
     getReportData();
     getCategoryList();
+    // eslint-disable-next-line
   }, [q]);
 
   return (

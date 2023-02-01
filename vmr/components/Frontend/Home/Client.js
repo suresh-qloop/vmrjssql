@@ -37,6 +37,7 @@ export default function Fact() {
         <div className="col-md-2 border text-center" key={i + 1}>
           <Link href={client.link} target="_blank">
             <img
+              rel="preload"
               src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
               className="client_image"
               alt="client_image"

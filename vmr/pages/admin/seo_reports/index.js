@@ -24,6 +24,7 @@ const ReportList = () => {
 
   useEffect(() => {
     searchHandler();
+    // eslint-disable-next-line
   }, [reportName, cPrice, searchStatus, category]);
 
   const product_name = (report) => {

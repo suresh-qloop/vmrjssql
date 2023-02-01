@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,6 @@ import notify from "../../helpers/Notification";
 import Header from "../Header";
 import Menu from "../Menu";
 import Footer from "../Footer";
-import { CKEditor } from "ckeditor4-react";
 
 const SeoArticle = ({ preLoadedValues }) => {
   const { status, data } = useSession();

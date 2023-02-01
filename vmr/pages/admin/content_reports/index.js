@@ -23,6 +23,7 @@ const ReportList = () => {
 
   useEffect(() => {
     searchHandler();
+    // eslint-disable-next-line
   }, [reportName, cPrice, searchStatus, shareWithReseller, category]);
 
   const product_name = (report) => {

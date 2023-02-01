@@ -2,9 +2,9 @@ import React from "react";
 
 import BackTop from "../components/common/BackTop";
 import Footer from "../components/Frontend/Footer";
-import Latest from "../components/Frontend/Home/Latest";
+
 import NavbarTop from "../components/Frontend/NavbarTop";
-import Client from "../components/Frontend/Home/Client";
+
 import Navbar from "../components/Frontend/Navbar";
 import Breadcrumb from "../components/Frontend/Breadcrumb";
 

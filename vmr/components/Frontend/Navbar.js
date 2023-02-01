@@ -186,7 +186,7 @@ const Navbar = (props) => {
                   onChange={(e) => {
                     setName(e.target.value);
 
-                    if (e.target.value == "") {
+                    if (e.target.value === "") {
                       setDropDown(false);
                       setAliasList([]);
                     } else {

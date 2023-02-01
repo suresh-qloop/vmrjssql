@@ -53,6 +53,7 @@ const AddFaq = () => {
 
     setFaqs(faqs);
     let result = faqs.reduce(
+      // eslint-disable-next-line
       (r, { question, answer }) => ((r[question] = answer), r),
       {}
     );

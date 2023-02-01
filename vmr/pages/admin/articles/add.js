@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { useForm } from "react-hook-form";
@@ -10,21 +10,12 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { CKEditor } from "ckeditor4-react";
-import dynamic from "next/dynamic";
-// const importJodit = () => import("jodit-react");
-
-// const JoditEditor = dynamic(importJodit, {
-//   ssr: false,
-// });
 
 const AddArticle = () => {
   const { data } = useSession();
   const navigate = useRouter();
 
-  // const [descError, setDescError] = useState(false);
   const [description, setDescription] = useState("");
-  // const descriptionEditor = useRef(null);
-  //   const [imageURL, setImage] = useState(null);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -48,22 +39,7 @@ const AddArticle = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const config = {
-    allowResizeX: false,
-    allowResizeY: false,
-    height: "400",
-  };
-
   const onSubmit = (reportData) => {
-    // if (
-    //   description === "<p><br></p>" ||
-    //   description === "" ||
-    //   description === null
-    // ) {
-    //   setDescError(true);
-    //   return;
-    // }
-
     const finalData = { ...reportData, description };
 
     axios
@@ -154,18 +130,6 @@ const AddArticle = () => {
                               Description
                             </label>
                             <div className="col-sm-12">
-                              {/* <JoditEditor
-                                ref={descriptionEditor}
-                                value={description}
-                                config={config}
-                                tabIndex={1}
-                                onBlur={handleSetDescription}
-                              />
-                              {descError && (
-                                <div className="error text-danger text-sm">
-                                  <p>This field is required</p>
-                                </div>
-                              )} */}
                               <CKEditor
                                 initData={description}
                                 onChange={(evt) => {

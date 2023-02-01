@@ -7,7 +7,7 @@ import Breadcrumb from "../components/Frontend/Breadcrumb";
 import Navbar from "../components/Frontend/Navbar";
 import NavbarTop from "../components/Frontend/NavbarTop";
 import Footer from "../components/Frontend/Footer";
-import { currencyInrFormat } from "../utils/currencyInrFormat";
+// import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
 import BackTop from "../components/common/BackTop";
@@ -27,14 +27,15 @@ const Reports = () => {
   // const [categoryId, setCategoryId] = useState();
 
   useEffect(() => {
+    getReportList();
     getCategoryList();
 
-    getReportList();
     // eslint-disable-next-line
-  }, [router.asPath]);
+  }, []);
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
+  // console.log(window.scrollY);
 
   const getCategoryList = async () => {
     await axios
@@ -46,21 +47,6 @@ const Reports = () => {
         console.log(err);
       });
   };
-
-  // const getCategoryReportsHandler = async (catId) => {
-  //   setCategoryId(catId);
-  //   await axios
-  //     .get(
-  //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catId}?start=0&limit=10`
-  //     )
-  //     .then((res) => {
-  //       setReportList(res.data.reports);
-  //       setCount(res.data.count);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   const getReportList = async () => {
     await axios
@@ -75,22 +61,6 @@ const Reports = () => {
   };
 
   const getMoreReport = async () => {
-    // if (categoryId) {
-    //   await axios
-    //     .get(
-    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
-    //     )
-    //     .then((res) => {
-    //       const reports = res.data.reports;
-    //       setReportList((reportList) => [...reportList, ...reports]);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
-
-    // if (!categoryId) {
-    console.log(reportList.length);
     await axios
       .get(
         `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=${reportList.length}&limit=10`
@@ -102,8 +72,13 @@ const Reports = () => {
       .catch((err) => {
         console.log(err);
       });
-    // }
   };
+
+  // const persistScrollPosition = (id) => {
+  //   // sessionStorage.setItem("y", window.scrollY);
+  //   console.log(id);
+  //   sessionStorage.setItem("key", id);
+  // };
 
   return (
     <div className="wrapper">
@@ -182,76 +157,77 @@ const Reports = () => {
             </div>
 
             <div className="col-md-9">
-              <div className="row">
-                <InfiniteScroll
-                  dataLength={reportList.length} //This is important field to render the next data
-                  next={getMoreReport}
-                  hasMore={hasMore}
-                  loader={
-                    <div className="text-center m-5 p-5">
-                      <div
-                        className="spinner-border text-primary"
-                        role="status"
+              <InfiniteScroll
+                dataLength={reportList.length} //This is important field to render the next data
+                next={getMoreReport}
+                hasMore={hasMore}
+                loader={
+                  <div className="text-center m-5 p-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                }
+                endMessage={
+                  <p className="mt-2" style={{ textAlign: "center" }}>
+                    <b>No More Records Found</b>
+                  </p>
+                }
+                // scrollableTarget={scroll.toString()}
+              >
+                {reportList?.map((report, i) => (
+                  <div
+                    className="card flex-md-row shadow-none rounded-0   mb-0 "
+                    style={{ borderBottom: "1px dashed #ccc" }}
+                    key={i + 1}
+                    id={report.slug}
+                  >
+                    <div className="card-body d-flex flex-column align-items-start">
+                      <p>
+                        <i className="far fa-calendar-alt mr-2"></i>
+                        <span>
+                          {moment(report.pub_date).format("MMMM YYYY")}
+                        </span>
+                      </p>
+                      <Link
+                        className="text-dark mb-0 report-heading"
+                        href={`/report/${report.slug}`}
+                        // onBlur={persistScrollPosition(report.slug)}
+                        onClick={() =>
+                          sessionStorage.setItem("key", report.slug)
+                        }
                       >
-                        <span className="sr-only">Loading...</span>
+                        {report.product_name}
+                      </Link>
+
+                      <p
+                        className="card-text text-secondary mb-0 dangerously"
+                        dangerouslySetInnerHTML={{
+                          __html: report.product_description,
+                        }}
+                      >
+                        {/* {report.name.slice(0, 150)}... */}
+                      </p>
+                      <div className="d-flax ">
+                        <Link
+                          href={`/contact/${report.slug}/download-sample`}
+                          className="btn btn-success btn-sm mr-3  mt-3"
+                          style={{ width: 180 }}
+                        >
+                          <i className="fas fa-download"></i> Download Sample
+                        </Link>
+
+                        <Link
+                          href={`/contact/${report.slug}/ask-questions`}
+                          className="btn btn-info btn-sm mt-3"
+                          style={{ width: 150 }}
+                        >
+                          <i className="fas fa-question-circle"></i> Ask
+                          Questions
+                        </Link>
                       </div>
                     </div>
-                  }
-                  endMessage={
-                    <p className="mt-2" style={{ textAlign: "center" }}>
-                      <b>No More Records Found</b>
-                    </p>
-                  }
-                >
-                  {reportList?.map((report, i) => (
-                    <div className="col-md-12" key={i + 1}>
-                      <div
-                        className="card flex-md-row shadow-none rounded-0   mb-0 "
-                        style={{ borderBottom: "1px dashed #ccc" }}
-                      >
-                        <div className="card-body d-flex flex-column align-items-start">
-                          <p>
-                            <i className="far fa-calendar-alt mr-2"></i>
-                            <span>
-                              {moment(report.pub_date).format("MMMM YYYY")}
-                            </span>
-                          </p>
-                          <Link
-                            className="text-dark mb-0 report-heading"
-                            href={`/report/${report.slug}`}
-                          >
-                            {report.product_name}
-                          </Link>
-
-                          <p
-                            className="card-text text-secondary mb-0 dangerously"
-                            dangerouslySetInnerHTML={{
-                              __html: report.product_description,
-                            }}
-                          >
-                            {/* {report.name.slice(0, 150)}... */}
-                          </p>
-                          <div className="d-flax ">
-                            <Link
-                              href={`/contact/${report.slug}/download-sample`}
-                              className="btn btn-success btn-sm mr-3  mt-3"
-                              style={{ width: 180 }}
-                            >
-                              <i className="fas fa-download"></i> Download
-                              Sample
-                            </Link>
-
-                            <Link
-                              href={`/contact/${report.slug}/ask-questions`}
-                              className="btn btn-info btn-sm mt-3"
-                              style={{ width: 150 }}
-                            >
-                              <i className="fas fa-question-circle"></i> Ask
-                              Questions
-                            </Link>
-                          </div>
-                        </div>
-                        {/* <div className="card-footer bg-white d-flex flex-column align-items-start">
+                    {/* <div className="card-footer bg-white d-flex flex-column align-items-start">
                           <strong className="d-inline-block my-2 text-dark">
                             Price
                           </strong>
@@ -259,11 +235,9 @@ const Reports = () => {
                             {currencyInrFormat(report.price)}
                           </h4>
                         </div> */}
-                      </div>
-                    </div>
-                  ))}
-                </InfiniteScroll>
-              </div>
+                  </div>
+                ))}
+              </InfiniteScroll>
             </div>
           </div>
         </div>

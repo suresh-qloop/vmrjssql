@@ -61,26 +61,26 @@ const AskQuestions = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // data.report = reportData.product_name;
-    // data.publisher_name = reportData.publisher_name;
-    // data.slug = reportData.slug;
-    // data.price = reportData.price;
-    // data.product_id = reportData.id;
-    // data.alias = reportData.alias;
-    // const finalData = {
-    //   ...data,
-    //   mobile,
-    // };
-    // axios
-    //   .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
-    //   // .then((res) => {
-    //   // notify("success", "Form Submitted Successfully");
-    //   // router.push("/");
-    //   // })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //     notify("error", error.response.data.message);
-    //   });
+    data.report = reportData.product_name;
+    data.publisher_name = reportData.publisher_name;
+    data.slug = reportData.slug;
+    data.price = reportData.price;
+    data.product_id = reportData.id;
+    data.alias = reportData.alias;
+    const finalData = {
+      ...data,
+      mobile,
+    };
+    axios
+      .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
+      // .then((res) => {
+      // notify("success", "Form Submitted Successfully");
+      // router.push("/");
+      // })
+      .catch(function (error) {
+        console.log(error);
+        notify("error", error.response.data.message);
+      });
   };
 
   return (

@@ -144,22 +144,6 @@ const TestimonialsList = () => {
     .slice(0, columns.length - 1)
     .map((d) => d.name);
 
-  const download_pdf = () => {
-    const doc = new jsPDF();
-
-    const temp_rowData = temp_rows.map((d1) =>
-      columns
-        .slice(0, columns.length - 1)
-        .map((d2) => d2.selector.name)
-        .map((d3) => d1[d3])
-    );
-    doc.autoTable({
-      head: [columns_data_for_export],
-      body: temp_rowData,
-    });
-    doc.save("client_list.pdf");
-  };
-
   useEffect(() => {
     getTestimonialData();
     // eslint-disable-next-line

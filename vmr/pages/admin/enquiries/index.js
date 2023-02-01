@@ -7,7 +7,7 @@ import { CSVLink } from "react-csv";
 import { useSession } from "next-auth/react";
 import moment from "moment/moment";
 // ES6 Modules or TypeScript
-import Swal from "sweetalert2";
+
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
@@ -22,7 +22,6 @@ const EnquiriesList = () => {
   const [enquirieData, setEnquirieData] = useState([]);
   const [csvData, setCSVData] = useState([]);
 
-  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [ratting, setRatting] = useState([]);
@@ -232,11 +231,7 @@ const EnquiriesList = () => {
   ];
 
   // useEffect(() => {
-  const temp_rows = enquirieData.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
-      -1
-  );
+  const temp_rows = enquirieData;
 
   const rows_data_for_export = csvData.map((d1) =>
     columns

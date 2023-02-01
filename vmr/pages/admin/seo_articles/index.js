@@ -3,15 +3,14 @@ import React, { useEffect, useState, useRef } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import Link from "next/link";
-import { CSVLink } from "react-csv";
+
 import { useSession } from "next-auth/react";
 
 // ES6 Modules or TypeScript
-import Swal from "sweetalert2";
+
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
-import notify from "../../../components/helpers/Notification";
 
 const SeoArticleList = () => {
   const { status, data } = useSession();

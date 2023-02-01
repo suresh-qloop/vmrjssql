@@ -43,6 +43,7 @@ const AskQuestions = () => {
       return;
     }
     getReportData();
+    // eslint-disable-next-line
   }, [slug]);
 
   const handleCaptcha = async (value) => {

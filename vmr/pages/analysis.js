@@ -32,6 +32,7 @@ const Analysis = () => {
 
   useEffect(() => {
     setHasMore(count > articleList.length ? true : false);
+    // eslint-disable-next-line
   }, [articleList]);
 
   const getArticleList = async () => {

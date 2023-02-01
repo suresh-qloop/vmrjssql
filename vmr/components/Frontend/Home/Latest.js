@@ -1,7 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import moment from "moment/moment";
 
 export default function Latest() {
   const [reportList, setReportList] = useState([]);

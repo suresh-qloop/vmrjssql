@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+
 import axios from "axios";
 
 const Badges = () => {
@@ -9,6 +9,7 @@ const Badges = () => {
 
   useEffect(() => {
     getEnquirieData();
+    // eslint-disable-next-line
   }, [status]);
 
   const getEnquirieData = async () => {

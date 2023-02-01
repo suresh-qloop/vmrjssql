@@ -18,7 +18,7 @@ const ReportList = () => {
   const { status, data } = useSession();
   const refContainer = useRef();
   const [reportData, setReportData] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [reportName, setReportName] = useState("");
@@ -30,6 +30,7 @@ const ReportList = () => {
 
   useEffect(() => {
     searchHandler();
+    // eslint-disable-next-line
   }, [reportName, cPrice, searchStatus, shareWithReseller, category]);
 
   const product_name = (report) => {
@@ -196,11 +197,7 @@ const ReportList = () => {
   ];
 
   // useEffect(() => {
-  const temp_rows = reportData.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(searchValue.toLowerCase()) !==
-      -1
-  );
+  const temp_rows = reportData;
 
   const rows_data_for_export = temp_rows.map((d1) =>
     columns
