@@ -2,11 +2,12 @@ import React from "react";
 
 import BackTop from "../components/common/BackTop";
 import Footer from "../components/Frontend/Footer";
-import Latest from "../components/Frontend/Home/Latest";
+
 import NavbarTop from "../components/Frontend/NavbarTop";
-import Client from "../components/Frontend/Home/Client";
+
 import Navbar from "../components/Frontend/Navbar";
 import Breadcrumb from "../components/Frontend/Breadcrumb";
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -115,20 +116,15 @@ export default function About() {
             </li>
           </ul>
           <p>
-            For more information, write to us at sales@valuemarketresearch.com
+            For more information, write to us at
+            <Link href="mailto:sales@valuemarketresearch.com " className="ml-1">
+              sales@valuemarketresearch.com
+            </Link>
           </p>
+          <hr className="m-2 dashed" />
         </div>
       </section>
-      <section className="bg-white">
-        <div className="container py-5">
-          <div className="heading">
-            <h3 className="text-center">Oue Clients.</h3>
-          </div>
 
-          <Client />
-        </div>
-      </section>
-      <Latest />
       <BackTop />
       <Footer />
     </div>

@@ -8,7 +8,7 @@ import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
 // import { currencyInrFormat } from "../utils/utils.js";
-import { currencyInrFormat } from "../../utils/currencyInrFormat";
+// import { currencyInrFormat } from "../../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
 import BackTop from "../../components/common/BackTop";
@@ -22,6 +22,7 @@ const Reports = () => {
   const catName = router.query.name;
 
   const [categoryList, setCategoryList] = useState();
+  const [categoryDetail, setCategoryDetail] = useState();
 
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
@@ -32,6 +33,7 @@ const Reports = () => {
     if (catName) {
       getCategoryList();
       getReportList();
+      getCategoryDetail();
     }
     // eslint-disable-next-line
   }, [catName]);
@@ -44,6 +46,16 @@ const Reports = () => {
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
       .then((res) => {
         setCategoryList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getCategoryDetail = async () => {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/cat/${catName}`)
+      .then((res) => {
+        setCategoryDetail(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -99,17 +111,15 @@ const Reports = () => {
     <div className="wrapper">
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Reports" />
+      <Breadcrumb name={categoryDetail?.category_name} />
       <div className=" bg-light pb-5 pt-3">
-        <div className="container bg-white py-5">
+        <div className="container bg-white pb-5 py-3">
           <div className="row">
             <div className="col-md-12 px-4">
-              <h3>REPORTS</h3>
-              <p className="text-secondary">
-                Here is the database of all the market research reports we have
-                published. The description of each report covers a complete
-                table of contents along with the segmentation and profiles of
-                the market players.
+              <h3>{categoryDetail?.category_name}</h3>
+              <hr className="m-2 dashed" />
+              <p className="text-secondary text-sm justify-content-center">
+                {categoryDetail?.short_desc}
               </p>
             </div>
             <div className="col-md-3">
@@ -139,7 +149,7 @@ const Reports = () => {
                           <Link
                             href={`../industries/${urlString(curElem.name)}`}
                             className={`btn btn-white text-sm ${
-                              catName == curElem.name
+                              catName === curElem.name
                                 ? "text-dark"
                                 : "text-info"
                             }   `}
@@ -161,7 +171,9 @@ const Reports = () => {
                               <Link
                                 href={`../industries/${urlString(Elem.name)}`}
                                 className={`btn btn-white text-sm ${
-                                  catName == Elem.id ? "text-dark" : "text-info"
+                                  catName === Elem.id
+                                    ? "text-dark"
+                                    : "text-info"
                                 }   ml-3`}
                               >
                                 {Elem.name} ({Elem.reports})

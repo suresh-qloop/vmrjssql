@@ -95,6 +95,58 @@ const AddCategory = () => {
                           )}
                         </div>
                       </div>
+                      <div className="form-group ">
+                        <label
+                          htmlFor="short_desc"
+                          className="col-sm-4 col-form-label"
+                        >
+                          Short Description
+                        </label>
+                        <div className="col-sm-12">
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.short_desc ? "is-invalid" : ""
+                            }`}
+                            id="short_desc"
+                            placeholder="Short Description"
+                            {...register("short_desc", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.short_desc && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.short_desc.message}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form-group ">
+                        <label
+                          htmlFor="long_desc"
+                          className="col-sm-4 col-form-label"
+                        >
+                          Long Description
+                        </label>
+                        <div className="col-sm-12">
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.long_desc ? "is-invalid" : ""
+                            }`}
+                            id="long_desc"
+                            placeholder="Long Description"
+                            {...register("long_desc", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.long_desc && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.long_desc.message}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                     <div className="card-footer">
                       <button type="submit" className="btn btn-info">

@@ -36,6 +36,7 @@ const ReportDetails = ({ reportData }) => {
       }));
     }
   }
+
   return (
     <Fragment>
       <Head>
@@ -49,7 +50,30 @@ const ReportDetails = ({ reportData }) => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name={reportData.category_name} />
+      {/* <Breadcrumb name={reportData.category_name} /> */}
+      <div className=" py-3 bg-light">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 col-sm-12 d-flex">
+              <Link href="/" className="text-dark">
+                Home
+              </Link>
+              &nbsp;
+              <span>/</span> &nbsp;
+              <span>
+                <Link
+                  href={`/industries/${
+                    reportData.category_name ? reportData.category_name : ""
+                  }`}
+                  className="text-dark"
+                >
+                  {reportData.category_name}
+                </Link>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className=" bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">
@@ -70,17 +94,17 @@ const ReportDetails = ({ reportData }) => {
                     <strong>{reportData.product_name}</strong>
                   </p>
                   <div className="row text-left">
-                    <div className="col-md-6  text-sm">
+                    <div className="col-md-3  text-sm">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span>{reportData.product_no}</span>
                     </div>
-                    <div className="col-md-6  text-sm">
+                    <div className="col-md-3  text-sm">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span>
                         {moment(reportData.pub_date).format("MMMM YYYY")}
                       </span>
                     </div>
-                    <div className="col-md-12 pt-2">
+                    <div className="col-md-6 ">
                       <span className="text-sm">
                         <strong> REPORT FORMATS:</strong> ELECTRONIC (PDF), MS
                         EXCEL
@@ -215,7 +239,7 @@ const ReportDetails = ({ reportData }) => {
             </div>
             <div className="col-lg-3 col-md-12 col-sm-12">
               <div className="card">
-                <div className="card-header  text-center p-2">
+                <div className="card-header  text-center p-2 blue-background text-light">
                   <strong> Choose your Buying Option</strong>
                 </div>
                 <div className="card-body">
@@ -314,7 +338,7 @@ const ReportDetails = ({ reportData }) => {
                     <hr className="mt-2 mb-0 dashed" />
                   </ul>
                   <Link
-                    className="btn btn-success text-center mt-3  form-control"
+                    className="btn btn-danger text-center mt-3  form-control"
                     href={{
                       pathname: `/contact/${reportData.slug}/buy-now`,
                       query: {

@@ -26,7 +26,7 @@ const ViewReport = () => {
   const getEditData = async () => {
     if (status === "authenticated") {
       await axios
-        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/content_reports/view/${id}`, {
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/content-report/view/${id}`, {
           headers: {
             Authorization: `Bearer ${data.user.token}`,
           },

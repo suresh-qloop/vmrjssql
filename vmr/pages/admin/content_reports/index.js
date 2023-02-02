@@ -162,7 +162,7 @@ const ReportList = () => {
       setReportData([]);
       await axios
         .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
+          `${process.env.NEXT_PUBLIC_NEXT_API}/content-report/search?name=${reportName}&&price=${cPrice}&&status=${searchStatus}&&reseller=${shareWithReseller}&&category_id=${category}`,
           {
             headers: {
               Authorization: `Bearer ${data.user.token}`,

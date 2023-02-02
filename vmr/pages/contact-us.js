@@ -48,7 +48,7 @@ const ContactUs = () => {
         console.log(error);
         notify("error", error.response.data.message);
       });
-    router.push("/thanks");
+    router.push("/thank-you");
   };
 
   return (

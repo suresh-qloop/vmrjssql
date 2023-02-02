@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import Head from "next/head";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
+import Link from "next/link";
+import { urlString } from "../../../utils/urlString";
 
 const DownloadSample = () => {
   const [reportData, setReportData] = useState([]);
@@ -74,7 +76,7 @@ const DownloadSample = () => {
         console.log(error);
         notify("error", error.response.data.message);
       });
-    router.push("/thanks");
+    router.push("/thank-you");
   };
 
   return (
@@ -97,11 +99,30 @@ const DownloadSample = () => {
             <div className="col-md-6 ">
               <div className="card">
                 <div className="card-body">
-                  <p className="text-center text-secondary">
+                  <div className="row ml-0 mb-3">
+                    <div className="col-md-12 text-right">
+                      <div className="enq-btn">
+                        <Link
+                          className="form-btn"
+                          // target="_blank"
+                          href={`/industries/${
+                            reportData.category_name
+                              ? urlString(reportData.category_name)
+                              : ""
+                          }`}
+                        >
+                          View Related Reports
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-center text-secondary ">
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
                   <h3 className="text-center mb-3">Download Sample</h3>
+
                   <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group row">
                       <label
@@ -337,26 +358,26 @@ const DownloadSample = () => {
                     </div>
                     <div className="form-group row">
                       <label
-                        htmlFor="remarks"
+                        htmlFor="message"
                         className="col-sm-4 col-form-label"
                       >
-                        Remarks
+                        Any Specific Requirement
                       </label>
                       <div className="col-sm-8">
-                        <input
+                        <textarea
                           type="text"
                           className={`form-control ${
-                            errors.remarks ? "is-invalid" : ""
+                            errors.message ? "is-invalid" : ""
                           }`}
-                          id="remarks"
-                          placeholder="Remarks"
-                          {...register("remarks", {
+                          id="message"
+                          placeholder="Any Specific Requirement"
+                          {...register("message", {
                             required: "This field is required",
                           })}
                         />
-                        {errors.remarks && (
+                        {errors.message && (
                           <div className="error invalid-feedback">
-                            <p>{errors.remarks.message}</p>
+                            <p>{errors.message.message}</p>
                           </div>
                         )}
                       </div>
@@ -380,7 +401,7 @@ const DownloadSample = () => {
                     </div>
                     <button
                       className="btn btn-info justify-content-center mt-3"
-                      // disabled={!isVerified}
+                      disabled={!isVerified}
                       onClick={() => {
                         if (mobile.length !== 10) {
                           setMobileError(true);
@@ -395,8 +416,10 @@ const DownloadSample = () => {
             </div>
             <div className="col-md-6">
               <h5 className="px-2 mt-3">
-                <i className="fas fa-chart-line text-lg text-success mr-2"></i>{" "}
-                {name}
+                <i className="fas fa-chart-line text-lg text-success mr-2"></i>
+                <Link className="text-dark" href={`/report/${reportData.slug}`}>
+                  {name}
+                </Link>
               </h5>
 
               <p

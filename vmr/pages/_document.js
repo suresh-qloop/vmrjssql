@@ -13,11 +13,11 @@ class MyDocument extends Document {
           <meta property="og:image" content="/dist/img/favicon.ico" />
           <meta property="og:url" content="/dist/img/favicon.ico"></meta>
 
-          <link href="https://fonts.gstatic.com" />
+          {/* <link href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
             rel="stylesheet"
-          />
+          /> */}
         </Head>
         <body
           className="hold-transition sidebar-mini layout-fixed"

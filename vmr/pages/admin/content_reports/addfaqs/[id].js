@@ -104,7 +104,7 @@ const AddFaq = () => {
           },
         })
         .then((res) => {
-          console.log(res.data.product_faq);
+    
           if (res.data.product_faq !== null) {
             // setFaqs(res.data.product_faq)
             const obj = JSON.parse(res.data.product_faq);

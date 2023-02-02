@@ -12,6 +12,7 @@ router.get("/reports", frontRoute.AllReports);
 router.get("/report/:slug", frontRoute.getReport);
 router.get("/categories", frontRoute.AllCategories);
 router.get("/category/:id", frontRoute.getCategoryReports);
+router.get("/cat/:id", frontRoute.getCategoryDetail);
 // router.get("/search", frontRoute.getSearchReports);
 router.get("/latest-reports", frontRoute.getLatestReports);
 router.get("/latest-pressreleases", frontRoute.getLatestPressReleases);

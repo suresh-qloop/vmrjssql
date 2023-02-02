@@ -5,6 +5,7 @@ import Footer from "../components/Frontend/Footer";
 import NavbarTop from "../components/Frontend/NavbarTop";
 import Navbar from "../components/Frontend/Navbar";
 import Breadcrumb from "../components/Frontend/Breadcrumb";
+import Link from "next/link";
 
 export default function Privacy() {
   return (
@@ -51,8 +52,11 @@ export default function Privacy() {
 
             <p className="text-secondary pb-1">
               A : You can order the report by - buying directly from the site
-              using the BUY NOW Option Or connect with our sales team
-              (sales@valuemarketresearch.com) who will assist you in the same.
+              using the BUY NOW Option Or connect with our sales team (
+              <Link href="mailto:sales@valuemarketresearch.com ">
+                sales@valuemarketresearch.com
+              </Link>
+              ) who will assist you in the same.
             </p>
           </div>
           <div className="border p-3 my-3">
@@ -90,9 +94,15 @@ export default function Privacy() {
             <p className="text-secondary pb-1">
               A : Yes, we can provide you specific chapters / specific regions
               and/or specific tables as per your research requirements. You just
-              need to drop us a mail at sales@valuemarketresearch.com specifying
-              your requirements and we will assist you with your customized
-              requirement.
+              need to drop us a mail at
+              <Link
+                href="mailto:sales@valuemarketresearch.com "
+                className="ml-1"
+              >
+                sales@valuemarketresearch.com
+              </Link>{" "}
+              specifying your requirements and we will assist you with your
+              customized requirement.
             </p>
           </div>
           <div className="border p-3 my-3">
@@ -137,7 +147,12 @@ export default function Privacy() {
               blocked by your card issuing bank (You may need to contact your
               bank to get the transaction approved) In case of any other payment
               related issues, please get in touch with us at:
-              sales@valuemarketresearch.com
+              <Link
+                href="mailto:sales@valuemarketresearch.com "
+                className="ml-1"
+              >
+                sales@valuemarketresearch.com
+              </Link>
             </p>
           </div>
         </div>

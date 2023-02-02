@@ -4,19 +4,20 @@ import Link from "next/link";
 import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
-import Breadcrumb from "../../components/Frontend/Breadcrumb";
+// import Breadcrumb from "../../components/Frontend/Breadcrumb";
 import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BackTop from "../../components/common/BackTop";
-import { urlString } from "../../utils/urlString";
+// import { urlString } from "../../utils/urlString";
+
+import Highlighter from "react-highlight-words";
 
 const ReportDetails = () => {
   const [count, setCount] = useState(null);
   const [reportList, setReportList] = useState([]);
-  const [categoryList, setCategoryList] = useState();
-  // const [categoryId, setCategoryId] = useState();
+
   const [hasMore, setHasMore] = useState(true);
 
   // setReportData(data);
@@ -38,46 +39,14 @@ const ReportDetails = () => {
       });
   };
 
-  // const getCategoryReportsHandler = async (catId) => {
-  //   setCategoryId(catId);
-  //   await axios
-  //     .get(
-  //       `${process.env.NEXT_PUBLIC_NEXT_API}/category/${catId}?start=0&limit=2`
-  //     )
-  //     .then((res) => {
-  //       setReportList(res.data.reports);
-  //       setCount(res.data.count);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const [name, setName] = useState(q);
 
-  const getCategoryList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
-      .then((res) => {
-        setCategoryList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const searchHandler = async (e) => {
+    e.preventDefault();
+    router.push(`/search-results?q=${name}`);
   };
 
   const getMoreReport = async () => {
-    // if (categoryId) {
-    //   await axios
-    //     .get(
-    //       `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${categoryId}?start=${reportList.length}&limit=10`
-    //     )
-    //     .then((res) => {
-    //       const reports = res.data.reports;
-    //       setReportList((reportList) => [...reportList, ...reports]);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
     if (q) {
       await axios
         .get(
@@ -116,7 +85,7 @@ const ReportDetails = () => {
       return;
     }
     getReportData();
-    getCategoryList();
+
     // eslint-disable-next-line
   }, [q]);
 
@@ -124,14 +93,14 @@ const ReportDetails = () => {
     <Fragment>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name="Industrial Equipment" />
+      {/* <Breadcrumb name="Industrial Equipment" /> */}
       <div className=" bg-light pb-5 pt-3">
         <div className="container bg-white py-3 pb-5">
           <div className="row">
             <div className="col-md-12 px-4">
               <h3>Search Results</h3>
             </div>
-            <div className="col-md-3">
+            {/* <div className="col-md-3">
               <div className="card shadow-none mb-0">
                 <div className="card-header">
                   <h2 className="card-title">Reports by Industry</h2>
@@ -154,15 +123,7 @@ const ReportDetails = () => {
                           ) : (
                             <i className="far fa-minus-square text-info "></i>
                           )}
-                          {/* <button
-                            type="button"
-                            onClick={() =>
-                              getCategoryReportsHandler(curElem._id)
-                            }
-                            className="text-info btn btn-white text-sm"
-                          >
-                            {curElem.name}
-                          </button> */}
+
                           <Link
                             href={`../industries/${urlString(curElem.name)}`}
                             className="text-info btn btn-white  text-sm"
@@ -181,16 +142,6 @@ const ReportDetails = () => {
                             <Fragment key={i + 1}>
                               {Elem.isDeleted === false && (
                                 <Fragment key={Elem._id}>
-                                  {/* <i className="far fa-minus-square text-info "></i> */}
-                                  {/* <button
-                                    type="button"
-                                    className="btn btn-white text-sm text-info ml-3"
-                                    onClick={() =>
-                                      getCategoryReportsHandler(Elem._id)
-                                    }
-                                  >
-                                    {Elem.name}
-                                  </button> */}
                                   <Link
                                     href={`../industries/${urlString(
                                       Elem.name
@@ -211,8 +162,33 @@ const ReportDetails = () => {
                   </div>
                 </div>
               </div>
+            </div> */}
+            <div className="col-md-12">
+              <form onSubmit={searchHandler} autoComplete="off">
+                <div className="row px-4 py-3">
+                  <div className="col-md-10">
+                    <input
+                      type="text"
+                      className="form-control "
+                      placeholder="Search"
+                      aria-label="Search"
+                      defaultValue={q}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col-md-2">
+                    <button type="search" className="btn btn-primary">
+                      <i className="fas fa-search"></i> Search
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-            <div className="col-md-9">
+
+            <div className="col-md-12">
               <div className="row">
                 <InfiniteScroll
                   dataLength={reportList.length} //This is important field to render the next data
@@ -252,7 +228,12 @@ const ReportDetails = () => {
                               className="text-dark"
                               href={`/report/${report.slug}`}
                             >
-                              {report.product_name}
+                              <Highlighter
+                                highlightClassName="YourHighlightClass"
+                                searchWords={[q]}
+                                autoEscape={true}
+                                textToHighlight={report.product_name}
+                              />
                             </Link>
                           </p>
 

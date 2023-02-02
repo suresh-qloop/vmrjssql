@@ -53,14 +53,17 @@ export default function Latest() {
   };
   return (
     <section className="bg-light">
-      <div className="container py-5">
+      <div className="container py-4">
         <div className="row">
           <div className="col-md-8">
-            <h4>Latest Publications</h4>
-            <hr className="m-2 dashed" />
+            <h5 className="border p-2  blue-background text-light text-center">
+              <i className="far fa-address-card mr-2"></i>
+              Latest Market Research Reports
+            </h5>
+            {/* <hr className="m-2 dashed" /> */}
             {reportList?.map((report, i) => (
               <div
-                className=" flex-md-row shadow-none  rounded-0   mb-0 key={i + 1}"
+                className=" flex-md-row shadow-none  rounded-0  border"
                 style={{ borderBottom: "1px dashed #ccc" }}
                 key={i + 1}
               >
@@ -87,19 +90,25 @@ export default function Latest() {
                 </div>
               </div>
             ))}
-
-            <Link href="/reports" className="btn btn-info my-4 btn-sm">
-              View More Publications
-            </Link>
+            <div className="card-body d-flex flex-column align-items-start border">
+              <p className="mb-0">
+                <strong>
+                  Checkout all of our
+                  <Link className=" ml-1" href="/reports">
+                    Research Reports
+                  </Link>
+                </strong>
+              </p>
+            </div>
           </div>
           <div className="col-md-4">
-            <h4>Latest Press Releases</h4>
-            <hr className="m-2 dashed" />
+            <h5 className="border p-2  blue-background text-light text-center">
+              <i className="fas fa-newspaper mr-2"></i> Latest Press Releases
+            </h5>
 
             {pressReleaseList?.map((pressRelease, i) => (
               <div
-                className="flex-md-row shadow-none rounded-0 mb-0"
-                style={{ borderBottom: "1px dashed #ccc" }}
+                className="flex-md-row shadow-none rounded-0 mb-0 border"
                 key={i + 1}
               >
                 <div className="card-body d-flex flex-column align-items-start text-sm">
@@ -114,17 +123,27 @@ export default function Latest() {
                 </div>
               </div>
             ))}
-            <Link href="/pressreleases" className="btn btn-info my-4 btn-sm">
-              View More Press Releases
-            </Link>
 
-            <h4>Latest Analysis</h4>
-            <hr className="m-2 dashed" />
+            <div className="card-body d-flex flex-column align-items-start text-sm border mb-3">
+              <p className="mb-0">
+                <strong>
+                  Checkout all of our
+                  <Link className=" ml-1" href="/pressreleases">
+                    Press Releases
+                  </Link>
+                </strong>
+              </p>
+            </div>
+
+            <h5 className="border p-2  blue-background text-light text-center">
+              <i className="fas fa-newspaper mr-2"></i> Latest Analysis
+            </h5>
+            {/* <hr className="m-2 dashed" /> */}
 
             {analysisList?.map((analysis, i) => (
               <div
-                className=" flex-md-row shadow-none  rounded-0   mb-0 "
-                style={{ borderBottom: "1px dashed #ccc" }}
+                className=" flex-md-row shadow-none  rounded-0   mb-0 border"
+                // style={{ borderBottom: "1px dashed #ccc" }}
                 key={i + 1}
               >
                 <div className="card-body d-flex flex-column align-items-start text-sm">
@@ -139,9 +158,16 @@ export default function Latest() {
                 </div>
               </div>
             ))}
-            <Link href="/analysis" className="btn btn-info my-4 btn-sm">
-              View More Analysis
-            </Link>
+            <div className="card-body d-flex flex-column align-items-start text-sm border mb-3">
+              <p className="mb-0">
+                <strong>
+                  Checkout all of our
+                  <Link className=" ml-1" href="/analysis">
+                    Analysis
+                  </Link>
+                </strong>
+              </p>
+            </div>
           </div>
         </div>
       </div>

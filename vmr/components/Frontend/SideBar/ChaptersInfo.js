@@ -4,7 +4,7 @@ import React from "react";
 const ChaptersInfo = ({ slug }) => {
   return (
     <div className="card ">
-      <div className="card-header  text-center p-2">
+      <div className="card-header  text-center p-2 blue-background text-light">
         <strong> Buy Chapters or Sections</strong>
       </div>
       <div className="card-body">
@@ -32,7 +32,7 @@ const ChaptersInfo = ({ slug }) => {
           <hr className="m-2 dashed" />
         </ul>
         <Link
-          className="btn btn-primary text-center mt-2  btn-block"
+          className="btn btn-danger text-center mt-2  btn-block"
           href={`/contact/${slug}/request-for-special-pricing`}
         >
           Request for Special Pricing

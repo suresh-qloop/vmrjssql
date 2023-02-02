@@ -283,7 +283,23 @@ exports.getCategoryReports = async (req, res, next) => {
 //       error: err.message,
 //     });
 //   }
-// };
+exports.getCategoryDetail = async (req, res, next) => {
+  const name = req.params.id;
+  try {
+    const [cat] = await Model.findById(
+      "categories",
+      "*",
+      `slug='${name}'`,
+      `id DESC`
+    );
+
+    res.status(200).json(cat[0]);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 
 exports.getLatestReports = async (req, res, next) => {
   const start = req.query.start || 0;
@@ -515,7 +531,7 @@ exports.MailController = async (req, res, next) => {
   await check("corporateEmail").notEmpty().run(req);
   await check("confirmEmail").notEmpty().run(req);
   await check("country").notEmpty().run(req);
-  await check("remarks").notEmpty().run(req);
+  await check("message").notEmpty().run(req);
   await check("type").notEmpty().run(req);
   await check("report").notEmpty().run(req);
   await check("publisher_name").notEmpty().run(req);
@@ -535,7 +551,7 @@ exports.MailController = async (req, res, next) => {
   const corporateEmail = req.body.corporateEmail;
   const confirmEmail = req.body.confirmEmail;
   const country = req.body.country;
-  const remarks = req.body.remarks;
+  const message = req.body.message;
   const subject = req.body.type;
   const ref_page = req.body.type;
   const report = req.body.report;
@@ -604,7 +620,7 @@ exports.MailController = async (req, res, next) => {
 
     if (user.length > 0) {
       const userId = user[0].id;
-      const value2 = `(${user[0].id},${product_id}, 'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}','${date}')`;
+      const value2 = `(${user[0].id},${product_id}, 'Enquiry from ${subject}','${message}','${ip}','${ref_page}','${date}','${date}')`;
 
       const [newEnquirie] = await Model.addData(
         "enquiries",
@@ -649,7 +665,7 @@ exports.MailController = async (req, res, next) => {
                     organization,
                     designation,
                     country,
-                    remarks,
+                    message,
                     ip,
                     ref_page,
                     price,
@@ -713,7 +729,7 @@ exports.MailController = async (req, res, next) => {
       );
       const userId = newUser.insertId;
 
-      const value2 = `(${newUser.insertId},${product_id},'Enquiry from ${subject}','${remarks}','${ip}','${ref_page}','${date}','${date}')`;
+      const value2 = `(${newUser.insertId},${product_id},'Enquiry from ${subject}','${message}','${ip}','${ref_page}','${date}','${date}')`;
 
       const [newEnquirie] = await Model.addData(
         "enquiries",
@@ -757,7 +773,7 @@ exports.MailController = async (req, res, next) => {
                     organization,
                     designation,
                     country,
-                    remarks,
+                    message,
                     ip,
                     ref_page,
                     price,

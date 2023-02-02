@@ -1,5 +1,5 @@
 import axios from "axios";
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 const Clients = () => {
@@ -21,7 +21,7 @@ const Clients = () => {
   };
   return (
     <div className="card ">
-      <div className="card-header  text-center p-2">
+      <div className="card-header  text-center p-2 blue-background text-light">
         <strong> Clients</strong>
       </div>
       <div className="card-body">
@@ -39,13 +39,13 @@ const Clients = () => {
                 }`}
                 key={i}
               >
-                <Link href={client.link} target="_blank">
-                  <img
-                    className="d-block w-100 "
-                    src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
-                    alt=""
-                  />
-                </Link>
+                {/* <Link href={client.link} target="_blank"> */}
+                <img
+                  className="d-block w-100 "
+                  src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
+                  alt=""
+                />
+                {/* </Link> */}
               </div>
             ))}
           </div>

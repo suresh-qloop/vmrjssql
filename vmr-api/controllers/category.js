@@ -36,7 +36,7 @@ exports.getCategory = async (req, res, next) => {
   try {
     const [category] = await Category.getOne(
       "categories",
-      "id,category_name",
+      "id,category_name,short_desc,long_desc",
       `id=${id} ORDER BY category_name ASC`
     );
     res.status(200).json(category[0]);
@@ -49,6 +49,8 @@ exports.getCategory = async (req, res, next) => {
 
 exports.addCategory = async (req, res, next) => {
   await check("category_name").notEmpty().run(req);
+  await check("short_desc").notEmpty().run(req);
+  await check("long_desc").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -56,15 +58,17 @@ exports.addCategory = async (req, res, next) => {
   }
 
   const category_name = toUpperCase(req.body.category_name);
+  const short_desc = toUpperCase(req.body.short_desc);
+  const long_desc = toUpperCase(req.body.long_desc);
   const slug = cleanString(category_name);
 
   let date = moment().format().slice(0, 19).replace("T", " ");
 
   try {
-    const value = `("${category_name}", "2", "2","${slug}","${date}")`;
+    const value = `("${category_name}","${short_desc}","${long_desc}","2", "2","${slug}","${date}")`;
     const [category] = await Category.addData(
       "categories",
-      "(category_name,parent_category_id,level,modified)",
+      "(category_name,short_desc,long_desc,parent_category_id,level,modified)",
       value
     );
 
@@ -80,6 +84,8 @@ exports.addCategory = async (req, res, next) => {
 
 exports.editCategory = async (req, res, next) => {
   await check("category_name").notEmpty().run(req);
+  await check("short_desc").notEmpty().run(req);
+  await check("long_desc").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -88,10 +94,12 @@ exports.editCategory = async (req, res, next) => {
 
   const id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
+  const short_desc = toUpperCase(req.body.short_desc);
+  const long_desc = toUpperCase(req.body.long_desc);
   const slug = cleanString(category_name);
 
   try {
-    const obj = `category_name="${category_name}",slug="${slug}"`;
+    const obj = `category_name="${category_name}",short_desc="${short_desc}",long_desc="${long_desc}",slug="${slug}"`;
 
     const [category] = await Category.editData("categories", obj, id);
 
@@ -189,6 +197,8 @@ exports.AllChildCategory = async (req, res, next) => {
 
 exports.addChildCategory = async (req, res, next) => {
   await check("category_name").notEmpty().run(req);
+  await check("short_desc").notEmpty().run(req);
+  await check("long_desc").notEmpty().run(req);
 
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -196,14 +206,16 @@ exports.addChildCategory = async (req, res, next) => {
   }
   const parent_category_id = req.params.id;
   const category_name = toUpperCase(req.body.category_name);
+  const short_desc = toUpperCase(req.body.short_desc);
+  const long_desc = toUpperCase(req.body.long_desc);
   const slug = cleanString(category_name);
   let created = moment().format().slice(0, 19).replace("T", " ");
 
   try {
-    const value = `("${category_name}", "${parent_category_id}", "3","${slug}","${created}", "${created}")`;
+    const value = `("${category_name}","${short_desc}","${long_desc}","${parent_category_id}", "3","${slug}","${created}", "${created}")`;
     const [category] = await Category.addData(
       "categories",
-      "(category_name,parent_category_id,level,created,modified)",
+      "(category_name,short_desc,long_desc,parent_category_id,level,created,modified)",
       value
     );
 

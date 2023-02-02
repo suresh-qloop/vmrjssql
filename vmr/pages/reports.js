@@ -9,16 +9,16 @@ import NavbarTop from "../components/Frontend/NavbarTop";
 import Footer from "../components/Frontend/Footer";
 // import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
-import { Fragment } from "react";
+// import { Fragment } from "react";
 import BackTop from "../components/common/BackTop";
-import { useRouter } from "next/router";
-import { urlString } from "../utils/urlString";
+// import { useRouter } from "next/router";
+// import { urlString } from "../utils/urlString";
 
 // import { useSession } from "next-auth/react";
 
 const Reports = () => {
-  const router = useRouter();
-  const [categoryList, setCategoryList] = useState();
+  // const router = useRouter();
+  // const [categoryList, setCategoryList] = useState();
 
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
@@ -28,25 +28,24 @@ const Reports = () => {
 
   useEffect(() => {
     getReportList();
-    getCategoryList();
+    // getCategoryList();
 
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
-  // console.log(window.scrollY);
 
-  const getCategoryList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
-      .then((res) => {
-        setCategoryList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getCategoryList = async () => {
+  //   await axios
+  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
+  //     .then((res) => {
+  //       setCategoryList(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const getReportList = async () => {
     await axios
@@ -74,12 +73,6 @@ const Reports = () => {
       });
   };
 
-  // const persistScrollPosition = (id) => {
-  //   // sessionStorage.setItem("y", window.scrollY);
-  //   console.log(id);
-  //   sessionStorage.setItem("key", id);
-  // };
-
   return (
     <div className="wrapper">
       <NavbarTop />
@@ -89,7 +82,7 @@ const Reports = () => {
       <div className=" bg-light pb-5 pt-2">
         <div className="container bg-white pb-5 pt-4">
           <div className="row">
-            <div className="col-md-12 px-4">
+            <div className=" col-lg-12 col-md-12 px-4">
               <h3>REPORTS</h3>
               <p className="text-secondary">
                 Here is the database of all the market research reports we have
@@ -98,10 +91,10 @@ const Reports = () => {
                 the market players.
               </p>
             </div>
-            <div className="col-md-3">
+            {/* <div className="col-lg-3 col-md-12">
               <div className="card shadow-none mb-0">
                 <div className="card-header">
-                  <h2 className="card-title">Reports by Industry</h2>
+                  <h2 className="card-title">Reports by Industry </h2>
                 </div>
 
                 <div className="card-body p-0 m-0">
@@ -154,9 +147,9 @@ const Reports = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="col-md-9">
+            <div className="col-lg-12 col-md-12">
               <InfiniteScroll
                 dataLength={reportList.length} //This is important field to render the next data
                 next={getMoreReport}

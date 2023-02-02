@@ -4,7 +4,7 @@ import Link from "next/link";
 const NavbarTop = () => {
   const [email, setEmail] = useState("sales@valuemarketresearch.com");
   return (
-    <div className=" dark-background d-md-block d-xl-block d-none">
+    <div className=" blue-background d-md-block d-xl-block d-none sticky-top">
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-sm-12">
@@ -17,7 +17,10 @@ const NavbarTop = () => {
           </div>
           <div className="col-md-6 col-sm-12 text-right ">
             <div className="nav-link text-light text-sm">
-              <i className="fas fa-phone-alt"></i> &nbsp; +1-888-294-1147
+              {/* <i className="fas fa-phone-alt"></i> &nbsp; +1-888-294-1147 */}
+              <a href="tel:8882941147" className="text-sm text-light">
+                <i className="fas fa-phone-alt mr-2"></i>+1-888-294-1147
+              </a>
             </div>
           </div>
         </div>

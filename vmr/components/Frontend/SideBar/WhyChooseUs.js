@@ -3,7 +3,7 @@ import React from "react";
 const WhyChooseUs = () => {
   return (
     <div className="card ">
-      <div className="card-header  text-center p-2">
+      <div className="card-header  text-center p-2 blue-background text-light">
         <strong> Why Choose Us</strong>
       </div>
       <div className="card-body">

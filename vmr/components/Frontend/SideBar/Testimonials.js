@@ -20,7 +20,7 @@ const Testimonials = () => {
   };
   return (
     <div className="card ">
-      <div className="card-header  text-center p-2">
+      <div className="card-header  text-center p-2 blue-background text-light">
         <strong> Testimonials</strong>
       </div>
       <div className="card-body" style={{ height: "100%" }}>

@@ -11,6 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../../../components/helpers/Notification";
 import Link from "next/link";
 import { currencyInrFormat } from "../../../utils/currencyInrFormat";
+import { urlString } from "../../../utils/urlString";
 
 const AskQuestions = () => {
   const [reportData, setReportData] = useState([]);
@@ -21,10 +22,10 @@ const AskQuestions = () => {
   const [mobileError, setMobileError] = useState(false);
 
   const router = useRouter();
-  console.log(router);
+
   const { slug, singleUser, upTo10User, corporateUser, datapack } =
     router.query;
-  console.log(datapack);
+
   const handleCaptcha = async (value) => {
     setIsVerified(true);
   };
@@ -50,6 +51,7 @@ const AskQuestions = () => {
       return;
     }
     getReportData();
+    // eslint-disable-next-line
   }, [slug]);
 
   const {
@@ -60,7 +62,6 @@ const AskQuestions = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     data.report = reportData.product_name;
     data.publisher_name = reportData.publisher_name;
     data.slug = reportData.slug;
@@ -103,10 +104,31 @@ const AskQuestions = () => {
             <div className="col-md-12 ">
               <div className="card">
                 <div className="card-body">
-                  <p className="text-center text-info">{reportData.alias}</p>
-                  <h3 className="text-center mb-3">
-                    <b> Buy Now</b>
-                  </h3>
+                  <p className="text-center text-info">
+                    <Link href={`/report/${reportData.slug}`}>
+                      {reportData.alias}
+                    </Link>
+                  </p>
+                  <div className="row">
+                    <div className="col-md-6 ">
+                      <h3 className="text-lg-right text-center mb-3">
+                        <b> Buy Now</b>
+                      </h3>
+                    </div>
+                    <div className="col-md-6 justify-content-center">
+                      <Link
+                        href={`/industries/${
+                          reportData.category_name
+                            ? urlString(reportData.category_name)
+                            : ""
+                        }`}
+                        className="btn btn-primary btn-sm text-light  "
+                      >
+                        View Related Reports
+                      </Link>
+                    </div>
+                  </div>
+
                   <hr />
                   <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="row text-sm">
@@ -123,7 +145,7 @@ const AskQuestions = () => {
                               //   setSingleUser(e.target.checked);
                               // }}
                               defaultChecked={
-                                singleUser == "true" ? true : false
+                                singleUser === "true" ? true : false
                               }
                             />
                             <label
@@ -153,7 +175,7 @@ const AskQuestions = () => {
                               //   setUpTo10User(e.target.checked);
                               // }}
                               defaultChecked={
-                                upTo10User == "true" ? true : false
+                                upTo10User === "true" ? true : false
                               }
                             />
                             <label
@@ -183,7 +205,7 @@ const AskQuestions = () => {
                               //   setCorporateUser(e.target.checked);
                               // }}
                               defaultChecked={
-                                corporateUser == "true" ? true : false
+                                corporateUser === "true" ? true : false
                               }
                             />
                             <label
@@ -213,7 +235,9 @@ const AskQuestions = () => {
                               // onChange={(e) => {
                               //   setDatapack(e.target.checked);
                               // }}
-                              defaultChecked={datapack == "true" ? true : false}
+                              defaultChecked={
+                                datapack === "true" ? true : false
+                              }
                             />
                             <label
                               htmlFor="todoCheck4"
@@ -357,17 +381,34 @@ const AskQuestions = () => {
                             <input
                               type="text"
                               className={`form-control ${
-                                errors.mobile ? "is-invalid" : ""
+                                mobileError === true ? "is-invalid" : ""
                               }`}
+                              pattern="[0-9]*"
                               id="mobile"
-                              placeholder="Mobile"
-                              {...register("mobile", {
-                                required: "This field is required",
-                              })}
+                              value={mobile}
+                              placeholder="Mobile Number"
+                              size="10"
+                              maxLength="10"
+                              // {...register("mobile", {
+                              //   required: "This field is required",
+                              // })}
+                              // onChange={(e) => setMobile(e.target.value)}
+                              onChange={(e) => {
+                                const re = /^[0-9\b]+$/;
+                                if (
+                                  e.target.value === "" ||
+                                  re.test(e.target.value)
+                                ) {
+                                  setMobile(e.target.value);
+                                  setMobileError(false);
+                                } else {
+                                  setMobileError(true);
+                                }
+                              }}
                             />
-                            {errors.mobile && (
+                            {mobileError && (
                               <div className="error invalid-feedback">
-                                <p>{errors.mobile.message}</p>
+                                <p>Please Enter Valid Mobile Number</p>
                               </div>
                             )}
                           </div>
@@ -383,7 +424,7 @@ const AskQuestions = () => {
                           </label>
                           <div className="col-sm-12">
                             <input
-                              type="email"
+                              type="text"
                               className={`form-control ${
                                 errors.corporateEmail ? "is-invalid" : ""
                               }`}
@@ -391,7 +432,20 @@ const AskQuestions = () => {
                               placeholder="Corporate Email"
                               {...register("corporateEmail", {
                                 required: "This field is required",
+                                pattern: {
+                                  value:
+                                    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                  message: "invalid email address",
+                                },
                               })}
+                              onPaste={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
+                              onCopy={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
                             />
                             {errors.corporateEmail && (
                               <div className="error invalid-feedback">
@@ -411,7 +465,7 @@ const AskQuestions = () => {
                           </label>
                           <div className="col-sm-12">
                             <input
-                              type="email"
+                              type="text"
                               className={`form-control ${
                                 errors.confirmEmail ? "is-invalid" : ""
                               }`}
@@ -419,7 +473,27 @@ const AskQuestions = () => {
                               placeholder="Confirm Email"
                               {...register("confirmEmail", {
                                 required: "This field is required",
+                                pattern: {
+                                  value:
+                                    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                  message: "invalid email address",
+                                },
+                                validate: (value) => {
+                                  const { corporateEmail } = getValues();
+                                  return (
+                                    corporateEmail === value ||
+                                    "Email should match!"
+                                  );
+                                },
                               })}
+                              onPaste={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
+                              onCopy={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
                             />
                             {errors.confirmEmail && (
                               <div className="error invalid-feedback">
@@ -587,7 +661,7 @@ const AskQuestions = () => {
                             className="form-check-input"
                             type="radio"
                             name="payment_option"
-                            {...register("zipCode", {
+                            {...register("payment_option", {
                               required: "This field is required",
                             })}
                             checked
@@ -618,8 +692,6 @@ const AskQuestions = () => {
                               Terms and Conditions
                             </Link>
                             and I accept it.
-                            <br />* Due to the nature of goods, orders once
-                            placed can't be cancelled.
                           </label>
                         </div>
                       </div>
@@ -631,12 +703,12 @@ const AskQuestions = () => {
                     </div>
                     <button
                       className="btn btn-info justify-content-center mt-3"
-                      //   disabled={!isVerified}
-                      //   onClick={() => {
-                      //     if (mobile.length !== 10) {
-                      //       setMobileError(true);
-                      //     }
-                      //   }}
+                      // disabled={!isVerified}
+                      onClick={() => {
+                        if (mobile.length !== 10) {
+                          setMobileError(true);
+                        }
+                      }}
                     >
                       Submit
                     </button>

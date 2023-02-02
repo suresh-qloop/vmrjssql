@@ -32,7 +32,7 @@ export default function Testimonials() {
       <section className="bg-light">
         <div className="container py-5">
           <div className="heading">
-            <h3 className="text-center">Oue Testimonials.</h3>
+            <h3 className="text-center">Clients Testimonials.</h3>
           </div>
           <div className="row justify-content-center">
             {testimonialList?.map((article, i) => (
