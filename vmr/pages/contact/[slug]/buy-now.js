@@ -13,18 +13,23 @@ import Link from "next/link";
 import { currencyInrFormat } from "../../../utils/currencyInrFormat";
 import { urlString } from "../../../utils/urlString";
 
+import crypto from "crypto";
+
+// import Razorpay from "razorpay";
 const AskQuestions = () => {
+  const router = useRouter();
+
+  const { slug, price } = router.query;
   const [reportData, setReportData] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+
   const [isVerified, setIsVerified] = useState(false);
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState(false);
-
-  const router = useRouter();
-
-  const { slug, singleUser, upTo10User, corporateUser, datapack } =
-    router.query;
+  const [amount, setAmount] = useState(price);
+  // const [singleUserPrice, setSingleUser] = useState(false);
+  // const [upTo10UserPrice, setUpTo10User] = useState(false);
+  // const [corporateUserPrice, setCorporateUser] = useState(false);
+  // const [datapackPrice, setDataPack] = useState(false);
 
   const handleCaptcha = async (value) => {
     setIsVerified(true);
@@ -35,8 +40,8 @@ const AskQuestions = () => {
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/report/${slug}`)
       .then((res) => {
         setReportData(res.data);
-        setName(res.data.product_name);
-        setDescription(res.data.product_description);
+        // setName(res.data.product_name);
+        // setDescription(res.data.product_description);
       })
       .catch((err) => {
         console.log(err);
@@ -51,8 +56,11 @@ const AskQuestions = () => {
       return;
     }
     getReportData();
+    if (!amount) {
+      setAmount(price);
+    }
     // eslint-disable-next-line
-  }, [slug]);
+  }, [slug, price]);
 
   const {
     register,
@@ -61,27 +69,81 @@ const AskQuestions = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.report = reportData.product_name;
     data.publisher_name = reportData.publisher_name;
     data.slug = reportData.slug;
     data.price = reportData.price;
     data.product_id = reportData.id;
     data.alias = reportData.alias;
+    data.amount = amount;
     const finalData = {
       ...data,
       mobile,
     };
-    axios
-      .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/req-email`, finalData)
-      // .then((res) => {
-      // notify("success", "Form Submitted Successfully");
-      // router.push("/");
-      // })
-      .catch(function (error) {
-        console.log(error);
-        notify("error", error.response.data.message);
-      });
+    console.log(finalData);
+    const {
+      data: { order },
+    } = await axios.post(
+      `${process.env.NEXT_PUBLIC_NEXT_API}/payment/`,
+      finalData
+    );
+    console.log(order);
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZOR_API_KEY, // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "USD",
+      name: "Value Market Research",
+      description: "Market Research Report as per agreement over the email",
+      image: "/dist/img/logos/vmr-logo.webp",
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      // callback_url: `${process.env.NEXT_PUBLIC_NEXT_API}/payment/payment-verification`,
+      prefill: {
+        name: `${finalData.first_name} ${finalData.last_name}`,
+        email: finalData.corporateEmail,
+        contact: finalData.mobile,
+      },
+      notes: {
+        name: `${finalData.first_name} ${finalData.last_name}`,
+        address: finalData.address,
+        email: finalData.corporateEmail,
+        mobile: finalData.mobile,
+        id: finalData.product_id,
+        alias: finalData.alias,
+        price: finalData.price,
+      },
+      handler: async function (response) {
+        let values = {
+          razorpay_signature: response.razorpay_signature,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+        };
+        const body =
+          values.razorpay_order_id + "|" + values.razorpay_payment_id;
+        const expectedSignature = crypto
+          .createHmac("sha256", process.env.NEXT_PUBLIC_RAZOR_KEY_SECRET)
+          .update(body.toString())
+          .digest("hex");
+        const isAuthentic = expectedSignature === values.razorpay_signature;
+
+        if (isAuthentic) {
+          // Database comes here
+          const user = await axios.post(
+            `${process.env.NEXT_PUBLIC_NEXT_API}/payment/payment-user-add`,
+            finalData
+          );
+          router.push("/payment_success");
+        } else {
+          router.push("/payment_failed");
+        }
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const razor = new window.Razorpay(options);
+
+    razor.open();
   };
 
   return (
@@ -111,12 +173,10 @@ const AskQuestions = () => {
                   </p>
                   <div className="row">
                     <div className="col-md-6 ">
-                      <h3 className="text-lg-right text-center mb-3">
-                        <b> Buy Now</b>
-                      </h3>
+                      <h4 className="text-lg-right text-right mb-3">Buy Now</h4>
                     </div>
                     <div className="col-md-6 justify-content-center">
-                      <Link
+                      {/* <Link
                         href={`/industries/${
                           reportData.category_name
                             ? urlString(reportData.category_name)
@@ -125,7 +185,20 @@ const AskQuestions = () => {
                         className="btn btn-primary btn-sm text-light  "
                       >
                         View Related Reports
-                      </Link>
+                      </Link> */}
+                      <div className="enq-btn">
+                        <Link
+                          className="form-btn"
+                          // target="_blank"
+                          href={`/industries/${
+                            reportData.category_name
+                              ? urlString(reportData.category_name)
+                              : ""
+                          }`}
+                        >
+                          View Related Reports
+                        </Link>
+                      </div>
                     </div>
                   </div>
 
@@ -138,19 +211,19 @@ const AskQuestions = () => {
                             <input
                               className="form-check-input"
                               type="radio"
-                              value=""
-                              name="todo1"
-                              id="todoCheck1"
-                              // onChange={(e) => {
-                              //   setSingleUser(e.target.checked);
-                              // }}
-                              defaultChecked={
-                                singleUser === "true" ? true : false
+                              value={reportData.price}
+                              name="price"
+                              id="single"
+                              onChange={(e) => {
+                                setAmount(reportData.price);
+                              }}
+                              checked={
+                                amount == reportData.price ? true : false
                               }
                             />
                             <label
-                              htmlFor="todoCheck1"
-                              className="form-check-label "
+                              htmlFor="single"
+                              className="form-check-label"
                             >
                               Single User License:&nbsp;
                               <span>
@@ -168,18 +241,18 @@ const AskQuestions = () => {
                             <input
                               className="form-check-input"
                               type="radio"
-                              value=""
-                              name="todo1"
-                              id="todoCheck2"
-                              // onChange={(e) => {
-                              //   setUpTo10User(e.target.checked);
-                              // }}
-                              defaultChecked={
-                                upTo10User === "true" ? true : false
+                              value={reportData.upto10}
+                              name="price"
+                              id="upto10"
+                              onChange={(e) => {
+                                setAmount(reportData.upto10);
+                              }}
+                              checked={
+                                amount == reportData.upto10 ? true : false
                               }
                             />
                             <label
-                              htmlFor="todoCheck2"
+                              htmlFor="upto10"
                               className="form-check-label "
                             >
                               Upto 10 Users License:&nbsp;
@@ -198,18 +271,20 @@ const AskQuestions = () => {
                             <input
                               className="form-check-input"
                               type="radio"
-                              value=""
-                              name="todo1"
-                              id="todoCheck3"
-                              // onChange={(e) => {
-                              //   setCorporateUser(e.target.checked);
-                              // }}
-                              defaultChecked={
-                                corporateUser === "true" ? true : false
+                              value={reportData.corporate_price}
+                              name="price"
+                              id="corporate_price"
+                              onChange={(e) => {
+                                setAmount(reportData.corporate_price);
+                              }}
+                              checked={
+                                amount == reportData.corporate_price
+                                  ? true
+                                  : false
                               }
                             />
                             <label
-                              htmlFor="todoCheck3"
+                              htmlFor="corporate_price"
                               className="form-check-label "
                             >
                               Corporate User License:&nbsp;
@@ -230,18 +305,21 @@ const AskQuestions = () => {
                             <input
                               className="form-check-input"
                               type="radio"
-                              name="todo1"
-                              id="todoCheck4"
-                              // onChange={(e) => {
-                              //   setDatapack(e.target.checked);
-                              // }}
-                              defaultChecked={
-                                datapack === "true" ? true : false
+                              value={reportData.data_pack_price}
+                              name="price"
+                              id="data_pack_price"
+                              onChange={(e) => {
+                                setAmount(reportData.data_pack_price);
+                              }}
+                              checked={
+                                amount == reportData.data_pack_price
+                                  ? true
+                                  : false
                               }
                             />
                             <label
-                              htmlFor="todoCheck4"
-                              className="form-check-label "
+                              htmlFor="data_pack_price"
+                              className="form-check-label"
                             >
                               DataPack License:&nbsp;
                               <span>
@@ -701,17 +779,19 @@ const AskQuestions = () => {
                         </div>
                       )}
                     </div>
-                    <button
-                      className="btn btn-info justify-content-center mt-3"
-                      // disabled={!isVerified}
-                      onClick={() => {
-                        if (mobile.length !== 10) {
-                          setMobileError(true);
-                        }
-                      }}
-                    >
-                      Submit
-                    </button>
+                    <div className="col-md-12 text-center">
+                      <button
+                        className="btn btn-info justify-content-center mt-3 "
+                        // disabled={!isVerified}
+                        onClick={() => {
+                          if (mobile.length !== 10) {
+                            setMobileError(true);
+                          }
+                        }}
+                      >
+                        Next
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>

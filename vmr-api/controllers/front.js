@@ -10,23 +10,25 @@ const nodemailer = require("nodemailer");
 const { query } = require("../models/config");
 const { findById } = require("../models/Model");
 const md5 = require("md5");
+const { report } = require("../routers/category");
+const { log } = require("forever");
 
-// exports.AllReports = async (req, res, next) => {
-//   try {
-//     const [reports] = await Model.findById(
-//       "products",
-//       "id,product_name,category_id,product_description,publisher_name,price,pub_date,is_active",
-//       "is_deleted = 0 AND is_active = 1",
-//       "id DESC"
-//     );
+exports.getAllReports = async (req, res, next) => {
+  try {
+    const [reports] = await Model.findById(
+      "products",
+      "id,product_name,category_id,product_description,publisher_name,slug,price,pub_date,is_active",
+      "is_deleted = 0 AND is_active = 1",
+      "id DESC"
+    );
 
-//     res.status(200).json(reports);
-//   } catch (err) {
-//     return res.status(500).json({
-//       error: err.message,
-//     });
-//   }
-// };
+    res.status(200).json(reports);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 
 exports.AllReports = async (req, res, next) => {
   const start = req.query.start || 0;
@@ -41,7 +43,7 @@ exports.AllReports = async (req, res, next) => {
     const [reports] = await Model.findById(
       "products p",
       "p.id,p.product_name,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
-      `p.is_deleted = 0 AND p.is_active = 1`,
+      `p.is_deleted = 0 AND p.is_active = 1 AND p.is_upcoming = 0`,
       `p.id DESC LIMIT ${start},${limit}`
     );
     // const [co] = await Model.findById(
@@ -53,7 +55,7 @@ exports.AllReports = async (req, res, next) => {
     const [co] = await Model.findById(
       "products p",
       "*",
-      `p.is_deleted = 0 AND p.is_active = 1`,
+      `p.is_deleted = 0 AND p.is_active = 1 AND p.is_upcoming = 0`,
       "p.id DESC"
     );
     // const result0 = reports;
@@ -67,9 +69,58 @@ exports.AllReports = async (req, res, next) => {
     //   return a;
     // };
     // let co = c.concat(c).unique();
-    let count = co.length;
     // let reports = results.concat(results).unique();
     // console.log(reports);
+
+    const [year] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='year'`,
+      "id DESC"
+    );
+
+    for (let i = 0; i < reports.length; i++) {
+      reports[i].product_name += `, ${year[0].value}`;
+    }
+    let count = co.length;
+    res.status(200).json({ reports, count });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+exports.UpcomingReports = async (req, res, next) => {
+  const start = req.query.start || 0;
+  const limit = req.query.limit || 10;
+  try {
+    const [reports] = await Model.findById(
+      "products p",
+      "p.id,p.product_name,p.product_description,p.publisher_name,p.price,p.pub_date,p.slug,p.is_active",
+      `p.is_deleted = 0 AND p.is_upcoming = 1`,
+      `p.id DESC LIMIT ${start},${limit}`
+    );
+
+    const [co] = await Model.findById(
+      "products p",
+      "*",
+      `p.is_deleted = 0 AND p.is_upcoming = 1`,
+      "p.id DESC"
+    );
+
+    const [year] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='year'`,
+      "id DESC"
+    );
+
+    for (let i = 0; i < reports.length; i++) {
+      reports[i].product_name += `, ${year[0].value}`;
+    }
+    let count = co.length;
+
     res.status(200).json({ reports, count });
   } catch (err) {
     return res.status(500).json({
@@ -215,8 +266,15 @@ exports.getReport = async (req, res, next) => {
       `pc.category_id = c.id AND pc.product_id=${report[0].id}`,
       "pc.id DESC"
     );
+    const [year] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='year'`,
+      "id DESC"
+    );
 
     report[0].category_name = await c[0].category_name;
+    report[0].product_name += `, ${year[0].value}`;
     res.status(200).json(report[0]);
   } catch (err) {
     return res.status(500).json({
@@ -830,6 +888,23 @@ exports.MailController = async (req, res, next) => {
   }
 };
 
+exports.getAllPressReleases = async (req, res, next) => {
+  try {
+    const [articles] = await Model.findById(
+      "articles",
+      "*",
+      "article_type = 'press-releases'",
+      `id DESC`
+    );
+
+    res.status(200).json(articles);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
 exports.AllPressReleases = async (req, res, next) => {
   const start = req.query.start || 0;
   const limit = req.query.limit || 10;
@@ -868,7 +943,22 @@ exports.getPressReleases = async (req, res, next) => {
     });
   }
 };
+exports.getAllAnalysis = async (req, res, next) => {
+  try {
+    const [articles] = await Model.findById(
+      "articles",
+      "*",
+      "article_type = 'analysis'",
+      `id DESC`
+    );
 
+    res.status(200).json(articles);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 exports.AllAnalysis = async (req, res, next) => {
   const start = req.query.start || 0;
   const limit = req.query.limit || 10;
@@ -958,7 +1048,7 @@ exports.getSearchAlias = async (req, res, next) => {
         const [search_results] = await Model.findById(
           "products Product,product_categories pc",
           "Product.id,Product.alias,Product.slug",
-          `${filt} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
+          `${filt} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.is_upcoming = 0 AND Product.id = pc.product_id`,
           `Product.id DESC LIMIT 10`
         );
 
@@ -1028,26 +1118,26 @@ exports.getSearchReport = async (req, res, next) => {
         const [keyword_results] = await Model.findById(
           "products Product,product_categories pc",
           "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
-          `${keyword_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id`,
+          `${keyword_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.is_upcoming = 0 AND Product.id = pc.product_id`,
           `${keyword_order} LIMIT 50`
         );
 
         const [alias_results] = await Model.getOne(
           "products Product,product_categories pc",
           "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
-          `${alias_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+          `${alias_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.is_upcoming = 0 AND Product.id = pc.product_id LIMIT 50`
         );
 
         const [name_results] = await Model.getOne(
           "products Product,product_categories pc",
           "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
           `${name_filter}
-           AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+           AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.is_upcoming = 0 AND Product.id = pc.product_id LIMIT 50`
         );
         const [desc_results] = await Model.getOne(
           "products Product,product_categories pc",
           "Product.id,Product.product_name,Product.category_id,Product.product_description,Product.publisher_name,Product.price,Product.pub_date,Product.slug,Product.is_active",
-          `${desc_filter} AND Product.is_active = 1 AND Product.is_deleted = 0 AND Product.id = pc.product_id LIMIT 50`
+          `${desc_filter} AND Product.is_active = 1 AND Product.is_deleted = 0  AND Product.is_upcoming = 0 AND Product.id = pc.product_id LIMIT 50`
         );
 
         Array.prototype.unique = function () {
@@ -1071,3 +1161,25 @@ exports.getSearchReport = async (req, res, next) => {
     });
   }
 };
+
+// exports.removeDate = async (req, res, next) => {
+//   try {
+//     const [reports] = await Model.fetchAll("products", "*", `id DESC`);
+//     await Promise.all(
+//       reports.forEach(async (report) => {
+//         const product_name = report.product_name.slice(0, -11);
+//         const obj = `product_name='${product_name}'`;
+//         const [productsCat] = await Model.edit(
+//           "products",
+//           obj,
+//           `id=${report.id}`
+//         );
+//       })
+//     );
+//     return res.status(200).json({ message: "delete" });
+//   } catch (err) {
+//     return res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };

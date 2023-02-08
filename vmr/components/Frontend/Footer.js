@@ -23,7 +23,7 @@ const Footer = () => {
                 <Link href="/reports">Reports</Link>
               </li>
               <li>
-                <Link href="/">Upcoming Reports</Link>
+                <Link href="/upcoming-reports">Upcoming Reports</Link>
               </li>
               <li>
                 <Link href="/testimonials">Testimonials</Link>
@@ -68,9 +68,11 @@ const Footer = () => {
               <li>
                 <Link href="/disclaimer">Disclaimer</Link>
               </li>
-              {/* <li>
-                <Link href="/">Sitemap</Link>
-              </li> */}
+              <li>
+                <Link target="_blank" href="/sitemap.xml">
+                  Sitemap
+                </Link>
+              </li>
             </ul>
           </div>
 

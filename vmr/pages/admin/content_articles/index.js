@@ -8,11 +8,10 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 // ES6 Modules or TypeScript
-import Swal from "sweetalert2";
+
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
 import Footer from "../../../components/Admin/Footer";
-import notify from "../../../components/helpers/Notification";
 
 const ArticleList = () => {
   const { status, data } = useSession();
@@ -88,7 +87,7 @@ const ArticleList = () => {
       cell: (article) => (
         <div>
           <Link
-            href={`../content_articles/${article.id}`}
+            href={`../pressreleases/${article.slug}`}
             style={{ marginRight: "5px" }}
             className="btn btn-sm btn-outline-success mr-2"
           >
@@ -101,18 +100,6 @@ const ArticleList = () => {
           >
             Edit
           </Link>
-
-          <button
-            type="button"
-            onClick={() => {
-              deleteArticle(article.id);
-            }}
-            className={`btn btn-sm btn-outline-danger mr-2 ${
-              data?.user.role === 1 ? "" : "d-none"
-            }`}
-          >
-            Delete
-          </button>
         </div>
       ),
     },
@@ -150,35 +137,6 @@ const ArticleList = () => {
           console.log(err);
         });
     }
-  };
-
-  const deleteArticle = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${process.env.NEXT_PUBLIC_NEXT_API}/content-article/${id}`, {
-            headers: {
-              Authorization: `Bearer ${data.user.token}`,
-            },
-          })
-          .then((res) => {
-            getArticleData();
-            notify("success", "Article Deleted Successfully");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
   };
 
   return (

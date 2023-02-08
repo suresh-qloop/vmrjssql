@@ -52,7 +52,7 @@ const ContentReport = ({ preLoadedValues }) => {
         .then((res) => {
           getCategoryList();
           notify("success", "Report Updated Successfully");
-          router.push(`/admin/reports/addfaqs/${res.data.id}`);
+          router.push(`/admin/content_reports/addfaqs/${res.data.id}`);
         })
         .catch(function (error) {
           console.log(error);
@@ -77,7 +77,7 @@ const ContentReport = ({ preLoadedValues }) => {
       )
       .then((res) => {
         notify("success", "Report Updated Successfully");
-        router.push("/admin/reports");
+        router.push("/admin/content_reports");
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -255,7 +255,11 @@ const ContentReport = ({ preLoadedValues }) => {
                               defaultChecked={is_active === 2 ? true : false}
                               // {...register("is_active")}
                               onChange={(e) => {
-                                setIsActive(e.target.checked);
+                                setIsActive(
+                                  e.target.checked == true
+                                    ? 2
+                                    : preLoadedValues.is_active
+                                );
                               }}
                             />
                           </div>

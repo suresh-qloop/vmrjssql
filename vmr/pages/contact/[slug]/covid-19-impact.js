@@ -398,17 +398,19 @@ const Covid19Impact = () => {
                         onChange={handleCaptcha}
                       />
                     </div>
-                    <button
-                      className="btn btn-info justify-content-center mt-3"
-                      disabled={!isVerified}
-                      onClick={() => {
-                        if (mobile.length !== 10) {
-                          setMobileError(true);
-                        }
-                      }}
-                    >
-                      Submit
-                    </button>
+                    <div className="col-md-12 text-center">
+                      <button
+                        className="btn btn-info justify-content-center mt-3"
+                        disabled={!isVerified}
+                        onClick={() => {
+                          if (mobile.length !== 10) {
+                            setMobileError(true);
+                          }
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -445,7 +447,7 @@ const Covid19Impact = () => {
               </p>
               <div className="card mx-md-5 my-md-5">
                 <h5 className="card-header  text-center py-3">
-                  <strong> Why Choose Us</strong>
+                  <strong>Why Choose Us</strong>
                 </h5>
                 <div className="card-body ">
                   <ul

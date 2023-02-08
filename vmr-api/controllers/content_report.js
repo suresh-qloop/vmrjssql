@@ -247,7 +247,7 @@ exports.editReport = async (req, res, next) => {
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
-  const is_active = req.body.is_active ? 2 : 0;
+  const is_active = req.body.is_active;
 
   try {
     const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',is_active='${is_active}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',slug='${slug}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',reference_url='${reference_url}',share_with_reseller='${share_with_reseller}'`;

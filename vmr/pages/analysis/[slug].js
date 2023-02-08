@@ -32,7 +32,7 @@ const AnalysisDetails = ({ articleData }) => {
       <NavbarTop />
       <Navbar />
       <Breadcrumb name={articleData.headline} />
-      <div className=" bg-light py-3">
+      <div className="bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">
             <div className="col-md-9 ">

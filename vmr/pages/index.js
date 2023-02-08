@@ -5,35 +5,51 @@ import Footer from "../components/Frontend/Footer";
 import Latest from "../components/Frontend/Home/Latest";
 import Fact from "../components/Frontend/Home/Fact";
 import Testimonial from "../components/Frontend/Home/Testimonial";
-import Research from "../components/Frontend/Home/Research";
+// import Research from "../components/Frontend/Home/Research";
 import Client from "../components/Frontend/Home/Client";
 import BackTop from "../components/common/BackTop";
-import Link from "next/link";
+// import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="wrapper">
       <NavbarTop />
       <Navbar />
-      <section className="  carosal  p-5">
-        <div className="carosal-bg-color">
-          <div className="container ">
-            <div className="row">
-              <div className="col-md-8 col-sm-12 p-5">
-                <h4 className="text-light">
-                  We add value to the business with our
-                </h4>
-                <h1 className="banner_title">
-                  Customized and Syndicate Market Research Reports
-                </h1>
-              </div>
-              <div className="col-md-4 col-sm-12"></div>
+
+      {/* <div className="carousel ">
+        <div className="carousel-inner">
+          <div className="carousel-item active">
+            <img
+              src={`/dist/img/slider.webp`}
+              alt=""
+              width={"100%"}
+              height={"450px"}
+            />
+            <div className="banner-carousel-caption    align-items-center">
+              <p> We add value to the business with our</p>
+              <h1>Customized and Syndicate Market Research Reports</h1>
             </div>
+          </div>
+        </div>
+      </div> */}
+
+      <section className="  carosal  p-lg-5 p-sm-0">
+        <div className="container">
+          <div className="row ">
+            <div className="col-md-8 col-sm-12 p-5 ">
+              <h4 className="text-dark ">
+                <strong> We add value to the business with our</strong>
+              </h4>
+              <h1 className="banner_title">
+                Customized and Syndicate Market Research Reports
+              </h1>
+            </div>
+            <div className="col-md-4 col-sm-12"></div>
           </div>
         </div>
       </section>
       {/* <Research /> */}
-      <section className=" choose">
+      <section className="choose">
         <div className="bg-color text-white">
           <div className="container pt-3">
             <div className="row">

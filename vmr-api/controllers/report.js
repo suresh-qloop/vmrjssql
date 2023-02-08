@@ -20,7 +20,6 @@ exports.AllReports = async (req, res, next) => {
   }
 };
 
-
 exports.getReport = async (req, res, next) => {
   const id = req.params.id;
 
@@ -35,8 +34,15 @@ exports.getReport = async (req, res, next) => {
       `product_id=${id}`,
       "id DESC"
     );
+    const [year] = await Report.findById(
+      "settings",
+      "*",
+      `\`key\`='year'`,
+      "id DESC"
+    );
 
     report[0].category_id = await c[0].category_id;
+    report[0].year = await year[0].value;
     res.status(200).json(report[0]);
   } catch (err) {
     return res.status(500).json({
@@ -202,7 +208,7 @@ exports.editReport = async (req, res, next) => {
   let date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const share_with_reseller = req.body.share_with_reseller ? 1 : 0;
   const is_upcoming = req.body.is_upcoming ? 1 : 0;
-  const is_active = req.body.is_active ? 2 : 0;
+  const is_active = req.body.is_active;
 
   try {
     const obj = `product_name='${product_name}',alias='${alias}',category_id='${category_id}',product_description='${product_description}',product_specification='${product_specification}',is_set_toc='${is_set_toc}',price='${price}',corporate_price='${corporate_price}',upto10='${upto10}',data_pack_price='${data_pack_price}',pub_date='${pub_date}',is_active='${is_active}',meta_name='${meta_name}',meta_keywords='${meta_keywords}',meta_desc='${meta_desc}',slug='${slug}',publisher_name='${publisher_name}',modified='${date}',is_upcoming='${is_upcoming}',reference_url='${reference_url}',share_with_reseller='${share_with_reseller}'`;

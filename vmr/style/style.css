@@ -159,10 +159,10 @@ body {
   font-family: "Nunito", sans-serif;
 }
 .dark-background {
-  background-color: #263238;
+  background-color: #005c94;
 }
 .blue-background {
-  background-color: #0074bd;
+  background-color: #005c94;
 }
 
 .img-box {
@@ -323,7 +323,7 @@ hr.dashed {
 
 .v-banner {
   /* height: 450px; */
-  background-color: #087097;
+  background-color: #005c94;
 }
 .banner_title {
   font-weight: 900;
@@ -380,7 +380,7 @@ hr.dashed {
 }
 
 .fact_listing h3 {
-  color: #3198be;
+  color: #005c94;
   font-size: 40px;
   margin: 0;
 }
@@ -527,7 +527,11 @@ hr.dashed {
 
 .carosal {
   background-image: url("../public/dist/img/slider.webp");
-  /* background-size: cover; */
+  height: 100%;
+  /* background-attachment: fixed; */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .carosal-bg-color {
   background-color: rgba(255, 132, 132, 0.243);
@@ -573,7 +577,7 @@ hr.dashed {
 }
 
 .enq-btn a {
-  background: #0074bd;
+  background: #005c94;
   color: #fff !important;
   padding: 5px 10px;
 }
@@ -581,3 +585,30 @@ hr.dashed {
   font-size: 12px !important;
   font-weight: 100 !important;
 }
+
+.success {
+  background-color: #00bd395d;
+}
+.danger {
+  background-color: #ff393980;
+}
+/* ======== Banner carousel  ============= */
+
+/* .banner-carousel-caption {
+  position: absolute;
+  right: 15%;
+  bottom: 45%;
+  left: 15%;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: black;
+  text-align: center;
+}
+.banner-carousel-caption p {
+  font-weight: 600;
+}
+
+.banner-carousel-caption h1 {
+  font-weight: 900;
+} */

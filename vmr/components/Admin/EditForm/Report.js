@@ -24,6 +24,7 @@ const Report = ({ preLoadedValues }) => {
     preLoadedValues.product_description
   );
   const [is_active, setIsActive] = useState(preLoadedValues.is_active);
+  console.log(preLoadedValues.is_active);
 
   const {
     register,
@@ -244,10 +245,14 @@ const Report = ({ preLoadedValues }) => {
                               type="checkbox"
                               className="form-check-input"
                               id="is_active"
-                              defaultChecked={is_active === 2 ? true : false}
+                              defaultChecked={is_active == 2 ? true : false}
                               // {...register("is_active")}
                               onChange={(e) => {
-                                setIsActive(e.target.checked);
+                                setIsActive(
+                                  e.target.checked == true
+                                    ? 2
+                                    : preLoadedValues.is_active
+                                );
                               }}
                             />
                           </div>

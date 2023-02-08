@@ -270,6 +270,7 @@ const ViewReport = () => {
                           }}
                           className="btn btn-sm btn-outline-primary mr-2"
                           style={{ width: 101 }}
+                          disabled={reportData.is_active == 2 ? false : true}
                         >
                           Activate
                         </button>

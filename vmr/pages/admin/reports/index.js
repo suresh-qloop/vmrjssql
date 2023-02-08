@@ -111,16 +111,16 @@ const ReportList = () => {
       width: "130px",
       cell: (report) => (
         <Fragment>
-          {report.is_active === 1 && (
+          {report.is_active == 1 && (
             <span className="badge bg-success ">Active</span>
           )}
-          {report.is_active === 2 && (
+          {report.is_active == 2 && (
             <span className="badge  bg-info">ReadyToActive</span>
           )}
-          {report.is_active === 0 && (
+          {report.is_active == 0 && (
             <span className="badge  bg-warning">Inactive</span>
           )}
-          {report.is_active === 4 && (
+          {report.is_active == 4 && (
             <span className="badge  bg-primary">InProgress</span>
           )}
         </Fragment>
@@ -148,7 +148,7 @@ const ReportList = () => {
             Edit
           </Link>
 
-          {report.is_active === 1 ? (
+          {report.is_active == 1 ? (
             <button
               type="button"
               onClick={() => {
@@ -167,7 +167,7 @@ const ReportList = () => {
               }}
               className="btn btn-sm btn-outline-primary mr-2"
               style={{ width: 101 }}
-              disabled={report.is_active === 2 ? false : true}
+              disabled={report.is_active == 2 ? false : true}
             >
               Activate
             </button>
@@ -176,10 +176,10 @@ const ReportList = () => {
           <button
             type="button"
             onClick={() => {
-              deleteReport(report._id);
+              deleteReport(report.id);
             }}
             className={`btn btn-sm btn-outline-danger mr-2 ${
-              data?.user.role === 1 ? "" : "d-none"
+              data?.user.role == 1 ? "" : "d-none"
             }`}
           >
             Delete
@@ -207,7 +207,7 @@ const ReportList = () => {
   );
 
   const columns_data_for_export = columns
-    .slice(0, columns.length - 1)
+    .slice(0, columns.length - 2)
     .map((d) => d.name);
 
   useEffect(() => {
@@ -458,7 +458,7 @@ const ReportList = () => {
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
                             if (
-                              e.target.value === "" ||
+                              e.target.value == "" ||
                               re.test(e.target.value)
                             ) {
                               setCPrice(e.target.value);

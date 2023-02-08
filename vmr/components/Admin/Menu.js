@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { ROLES } from "../../utils/roles";
 // import { loadTree } from "../../public/dist/js/loadTree.js";
 
 const Menu = () => {
+  const navigate = useRouter();
   const { status, data } = useSession();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -19,9 +21,7 @@ const Menu = () => {
 
   useEffect(() => {
     setRole();
-    // const trees = window.$('[data-widget="pushmenu"]');
-    // trees.Treeview("init");
-    // loadTree();
+
     // eslint-disable-next-line
   }, [status]);
 
@@ -65,7 +65,12 @@ const Menu = () => {
               data-accordion="false"
             >
               <li className="nav-item">
-                <Link href="/admin/dashboard" className="nav-link  ">
+                <Link
+                  href="/admin/dashboard"
+                  className={`nav-link ${
+                    navigate.pathname === "/admin/dashboard" ? "active" : ""
+                  } `}
+                >
                   <i className="nav-icon fas fa-tachometer-alt mr-2" />
                   <p>Dashboard</p>
                 </Link>
@@ -73,7 +78,12 @@ const Menu = () => {
 
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/users" className="nav-link">
+                  <Link
+                    href="/admin/users"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/users" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-users mr-2"></i>
                     <p>Manage Users</p>
                   </Link>
@@ -81,7 +91,12 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/categories" className="nav-link">
+                  <Link
+                    href="/admin/categories"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/categories" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-filter mr-2"></i>
                     <p>Categories</p>
                   </Link>
@@ -89,7 +104,12 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/reports" className="nav-link">
+                  <Link
+                    href="/admin/reports"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/reports" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-book mr-2"></i>
                     <p>Reports</p>
                   </Link>
@@ -97,7 +117,12 @@ const Menu = () => {
               )}
               {isSeo && (
                 <li className="nav-item">
-                  <Link href="/admin/seo_reports" className="nav-link">
+                  <Link
+                    href="/admin/seo_reports"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/seo_reports" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-book mr-2"></i>
                     <p>Reports</p>
                   </Link>
@@ -106,7 +131,14 @@ const Menu = () => {
 
               {isContent && (
                 <li className="nav-item">
-                  <Link href="/admin/content_reports" className="nav-link">
+                  <Link
+                    href="/admin/content_reports"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/content_reports"
+                        ? "active"
+                        : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-book mr-2"></i>
                     <p>Reports</p>
                   </Link>
@@ -114,7 +146,12 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/articles" className="nav-link">
+                  <Link
+                    href="/admin/articles"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/articles" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-newspaper mr-2"></i>
                     <p>Articles</p>
                   </Link>
@@ -122,7 +159,14 @@ const Menu = () => {
               )}
               {isSeo && (
                 <li className="nav-item">
-                  <Link href="/admin/seo_articles" className="nav-link">
+                  <Link
+                    href="/admin/seo_articles"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/seo_articles"
+                        ? "active"
+                        : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-newspaper mr-2"></i>
                     <p>Articles</p>
                   </Link>
@@ -130,7 +174,14 @@ const Menu = () => {
               )}
               {isContent && (
                 <li className="nav-item">
-                  <Link href="/admin/content_articles" className="nav-link">
+                  <Link
+                    href="/admin/content_articles"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/content_articles"
+                        ? "active"
+                        : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-newspaper mr-2"></i>
                     <p>Articles</p>
                   </Link>
@@ -138,7 +189,14 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/testimonials" className="nav-link">
+                  <Link
+                    href="/admin/testimonials"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/testimonials"
+                        ? "active"
+                        : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-quote-left mr-2"></i>
                     <p>Testimonials</p>
                   </Link>
@@ -146,15 +204,25 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/clients" className="nav-link">
+                  <Link
+                    href="/admin/clients"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/clients" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-user-friends mr-2"></i>
-                    <p>Home Page Logo</p>
+                    <p>Home Page Logos</p>
                   </Link>
                 </li>
               )}
               {(isAdmin || isManager || isSalesTeam) && (
                 <li className="nav-item">
-                  <Link href="/admin/enquiries" className="nav-link">
+                  <Link
+                    href="/admin/enquiries"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/enquiries" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-question mr-2"></i>
                     <p>Enquiries</p>
                   </Link>
@@ -162,7 +230,12 @@ const Menu = () => {
               )}
               {(isAdmin || isManager) && (
                 <li className="nav-item">
-                  <Link href="/admin/settings" className="nav-link">
+                  <Link
+                    href="/admin/settings"
+                    className={`nav-link ${
+                      navigate.pathname === "/admin/settings" ? "active" : ""
+                    } `}
+                  >
                     <i className="nav-icon fas fa-wrench mr-2"></i>
                     <p>Settings</p>
                   </Link>

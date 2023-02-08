@@ -4,6 +4,7 @@ const db = require("./config");
 
 module.exports = class Model {
   static fetchAll(table, field = "*", order) {
+    // console.log(`SELECT ${field} FROM ${table} ORDER BY ${order}`);
     return db.execute(`SELECT ${field} FROM ${table} ORDER BY ${order}`);
   }
 

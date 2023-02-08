@@ -223,7 +223,12 @@ const Navbar = (props) => {
                       })}
                     </ul>
                   </div>
-                  <button className="btn btn-primary " type="submit">
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    id="search"
+                    aria-label="search"
+                  >
                     <i className="fas fa-search text-light"></i>
                   </button>
                 </form>

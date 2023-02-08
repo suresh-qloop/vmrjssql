@@ -398,17 +398,19 @@ const FreeSample = () => {
                         onChange={handleCaptcha}
                       />
                     </div>
-                    <button
-                      className="btn btn-info justify-content-center mt-3"
-                      disabled={!isVerified}
-                      onClick={() => {
-                        if (mobile.length !== 10) {
-                          setMobileError(true);
-                        }
-                      }}
-                    >
-                      Submit
-                    </button>
+                    <div className="col-md-12 text-center">
+                      <button
+                        className="btn btn-info justify-content-center mt-3"
+                        disabled={!isVerified}
+                        onClick={() => {
+                          if (mobile.length !== 10) {
+                            setMobileError(true);
+                          }
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>

@@ -277,7 +277,7 @@ const ContentArticle = ({ preLoadedValues }) => {
                         Save
                       </button>
                       <Link
-                        href="/admin/articles"
+                        href="/admin/content_articles"
                         className="btn btn-default float-right"
                       >
                         Cancel

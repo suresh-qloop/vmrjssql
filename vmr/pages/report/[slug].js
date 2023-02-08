@@ -21,10 +21,11 @@ import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
 import BackTop from "../../components/common/BackTop";
 
 const ReportDetails = ({ reportData }) => {
-  const [singleUser, setSingleUser] = useState(true);
-  const [upTo10User, setUpTo10User] = useState(false);
-  const [corporateUser, setCorporateUser] = useState(false);
-  const [datapack, setDatapack] = useState(false);
+  // const [singleUser, setSingleUser] = useState(true);
+  // const [upTo10User, setUpTo10User] = useState(false);
+  // const [corporateUser, setCorporateUser] = useState(false);
+  // const [datapack, setDatapack] = useState(false);
+  const [price, setPrice] = useState(reportData.price);
   let output;
   if (reportData.product_faq) {
     const obj = JSON.parse(reportData.product_faq);
@@ -240,7 +241,7 @@ const ReportDetails = ({ reportData }) => {
             <div className="col-lg-3 col-md-12 col-sm-12">
               <div className="card">
                 <div className="card-header  text-center p-2 blue-background text-light">
-                  <strong> Choose your Buying Option</strong>
+                  <strong>Choose your Buying Option</strong>
                 </div>
                 <div className="card-body">
                   <ul
@@ -251,15 +252,15 @@ const ReportDetails = ({ reportData }) => {
                       <div className="icheck-primary d-inline">
                         <input
                           type="radio"
-                          value=""
-                          name="todo1"
-                          id="todoCheck1"
+                          value={reportData.price}
+                          name="price"
+                          id="single"
                           onChange={(e) => {
-                            setSingleUser(e.target.checked);
+                            setPrice(reportData.price);
                           }}
                           defaultChecked={true}
                         />
-                        <label htmlFor="todoCheck1" className="text-xs">
+                        <label htmlFor="single" className="text-xs">
                           Single User License:&nbsp;
                           <span className="text-xs">
                             {reportData.price
@@ -274,14 +275,14 @@ const ReportDetails = ({ reportData }) => {
                       <div className="icheck-primary d-inline">
                         <input
                           type="radio"
-                          value=""
-                          name="todo1"
-                          id="todoCheck2"
+                          value={reportData.upto10}
+                          name="price"
+                          id="upto10"
                           onChange={(e) => {
-                            setUpTo10User(e.target.checked);
+                            setPrice(reportData.upto10);
                           }}
                         />
-                        <label htmlFor="todoCheck2" className="text-xs">
+                        <label htmlFor="upto10" className="text-xs">
                           Upto 10 Users License:&nbsp;
                           <span className="text-xs">
                             {reportData.upto10
@@ -296,14 +297,14 @@ const ReportDetails = ({ reportData }) => {
                       <div className="icheck-primary d-inline ">
                         <input
                           type="radio"
-                          value=""
-                          name="todo1"
-                          id="todoCheck3"
+                          value={reportData.corporate_price}
+                          name="price"
+                          id="corporate_price"
                           onChange={(e) => {
-                            setCorporateUser(e.target.checked);
+                            setPrice(reportData.corporate_price);
                           }}
                         />
-                        <label htmlFor="todoCheck3" className="text-xs">
+                        <label htmlFor="corporate_price" className="text-xs">
                           Corporate User License:&nbsp;
                           <span className="text-xs">
                             {reportData.corporate_price
@@ -318,14 +319,14 @@ const ReportDetails = ({ reportData }) => {
                       <div className="icheck-primary d-inline ">
                         <input
                           type="radio"
-                          value=""
-                          name="todo1"
-                          id="todoCheck4"
+                          value={reportData.data_pack_price}
+                          name="price"
+                          id="data_pack_price"
                           onChange={(e) => {
-                            setDatapack(e.target.checked);
+                            setPrice(reportData.data_pack_price);
                           }}
                         />
-                        <label htmlFor="todoCheck4" className="text-xs ">
+                        <label htmlFor="data_pack_price" className="text-xs ">
                           DataPack License:&nbsp;
                           <span className="text-xs">
                             {reportData.data_pack_price
@@ -342,10 +343,7 @@ const ReportDetails = ({ reportData }) => {
                     href={{
                       pathname: `/contact/${reportData.slug}/buy-now`,
                       query: {
-                        singleUser,
-                        upTo10User,
-                        corporateUser,
-                        datapack,
+                        price,
                       },
                     }}
                   >
