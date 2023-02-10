@@ -125,6 +125,7 @@ const Articles = () => {
                           </p>
                           <h5 className="mb-0 text-primary">
                             <Link
+                            target="_blank"
                               className="text-primary"
                               href={`/pressreleases/${article.slug}`}
                             >

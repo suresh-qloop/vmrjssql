@@ -255,7 +255,7 @@ const ContactUs = () => {
                 <p>
                   <a
                     href="mailto:sales@valuemarketresearch.com"
-                    className="text-sm text-secondary "
+                    className="text-sm  "
                   >
                     <i className="far fa-envelope mr-2"></i>
                     sales@valuemarketresearch.com

@@ -6,7 +6,6 @@ const { check, validationResult } = require("express-validator");
 const md5 = require("md5");
 exports.orderReport = async (req, res, next) => {
   const data = req.body;
-  console.log(data.amount);
   try {
     const options = {
       amount: data.amount * 100,
@@ -51,7 +50,6 @@ exports.orderReport = async (req, res, next) => {
 //   }
 // };
 exports.paymentUserAdd = async (req, res, next) => {
-  console.log(req.body);
   await check("first_name").notEmpty().run(req);
   await check("last_name").notEmpty().run(req);
   await check("organisation").notEmpty().run(req);
@@ -80,8 +78,7 @@ exports.paymentUserAdd = async (req, res, next) => {
   const country = req.body.country;
   const zipCode = req.body.zipCode;
   const ip = req.socket.remoteAddress;
-  // const product_id = req.body.product_id;
-  // const alias = req.body.alias;
+
   let date = moment().format().slice(0, 19).replace("T", " ");
   try {
     const [userCheck] = await Payment.findById(
@@ -127,16 +124,16 @@ exports.paymentUserAdd = async (req, res, next) => {
     });
   }
 };
-exports.getKey = async (req, res, next) => {
-  try {
-    res.status(200).json({
-      key: process.env.RAZOR_API_KEY,
-      secretKey: process.env.RAZOR_KEY_SECRET,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      error: err.message,
-    });
-  }
-};
+// exports.getKey = async (req, res, next) => {
+//   try {
+//     res.status(200).json({
+//       key: process.env.RAZOR_API_KEY,
+//       secretKey: process.env.RAZOR_KEY_SECRET,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };

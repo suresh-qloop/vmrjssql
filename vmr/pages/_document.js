@@ -18,6 +18,10 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
             rel="stylesheet"
           /> */}
+          {/* <link
+            rel="stylesheet"
+            href={`${process.env.NEXT_PUBLIC_URL}/dist/css/adminlte.min.css`}
+          /> */}
         </Head>
         <body
           className="hold-transition sidebar-mini layout-fixed"

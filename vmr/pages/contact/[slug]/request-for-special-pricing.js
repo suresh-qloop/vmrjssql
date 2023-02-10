@@ -29,7 +29,7 @@ const RequestForDiscount = () => {
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/report/${slug}`)
       .then((res) => {
         setReportData(res.data);
-        setName(res.data.product_name);
+        setName(res.data.alias);
         setDescription(res.data.product_description);
       })
       .catch((err) => {
@@ -113,15 +113,15 @@ const RequestForDiscount = () => {
                       </div>
                     </div>
                   </div>
-                  <p className="text-center text-secondary">
+                  <p className="text-center text-secondary text-sm">
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h3 className="text-center mb-3">
+                  <h4 className="text-center mb-3">
                     Request for Special Pricing
-                  </h3>
-                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="form-group row">
+                  </h4>
+                  <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
+                    <div className={`row  ${errors.fullName ? "" : "mb-3"}`}>
                       <label
                         htmlFor="fullName"
                         className="col-sm-4 col-form-label"
@@ -129,29 +129,38 @@ const RequestForDiscount = () => {
                         Full Name
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.fullName ? "is-invalid" : ""
-                          }`}
-                          id="fullName"
-                          placeholder="Full Name"
-                          {...register("fullName", {
-                            required: "This field is required",
-                            pattern: {
-                              value: /^(\w\w+)\s(\w+)$/i,
-                              message: "Please Enter Your Full Name",
-                            },
-                          })}
-                        />
-                        {errors.fullName && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.fullName.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-user"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control  ${
+                              errors.fullName ? "is-invalid" : ""
+                            }`}
+                            id="fullName"
+                            placeholder="Full Name"
+                            {...register("fullName", {
+                              required: "This field is required",
+                              pattern: {
+                                value: /^(\w\w+)\s(\w+)$/i,
+                                message: "Please Enter Your Full Name",
+                              },
+                            })}
+                          />
+                          {errors.fullName && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.fullName.message}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+                    <div
+                      className={`row  ${errors.organization ? "" : "mb-3"}`}
+                    >
                       <label
                         htmlFor="organization"
                         className="col-sm-4 col-form-label"
@@ -159,25 +168,32 @@ const RequestForDiscount = () => {
                         Organization
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.organization ? "is-invalid" : ""
-                          }`}
-                          id="organization"
-                          placeholder="Organization"
-                          {...register("organization", {
-                            required: "This field is required",
-                          })}
-                        />
-                        {errors.organization && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.organization.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-users"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.organization ? "is-invalid" : ""
+                            }`}
+                            id="organization"
+                            placeholder="Organization"
+                            {...register("organization", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.organization && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.organization.message}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+                    <div className={`row  ${errors.designation ? "" : "mb-3"}`}>
                       <label
                         htmlFor="designation"
                         className="col-sm-4 col-form-label"
@@ -185,25 +201,32 @@ const RequestForDiscount = () => {
                         Designation
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.designation ? "is-invalid" : ""
-                          }`}
-                          id="designation"
-                          placeholder="Designation"
-                          {...register("designation", {
-                            required: "This field is required",
-                          })}
-                        />
-                        {errors.designation && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.designation.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-address-card"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.designation ? "is-invalid" : ""
+                            }`}
+                            id="designation"
+                            placeholder="Designation"
+                            {...register("designation", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.designation && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.designation.message}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+                    <div className={`row  ${mobileError ? "" : "mb-3"}`}>
                       <label
                         htmlFor="mobile"
                         className="col-sm-4 col-form-label"
@@ -211,40 +234,82 @@ const RequestForDiscount = () => {
                         Mobile
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            mobileError ? "is-invalid" : ""
-                          }`}
-                          pattern="[0-9]*"
-                          id="mobile"
-                          value={mobile}
-                          placeholder="Mobile Number"
-                          size="10"
-                          maxLength="10"
-                          // minlength="10"
-                          onChange={(e) => {
-                            const re = /^[0-9\b]+$/;
-                            if (
-                              e.target.value === "" ||
-                              re.test(e.target.value)
-                            ) {
-                              setMobile(e.target.value);
-                              setMobileError(false);
-                            } else {
-                              setMobileError(true);
-                            }
-                          }}
-                        />
-                        {mobileError && (
-                          <div className="error invalid-feedback">
-                            <p>Please Enter Valid Mobile Number</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-phone-alt"></i>
+                            </span>
                           </div>
-                        )}
+
+                          {/* <Controller
+                          name="mobile"
+                          control={control}
+                          defaultValue=""
+                          {...register("mobile", {
+                            required: "Please enter a card number",
+                          })}
+                          render={({ field: { onChange, value, onBlur } }) => (
+                            <InputMask
+                              mask="99999 99999"
+                              maskChar=" "
+                              value={value}
+                              onChange={onChange}
+                              onBlur={onBlur}
+                            >
+                              {(inputProps) => (
+                                <input
+                                  {...inputProps}
+                                  className={`form-control ${
+                                    errors.mobile ? "is-invalid" : ""
+                                  }`}
+                                  id="mobile"
+                                  placeholder="Mobile"
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        /> */}
+                          {/* {errors.mobile && (
+                          <div className="error invalid-feedback">
+                            <p>{errors.mobile.message}</p>
+                          </div>
+                        )} */}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              mobileError ? "is-invalid " : ""
+                            }`}
+                            pattern="[0-9]*"
+                            id="mobile"
+                            value={mobile}
+                            placeholder="Mobile Number"
+                            size="10"
+                            maxLength="10"
+                            // minlength="10"
+                            onChange={(e) => {
+                              const re = /^[0-9\b]+$/;
+                              if (
+                                e.target.value === "" ||
+                                re.test(e.target.value)
+                              ) {
+                                setMobile(e.target.value);
+                                setMobileError(false);
+                              } else {
+                                setMobileError(true);
+                              }
+                            }}
+                          />
+                          {mobileError && (
+                            <div className="error invalid-feedback">
+                              <p>Please Enter Valid Mobile Number</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-
-                    <div className="form-group row">
+                    <div
+                      className={`row  ${errors.corporateEmail ? "" : "mb-3"}`}
+                    >
                       <label
                         htmlFor="corporateEmail"
                         className="col-sm-4 col-form-label"
@@ -252,37 +317,48 @@ const RequestForDiscount = () => {
                         Corporate Email
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.corporateEmail ? "is-invalid" : ""
-                          }`}
-                          id="corporateEmail"
-                          placeholder="Corporate Email"
-                          {...register("corporateEmail", {
-                            required: "This field is required",
-                            pattern: {
-                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                              message: "invalid email address",
-                            },
-                          })}
-                          onPaste={(e) => {
-                            e.preventDefault();
-                            return false;
-                          }}
-                          onCopy={(e) => {
-                            e.preventDefault();
-                            return false;
-                          }}
-                        />
-                        {errors.corporateEmail && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.corporateEmail.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-envelope"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.corporateEmail ? "is-invalid" : ""
+                            }`}
+                            id="corporateEmail"
+                            placeholder="Corporate Email"
+                            {...register("corporateEmail", {
+                              required: "This field is required",
+                              pattern: {
+                                value:
+                                  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "invalid email address",
+                              },
+                            })}
+                            onPaste={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                            onCopy={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                          />
+                          {errors.corporateEmail && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.corporateEmail.message}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+
+                    <div
+                      className={`row  ${errors.confirmEmail ? "" : "mb-3"}`}
+                    >
                       <label
                         htmlFor="confirmEmail"
                         className="col-sm-4 col-form-label"
@@ -290,44 +366,52 @@ const RequestForDiscount = () => {
                         Confirm Email
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.confirmEmail ? "is-invalid" : ""
-                          }`}
-                          id="confirmEmail"
-                          placeholder="Confirm Email"
-                          {...register("confirmEmail", {
-                            required: "This field is required",
-                            pattern: {
-                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                              message: "invalid email address",
-                            },
-                            validate: (value) => {
-                              const { corporateEmail } = getValues();
-                              return (
-                                corporateEmail === value ||
-                                "Email should match!"
-                              );
-                            },
-                          })}
-                          onPaste={(e) => {
-                            e.preventDefault();
-                            return false;
-                          }}
-                          onCopy={(e) => {
-                            e.preventDefault();
-                            return false;
-                          }}
-                        />
-                        {errors.confirmEmail && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.confirmEmail.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-envelope"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.confirmEmail ? "is-invalid" : ""
+                            }`}
+                            id="confirmEmail"
+                            placeholder="Confirm Email"
+                            {...register("confirmEmail", {
+                              required: "This field is required",
+                              pattern: {
+                                value:
+                                  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "invalid email address",
+                              },
+                              validate: (value) => {
+                                const { corporateEmail } = getValues();
+                                return (
+                                  corporateEmail === value ||
+                                  "Email should match!"
+                                );
+                              },
+                            })}
+                            onPaste={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                            onCopy={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                          />
+                          {errors.confirmEmail && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.confirmEmail.message}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+                    <div className={`row  ${errors.country ? "" : "mb-3"}`}>
                       <label
                         htmlFor="country"
                         className="col-sm-4 col-form-label"
@@ -335,25 +419,32 @@ const RequestForDiscount = () => {
                         Country
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.country ? "is-invalid" : ""
-                          }`}
-                          id="country"
-                          placeholder="Country"
-                          {...register("country", {
-                            required: "This field is required",
-                          })}
-                        />
-                        {errors.country && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.country.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-map-marker-alt"></i>
+                            </span>
                           </div>
-                        )}
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.country ? "is-invalid" : ""
+                            }`}
+                            id="country"
+                            placeholder="Country"
+                            {...register("country", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.country && (
+                            <span className="error invalid-feedback">
+                              <p>{errors.country.message}</p>
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group row">
+                    <div className={`row  ${errors.message ? "" : "mb-3"}`}>
                       <label
                         htmlFor="message"
                         className="col-sm-4 col-form-label"
@@ -361,22 +452,29 @@ const RequestForDiscount = () => {
                         Any Specific Requirement
                       </label>
                       <div className="col-sm-8">
-                        <input
-                          type="text"
-                          className={`form-control ${
-                            errors.message ? "is-invalid" : ""
-                          }`}
-                          id="message"
-                          placeholder="Any Specific Requirement"
-                          {...register("message", {
-                            required: "This field is required",
-                          })}
-                        />
-                        {errors.message && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.message.message}</p>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="fas fa-info-circle"></i>
+                            </span>
                           </div>
-                        )}
+                          <textarea
+                            type="text"
+                            className={`form-control ${
+                              errors.message ? "is-invalid" : ""
+                            }`}
+                            id="message"
+                            placeholder="Any Specific Requirement"
+                            {...register("message", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.message && (
+                            <span className="error invalid-feedback">
+                              <p>{errors.message.message}</p>
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-8">
@@ -391,7 +489,6 @@ const RequestForDiscount = () => {
                     </div>
                     <div className="captcha">
                       <ReCAPTCHA
-                        size="normal"
                         sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
@@ -416,7 +513,7 @@ const RequestForDiscount = () => {
             <div className="col-md-6">
               <h5 className="px-2 mt-3">
                 <i className="fas fa-chart-line text-lg text-success mr-2"></i>{" "}
-                <Link className="text-dark" href={`/report/${reportData.slug}`}>
+                <Link className="text-blue" href={`/report/${reportData.slug}`}>
                   {name}
                 </Link>
               </h5>

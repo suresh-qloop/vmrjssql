@@ -11,8 +11,9 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import BackTop from "../../components/common/BackTop";
 // import { urlString } from "../../utils/urlString";
-
+import { useForm } from "react-hook-form";
 import Highlighter from "react-highlight-words";
+import notify from "../../components/helpers/Notification";
 
 const ReportDetails = () => {
   const [count, setCount] = useState(null);
@@ -80,14 +81,36 @@ const ReportDetails = () => {
   }, [reportList]);
 
   useEffect(() => {
-    if (!q) {
-      router.push("/");
-      return;
-    }
+    // if (!q) {
+    //   router.push("/");
+    //   return;
+    // }
     getReportData();
 
     // eslint-disable-next-line
   }, [q]);
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/search-enquirie`, data)
+      // .then((res) => {
+      // notify("success", "Form Submitted Successfully");
+      // router.push("/");
+      // })
+      .catch(function (error) {
+        console.log(error);
+        notify("error", error.response.data.message);
+      });
+    router.push("/thank-you");
+  };
 
   return (
     <Fragment>
@@ -190,85 +213,315 @@ const ReportDetails = () => {
 
             <div className="col-md-12">
               <div className="row">
-                <InfiniteScroll
-                  dataLength={reportList.length} //This is important field to render the next data
-                  next={getMoreReport}
-                  hasMore={hasMore}
-                  loader={
-                    <div className="text-center m-5 p-5">
-                      <div
-                        className="spinner-border text-primary"
-                        role="status"
-                      >
-                        <span className="sr-only">Loading...</span>
+                {reportList.length > 0 ? (
+                  <InfiniteScroll
+                    dataLength={reportList.length} //This is important field to render the next data
+                    next={getMoreReport}
+                    hasMore={hasMore}
+                    loader={
+                      <div className="text-center m-5 p-5">
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       </div>
-                    </div>
-                  }
-                  endMessage={
-                    <p className="mt-2" style={{ textAlign: "center" }}>
-                      <b>No More Records Found</b>
-                    </p>
-                  }
-                >
-                  {reportList?.map((report, i) => (
-                    <div className="col-md-12" key={i + 1}>
-                      <div
-                        className="card flex-md-row shadow-none rounded-0   mb-0 "
-                        style={{ borderBottom: "1px dashed #ccc" }}
-                      >
-                        <div className="card-body d-flex flex-column align-items-start">
-                          <p>
-                            <i className="far fa-calendar-alt mr-2"></i>
-                            <span>
-                              {moment(report.pub_date).format("MMMM YYYY")}
-                            </span>
-                          </p>
-                          <p className="mb-0 report-heading">
-                            <Link
-                              className="text-dark"
-                              href={`/report/${report.slug}`}
-                            >
-                              <Highlighter
-                                highlightClassName="YourHighlightClass"
-                                searchWords={[q]}
-                                autoEscape={true}
-                                textToHighlight={report.product_name}
-                              />
-                            </Link>
-                          </p>
+                    }
+                    endMessage={
+                      <p className="mt-2" style={{ textAlign: "center" }}>
+                        <b>No More Records Found</b>
+                      </p>
+                    }
+                  >
+                    {reportList?.map((report, i) => (
+                      <div className="col-md-12" key={i + 1}>
+                        <div
+                          className="card flex-md-row shadow-none rounded-0   mb-0 "
+                          style={{ borderBottom: "1px dashed #ccc" }}
+                        >
+                          <div className="card-body d-flex flex-column align-items-start">
+                            <p>
+                              <i className="far fa-calendar-alt mr-2"></i>
+                              <span>
+                                {moment(report.pub_date).format("MMMM YYYY")}
+                              </span>
+                            </p>
+                            <p className="mb-0 report-heading">
+                              <Link
+                                target="_blank"
+                                className="text-dark"
+                                href={`/report/${report.slug}`}
+                              >
+                                <Highlighter
+                                  highlightClassName="YourHighlightClass"
+                                  searchWords={[q]}
+                                  autoEscape={true}
+                                  textToHighlight={report.product_name}
+                                />
+                              </Link>
+                            </p>
 
-                          <p
-                            className="card-text text-secondary mb-auto my-3 dangerously"
-                            dangerouslySetInnerHTML={{
-                              __html: report.product_description,
-                            }}
-                          >
-                            {/* {report.name.slice(0, 150)}... */}
-                          </p>
-                          <div className="d-flax ">
-                            <Link
-                              href={`/contact/${report.slug}/download-sample/`}
-                              className="btn btn-success btn-sm mr-3  mt-3"
-                              style={{ width: 180 }}
+                            <p
+                              className="card-text text-secondary mb-auto my-3 dangerously"
+                              dangerouslySetInnerHTML={{
+                                __html: report.product_description,
+                              }}
                             >
-                              <i className="fas fa-download"></i> Download
-                              Sample
-                            </Link>
+                              {/* {report.name.slice(0, 150)}... */}
+                            </p>
+                            <div className="d-flax ">
+                              <Link
+                                href={`/contact/${report.slug}/download-sample/`}
+                                className="btn btn-success btn-sm mr-3  mt-3"
+                                style={{ width: 180 }}
+                                target="_blank"
+                              >
+                                <i className="fas fa-download"></i> Download
+                                Sample
+                              </Link>
 
-                            <Link
-                              href={`/contact/${report.slug}/ask-questions`}
-                              className="btn btn-info btn-sm mt-3"
-                              style={{ width: 150 }}
-                            >
-                              <i className="fas fa-question-circle"></i> Ask
-                              Questions
-                            </Link>
+                              <Link
+                                href={`/contact/${report.slug}/ask-questions`}
+                                className="btn btn-info btn-sm mt-3"
+                                style={{ width: 150 }}
+                                target="_blank"
+                              >
+                                <i className="fas fa-question-circle"></i> Ask
+                                Questions
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    ))}
+                  </InfiniteScroll>
+                ) : (
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-12 ">
+                        <div className="text-center pt-4">
+                          <h5 className="">
+                            <strong>
+                              {" "}
+                              Didn't find what you are looking for?
+                            </strong>
+                          </h5>
+                          <h5 className="">
+                            Please fill out the form. We will contact you within
+                            24 hours.
+                          </h5>
+                        </div>
+                        <hr className="dashed" />
+                      </div>
+                      <div className="col-md-12">
+                        <form
+                          className="px-5 py-3"
+                          onSubmit={handleSubmit(onSubmit)}
+                        >
+                          <div
+                            className={`row  ${errors.fullName ? "" : "mb-3"}`}
+                          >
+                            <label
+                              htmlFor="fullName"
+                              className="col-sm-4 col-form-label"
+                            >
+                              Full Name
+                            </label>
+                            <div className="col-sm-8">
+                              <div className="input-group">
+                                <div className="input-group-prepend">
+                                  <span className="input-group-text">
+                                    <i className="fas fa-user"></i>
+                                  </span>
+                                </div>
+                                <input
+                                  type="text"
+                                  className={`form-control  ${
+                                    errors.fullName ? "is-invalid" : ""
+                                  }`}
+                                  id="fullName"
+                                  placeholder="Full Name"
+                                  {...register("fullName", {
+                                    required: "This field is required",
+                                    pattern: {
+                                      value: /^(\w\w+)\s(\w+)$/i,
+                                      message: "Please Enter Your Full Name",
+                                    },
+                                  })}
+                                />
+                                {errors.fullName && (
+                                  <div className="error invalid-feedback">
+                                    <p>{errors.fullName.message}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`row  ${
+                              errors.corporateEmail ? "" : "mb-3"
+                            }`}
+                          >
+                            <label
+                              htmlFor="corporateEmail"
+                              className="col-sm-4 col-form-label"
+                            >
+                              Corporate Email
+                            </label>
+                            <div className="col-sm-8">
+                              <div className="input-group">
+                                <div className="input-group-prepend">
+                                  <span className="input-group-text">
+                                    <i className="fas fa-envelope"></i>
+                                  </span>
+                                </div>
+                                <input
+                                  type="text"
+                                  className={`form-control ${
+                                    errors.corporateEmail ? "is-invalid" : ""
+                                  }`}
+                                  id="corporateEmail"
+                                  placeholder="Corporate Email"
+                                  {...register("corporateEmail", {
+                                    required: "This field is required",
+                                    pattern: {
+                                      value:
+                                        /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                      message: "invalid email address",
+                                    },
+                                  })}
+                                  onPaste={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                  }}
+                                  onCopy={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                  }}
+                                />
+                                {errors.corporateEmail && (
+                                  <div className="error invalid-feedback">
+                                    <p>{errors.corporateEmail.message}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`row  ${
+                              errors.confirmEmail ? "" : "mb-3"
+                            }`}
+                          >
+                            <label
+                              htmlFor="confirmEmail"
+                              className="col-sm-4 col-form-label"
+                            >
+                              Confirm Email
+                            </label>
+                            <div className="col-sm-8">
+                              <div className="input-group">
+                                <div className="input-group-prepend">
+                                  <span className="input-group-text">
+                                    <i className="fas fa-envelope"></i>
+                                  </span>
+                                </div>
+                                <input
+                                  type="text"
+                                  className={`form-control ${
+                                    errors.confirmEmail ? "is-invalid" : ""
+                                  }`}
+                                  id="confirmEmail"
+                                  placeholder="Confirm Email"
+                                  {...register("confirmEmail", {
+                                    required: "This field is required",
+                                    pattern: {
+                                      value:
+                                        /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                      message: "invalid email address",
+                                    },
+                                    validate: (value) => {
+                                      const { corporateEmail } = getValues();
+                                      return (
+                                        corporateEmail === value ||
+                                        "Email should match!"
+                                      );
+                                    },
+                                  })}
+                                  onPaste={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                  }}
+                                  onCopy={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                  }}
+                                />
+                                {errors.confirmEmail && (
+                                  <div className="error invalid-feedback">
+                                    <p>{errors.confirmEmail.message}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`row  ${errors.message ? "" : "mb-3"}`}
+                          >
+                            <label
+                              htmlFor="message"
+                              className="col-sm-4 col-form-label"
+                            >
+                              Any Specific Requirement
+                            </label>
+                            <div className="col-sm-8">
+                              <div className="input-group">
+                                <div className="input-group-prepend">
+                                  <span className="input-group-text">
+                                    <i className="fas fa-info-circle"></i>
+                                  </span>
+                                </div>
+                                <textarea
+                                  type="text"
+                                  className={`form-control ${
+                                    errors.message ? "is-invalid" : ""
+                                  }`}
+                                  id="message"
+                                  placeholder="Any Specific Requirement"
+                                  {...register("message", {
+                                    required: "This field is required",
+                                  })}
+                                />
+                                {errors.message && (
+                                  <span className="error invalid-feedback">
+                                    <p>{errors.message.message}</p>
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-sm-8">
+                            <input
+                              type="hidden"
+                              className="form-control"
+                              id="type"
+                              placeholder="type"
+                              {...register("type")}
+                              value="Search"
+                            />
+                          </div>
+
+                          <div className="col-md-12 text-center">
+                            <button className="btn btn-info justify-content-center mt-2">
+                              Submit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
-                  ))}
-                </InfiniteScroll>
+                  </div>
+                )}
               </div>
             </div>
           </div>

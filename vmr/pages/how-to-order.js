@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import BackTop from "../components/common/BackTop";
 import Footer from "../components/Frontend/Footer";
@@ -10,6 +10,21 @@ import Breadcrumb from "../components/Frontend/Breadcrumb";
 import Link from "next/link";
 
 export default function HowToOrder() {
+  useEffect(() => {
+    var d = document;
+    var x = !d.getElementById("razorpay-embed-btn-js");
+    if (d) {
+      var s = d.createElement("script");
+      s.defer = !0;
+      s.id = "razorpay-embed-btn-js";
+      s.src = "https://cdn.razorpay.com/static/embed_btn/bundle.js";
+      d.body.appendChild(s);
+    } else {
+      var rzp = window["_rzp_"];
+      rzp && rzp.init && rzp.init();
+    }
+  }, []);
+
   return (
     <div className="wrapper">
       <NavbarTop />
@@ -62,6 +77,13 @@ export default function HowToOrder() {
           </p>
 
           <hr className="m-2 dashed" />
+          <div
+            className="razorpay-embed-btn text-center"
+            data-url="https://pages.razorpay.com/vmrpayment"
+            data-text="Make Payment"
+            data-color="#528FF0"
+            data-size="large"
+          ></div>
         </div>
       </section>
 

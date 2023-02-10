@@ -32,7 +32,24 @@ const ArticleDetails = ({ articleData }) => {
       </Head>
       <NavbarTop />
       <Navbar />
-      <Breadcrumb name={articleData.headline} />
+      {/* <Breadcrumb name={articleData.headline} /> */}
+      <div className=" py-3 bg-light">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 col-sm-12 d-flex">
+              <Link href="/" className="text-dark">
+                Home
+              </Link>
+              &nbsp; <span>/</span> &nbsp;
+              <Link href="/pressreleases" className="text-dark">
+                Press Releases
+              </Link>
+              &nbsp;<span>/</span> &nbsp;
+              <span>{articleData.headline}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className=" bg-light py-3">
         <div className="container bg-white p-4">
           <div className="row">

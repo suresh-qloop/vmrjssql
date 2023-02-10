@@ -7,6 +7,7 @@ import NavbarTop from "../components/Frontend/NavbarTop";
 
 import Navbar from "../components/Frontend/Navbar";
 import Breadcrumb from "../components/Frontend/Breadcrumb";
+import Client from "../components/Frontend/Home/Client";
 import Link from "next/link";
 
 export default function About() {
@@ -15,10 +16,10 @@ export default function About() {
       <NavbarTop />
       <Navbar />
       <Breadcrumb name="About Us" />
-      <section className="bg-light">
+      <section className="">
         <div className="container py-4">
-          <h5 className="text-left"> ABOUT US</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading "> ABOUT US</h5>
+          {/* <hr className="m-2 dashed" /> */}
 
           <p className="text-secondary pb-3">
             Value Market Research facilitates its clients with resourceful
@@ -33,16 +34,16 @@ export default function About() {
             organizational development.
           </p>
 
-          <h5 className="text-left">OUR VISION</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading">OUR VISION</h5>
+          {/* <hr className="m-2 dashed" /> */}
 
           <p className="text-secondary pb-3">
             Our vision is to ease decision-making and empower the strategists by
             providing them with holistic market information.
           </p>
 
-          <h5 className="text-left">OUR MISSION</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading">OUR MISSION</h5>
+          {/* <hr className="m-2 dashed" /> */}
           <p>
             We are a result-oriented organization and are expanding to achieve
             our mission:
@@ -54,8 +55,8 @@ export default function About() {
             </strong>
           </p>
 
-          <h5 className="text-left">OUR APPROACH</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading">OUR APPROACH</h5>
+          {/* <hr className="m-2 dashed" /> */}
           <p className="text-secondary pb-3">
             There is no one standard approach to build a report that is concise
             and detailed. For a company that deals with numerous industry
@@ -69,8 +70,10 @@ export default function About() {
             analysis.
           </p>
 
-          <h5 className="text-left">OUR ADVISORY & CONSULTING TEAM</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading">
+            OUR ADVISORY & CONSULTING TEAM
+          </h5>
+          {/* <hr className="m-2 dashed" /> */}
           <p className="text-secondary">
             We believe that significant problems require extraordinary people to
             solve them, while outstanding people are always drawn toward solving
@@ -91,8 +94,8 @@ export default function About() {
             experts together put us in a position to grow alongside our clients.
           </p>
 
-          <h5 className="text-left">WHY VALUE MARKET RESEARCH?</h5>
-          <hr className="m-2 dashed" />
+          <h5 className="text-left page-heading">WHY VALUE MARKET RESEARCH?</h5>
+          {/* <hr className="m-2 dashed" /> */}
           <ul className="text-secondary ">
             <li>
               Our team of 400+ Industry Experts, Analysts and SME's work across
@@ -124,7 +127,15 @@ export default function About() {
           <hr className="m-2 dashed" />
         </div>
       </section>
+      <section className="">
+        <div className="container py-4">
+          <div className="heading">
+            <h4 className="text-center">OUR CLIENTS</h4>
+          </div>
 
+          <Client />
+        </div>
+      </section>
       <BackTop />
       <Footer />
     </div>

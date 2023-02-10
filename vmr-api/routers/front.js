@@ -31,6 +31,7 @@ router.get("/analysis/:id", frontRoute.getAnalysis);
 router.get("/settings", frontRoute.getSettings);
 router.get("/auto-search", frontRoute.getSearchAlias);
 router.get("/search", frontRoute.getSearchReport);
+router.post("/search-enquirie", frontRoute.searchEnquirie);
 // router.delete("/remove", frontRoute.removeDate);
 
 module.exports = router;

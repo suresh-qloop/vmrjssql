@@ -7,10 +7,80 @@ const Footer = () => {
   useEffect(() => {
     let date = new Date().getFullYear();
     setCodate(date);
+
+    (function () {
+      var s1 = document.createElement("script"),
+        s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = "https://embed.tawk.to/5ac844094b401e45400e6c9d/default";
+      s1.charset = "UTF-8";
+      s1.setAttribute("crossorigin", "*");
+      s0.parentNode.insertBefore(s1, s0);
+    })();
   }, []);
   return (
     <div className="main-footer1 ">
-      <div className="container bottom_border">
+      <div className="container main-footer1-con bottom_border">
+        {/* <div className="social">
+          <ul className="social_footer_ul text-center">
+            <li>
+              <Link
+                href="https://www.facebook.com/valuemarketresearch/"
+                target="_blank"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </Link>
+            </li>
+            <li>
+              <Link href="https://twitter.com/vmr_reports" target="_blank">
+                <i className="fab fa-twitter"></i>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="https://www.linkedin.com/company/value-market-research/"
+                target="_blank"
+              >
+                <i className="fab fa-linkedin"></i>
+              </Link>
+            </li>
+          </ul>
+        </div> */}
+        <div className="footerboxriben">
+          <ul>
+            <li>Follow Us</li>
+            <li>
+              <Link
+                aria-label="Facebook"
+                href="https://www.facebook.com/valuemarketresearch/"
+                className="facebook"
+                target="_blank"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </Link>
+            </li>
+            <li>
+              <Link
+                aria-label="Twitter"
+                href="https://twitter.com/vmr_reports"
+                className="twitter"
+                target="_blank"
+              >
+                <i className="fab fa-twitter"></i>
+              </Link>
+            </li>
+            <li>
+              <Link
+                aria-label="LinkedIn"
+                href="https://www.linkedin.com/company/value-market-research/"
+                className="linkedin"
+                target="_blank"
+              >
+                <i className="fab fa-linkedin"></i>
+              </Link>
+            </li>
+          </ul>
+        </div>
         <div className="row">
           <div className=" col-sm-12 col-md-3 ">
             <h5 className="headin5_amrc col_white_amrc pt2">USEFUL LINKS</h5>
@@ -113,37 +183,12 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12 ">
-            <p className="text-center mt-3  text-light">
+            <p className="text-center my-4  text-light">
               © {codate}, All Rights Reserved,&nbsp;
               <Link href="/" className="text-decoration-none  text-light">
                 Value Market Research
               </Link>
             </p>
-          </div>
-          <div className="col-md-12 text-center">
-            <ul className="social_footer_ul text-center">
-              <li>
-                <Link
-                  href="https://www.facebook.com/valuemarketresearch/"
-                  target="_blank"
-                >
-                  <i className="fab fa-facebook-f"></i>
-                </Link>
-              </li>
-              <li>
-                <Link href="https://twitter.com/vmr_reports" target="_blank">
-                  <i className="fab fa-twitter"></i>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://www.linkedin.com/company/value-market-research/"
-                  target="_blank"
-                >
-                  <i className="fab fa-linkedin"></i>
-                </Link>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

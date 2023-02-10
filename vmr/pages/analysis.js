@@ -125,6 +125,7 @@ const Analysis = () => {
                           </p>
                           <h5 className="mb-0 text-primary">
                             <Link
+                              target="_blank"
                               className="text-primary"
                               href={`/analysis/${article.slug}`}
                             >

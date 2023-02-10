@@ -19,6 +19,7 @@ import ChaptersInfo from "../../components/Frontend/SideBar/ChaptersInfo";
 import Objectives from "../../components/Frontend/SideBar/Objectives";
 import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
 import BackTop from "../../components/common/BackTop";
+import { urlString } from "../../utils/urlString";
 
 const ReportDetails = ({ reportData }) => {
   // const [singleUser, setSingleUser] = useState(true);
@@ -26,6 +27,10 @@ const ReportDetails = ({ reportData }) => {
   // const [corporateUser, setCorporateUser] = useState(false);
   // const [datapack, setDatapack] = useState(false);
   const [price, setPrice] = useState(reportData.price);
+  useEffect(() => {
+    sessionStorage.setItem("price", price);
+  }, [price]);
+
   let output;
   if (reportData.product_faq) {
     const obj = JSON.parse(reportData.product_faq);
@@ -64,7 +69,9 @@ const ReportDetails = ({ reportData }) => {
               <span>
                 <Link
                   href={`/industries/${
-                    reportData.category_name ? reportData.category_name : ""
+                    reportData.category_name
+                      ? urlString(reportData.category_name)
+                      : ""
                   }`}
                   className="text-dark"
                 >
@@ -75,7 +82,7 @@ const ReportDetails = ({ reportData }) => {
           </div>
         </div>
       </div>
-      <div className=" bg-light py-3">
+      <div className=" bg-light pb-4">
         <div className="container bg-white p-4">
           <div className="row">
             <div className="col-lg-9 col-md-12 col-sm-12">
@@ -97,16 +104,18 @@ const ReportDetails = ({ reportData }) => {
                   <div className="row text-left">
                     <div className="col-md-3  text-sm">
                       <i className="far fa-calendar-alt mr-2"></i>
-                      <span>{reportData.product_no}</span>
+                      <span className="report-span">
+                        ID:{reportData.product_no}
+                      </span>
                     </div>
                     <div className="col-md-3  text-sm">
                       <i className="far fa-calendar-alt mr-2"></i>
-                      <span>
+                      <span className="report-span">
                         {moment(reportData.pub_date).format("MMMM YYYY")}
                       </span>
                     </div>
                     <div className="col-md-6 ">
-                      <span className="text-sm">
+                      <span className="report-span">
                         <strong> REPORT FORMATS:</strong> ELECTRONIC (PDF), MS
                         EXCEL
                       </span>
@@ -117,6 +126,7 @@ const ReportDetails = ({ reportData }) => {
                       <Link
                         href={`/contact/${reportData.slug}/download-sample`}
                         className="btn btn-success btn-sm mr-3 mt-3 btn-block"
+                        target="_blank"
                         // style={{ width: 180 }}
                       >
                         <i className="fas fa-download"></i> Download Sample
@@ -126,6 +136,7 @@ const ReportDetails = ({ reportData }) => {
                       <Link
                         href={`/contact/${reportData.slug}/ask-questions`}
                         className="btn btn-info btn-sm mr-3  mt-3 btn-block"
+                        // target="_blank"
                         // style={{ width: 150 }}
                       >
                         <i className="fas fa-question-circle"></i> Ask Questions
@@ -135,6 +146,7 @@ const ReportDetails = ({ reportData }) => {
                       <Link
                         href={`/contact/${reportData.slug}/request-customization`}
                         className="btn btn-warning text-light mr-3 btn-sm  mt-3 btn-block"
+                        target="_blank"
                         // style={{ width: 200 }}
                       >
                         <i className="fas fa-edit "></i> Request Customization
@@ -144,6 +156,7 @@ const ReportDetails = ({ reportData }) => {
                       <Link
                         href={`/contact/${reportData.slug}/request-for-discount`}
                         className="btn btn-primary btn-sm mr-3  mt-3 btn-block"
+                        target="_blank"
                         // style={{ width: 150 }}
                       >
                         <i className="fas fa-edit"></i> Request Discount
@@ -153,6 +166,7 @@ const ReportDetails = ({ reportData }) => {
                       <Link
                         href={`/contact/${reportData.slug}/covid-19-impact`}
                         className="btn btn-danger btn-sm mr-3  mt-3 btn-block"
+                        target="_blank"
                         // style={{ width: 150 }}
                       >
                         COVID-19 Impact
@@ -342,9 +356,6 @@ const ReportDetails = ({ reportData }) => {
                     className="btn btn-danger text-center mt-3  form-control"
                     href={{
                       pathname: `/contact/${reportData.slug}/buy-now`,
-                      query: {
-                        price,
-                      },
                     }}
                   >
                     <i className="fas fa-shopping-basket"></i> Buy Now

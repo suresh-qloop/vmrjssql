@@ -233,6 +233,7 @@ const Reports = () => {
                           </p>
                           <p className="mb-0 report-heading">
                             <Link
+                              target="_blank"
                               className="text-dark"
                               href={`/report/${report.slug}`}
                             >
@@ -253,6 +254,7 @@ const Reports = () => {
                               href={`/contact/${report.slug}/download-sample`}
                               className="btn btn-success btn-sm mr-3  mt-3"
                               style={{ width: 180 }}
+                              target="_blank"
                             >
                               <i className="fas fa-download"></i> Download
                               Sample
@@ -262,6 +264,7 @@ const Reports = () => {
                               href={`/contact/${report.slug}/ask-questions`}
                               className="btn btn-info btn-sm mt-3"
                               style={{ width: 150 }}
+                              target="_blank"
                             >
                               <i className="fas fa-question-circle"></i> Ask
                               Questions

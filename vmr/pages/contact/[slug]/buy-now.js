@@ -19,13 +19,13 @@ import crypto from "crypto";
 const AskQuestions = () => {
   const router = useRouter();
 
-  const { slug, price } = router.query;
+  const { slug } = router.query;
   const [reportData, setReportData] = useState([]);
 
   const [isVerified, setIsVerified] = useState(false);
   const [mobile, setMobile] = useState("");
   const [mobileError, setMobileError] = useState(false);
-  const [amount, setAmount] = useState(price);
+  const [amount, setAmount] = useState("");
   // const [singleUserPrice, setSingleUser] = useState(false);
   // const [upTo10UserPrice, setUpTo10User] = useState(false);
   // const [corporateUserPrice, setCorporateUser] = useState(false);
@@ -56,11 +56,15 @@ const AskQuestions = () => {
       return;
     }
     getReportData();
-    if (!amount) {
+    const price = sessionStorage.getItem("price");
+    if (price) {
       setAmount(price);
     }
+    // if (!amount) {
+    //   setAmount(price);
+    // }
     // eslint-disable-next-line
-  }, [slug, price]);
+  }, [slug]);
 
   const {
     register,
@@ -110,7 +114,7 @@ const AskQuestions = () => {
         mobile: finalData.mobile,
         id: finalData.product_id,
         alias: finalData.alias,
-        price: finalData.price,
+        price: finalData.amount,
       },
       handler: async function (response) {
         let values = {
@@ -727,7 +731,7 @@ const AskQuestions = () => {
                     </div>
                     <div className="captcha">
                       <ReCAPTCHA
-                        size="normal"
+                        // size="normal"
                         sitekey={process.env.NEXT_PUBLIC_SITEKEY}
                         onChange={handleCaptcha}
                       />
@@ -755,29 +759,34 @@ const AskQuestions = () => {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div className="form-group">
+                      <div className="form-group ">
                         <div className="form-check">
                           <input
-                            className="form-check-input"
                             type="checkbox"
+                            className={`form-check-input ${
+                              errors.term ? "is-invalid" : ""
+                            }`}
                             {...register("term", {
                               required: "This field is required",
                             })}
                           />
-                          <label className="form-check-label text-sm text-secondary">
+                          <label
+                            className="form-check-label text-sm text-secondary"
+                            htmlFor="term"
+                          >
                             I have read
                             <Link href="/terms-and-conditions" className="mx-1">
                               Terms and Conditions
                             </Link>
                             and I accept it.
                           </label>
+                          {errors.term && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.term.message}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
-                      {errors.term && (
-                        <div className="error invalid-feedback">
-                          <p>{errors.term.message}</p>
-                        </div>
-                      )}
                     </div>
                     <div className="col-md-12 text-center">
                       <button

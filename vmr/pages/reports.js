@@ -9,16 +9,16 @@ import NavbarTop from "../components/Frontend/NavbarTop";
 import Footer from "../components/Frontend/Footer";
 // import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
-// import { Fragment } from "react";
+import { Fragment } from "react";
 import BackTop from "../components/common/BackTop";
 // import { useRouter } from "next/router";
-// import { urlString } from "../utils/urlString";
-
+import { urlString } from "../utils/urlString";
+//
 // import { useSession } from "next-auth/react";
 
 const Reports = () => {
   // const router = useRouter();
-  // const [categoryList, setCategoryList] = useState();
+  const [categoryList, setCategoryList] = useState();
 
   const [reportList, setReportList] = useState([]);
   const [count, setCount] = useState(null);
@@ -28,7 +28,7 @@ const Reports = () => {
 
   useEffect(() => {
     getReportList();
-    // getCategoryList();
+    getCategoryList();
 
     // eslint-disable-next-line
   }, []);
@@ -36,16 +36,16 @@ const Reports = () => {
     setHasMore(count > reportList.length ? true : false);
   }, [reportList]);
 
-  // const getCategoryList = async () => {
-  //   await axios
-  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
-  //     .then((res) => {
-  //       setCategoryList(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const getCategoryList = async () => {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
+      .then((res) => {
+        setCategoryList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getReportList = async () => {
     await axios
@@ -91,7 +91,7 @@ const Reports = () => {
                 the market players.
               </p>
             </div>
-            {/* <div className="col-lg-3 col-md-12">
+            <div className="col-lg-3 col-md-12">
               <div className="card shadow-none mb-0">
                 <div className="card-header">
                   <h2 className="card-title">Reports by Industry </h2>
@@ -147,9 +147,9 @@ const Reports = () => {
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
 
-            <div className="col-lg-12 col-md-12">
+            <div className="col-lg-9 col-md-9">
               <InfiniteScroll
                 dataLength={reportList.length} //This is important field to render the next data
                 next={getMoreReport}
@@ -183,6 +183,7 @@ const Reports = () => {
                         </span>
                       </p>
                       <Link
+                        target="_blank"
                         className="text-dark mb-0 report-heading"
                         href={`/report/${report.slug}`}
                         // onBlur={persistScrollPosition(report.slug)}
@@ -206,6 +207,7 @@ const Reports = () => {
                           href={`/contact/${report.slug}/download-sample`}
                           className="btn btn-success btn-sm mr-3  mt-3"
                           style={{ width: 180 }}
+                          target="_blank"
                         >
                           <i className="fas fa-download"></i> Download Sample
                         </Link>
@@ -214,6 +216,7 @@ const Reports = () => {
                           href={`/contact/${report.slug}/ask-questions`}
                           className="btn btn-info btn-sm mt-3"
                           style={{ width: 150 }}
+                          target="_blank"
                         >
                           <i className="fas fa-question-circle"></i> Ask
                           Questions

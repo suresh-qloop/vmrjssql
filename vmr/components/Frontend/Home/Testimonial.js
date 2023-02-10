@@ -26,7 +26,7 @@ export default function Testimonial() {
       </div>
       <div
         id="carouselExampleIndicators1"
-        className="carousel slide my-4"
+        className="carousel slide "
         data-interval="4000"
         data-ride="carousel"
       >

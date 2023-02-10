@@ -61,7 +61,7 @@ const Navbar = (props) => {
               src="/dist/img/logos/vmr-logo.webp"
               width="176"
               height="65"
-              alt=""
+              alt="Value Market Research"
             />
           </Link>
           <button
@@ -109,7 +109,7 @@ const Navbar = (props) => {
                       <Fragment key={i + 1}>
                         <Link
                           className="dropdown-item"
-                          href={`../industries/${urlString(curElem.name)}`}
+                          href={`/industries/${urlString(curElem.name)}`}
                           key={curElem.id}
                         >
                           {curElem.name}

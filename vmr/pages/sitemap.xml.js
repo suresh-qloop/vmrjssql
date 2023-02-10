@@ -35,7 +35,24 @@ function generateSiteMap(categories, reports, pressreleases, analysis) {
      `;
        })
        .join("")}
-
+       <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/about-us</loc>
+     </url>
+     <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/testimonials</loc>
+     </url>
+     <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/contact-us</loc>
+     </url>
+     <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/how-to-order</loc>
+     </url>
+     <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/research-methodology</loc>
+     </url>
+       <url>
+       <loc>${process.env.NEXT_PUBLIC_URL}/pressreleases</loc>
+     </url>
        ${pressreleases
          .map(({ slug }) => {
            return `

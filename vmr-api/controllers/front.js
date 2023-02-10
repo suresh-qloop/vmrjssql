@@ -1183,3 +1183,132 @@ exports.getSearchReport = async (req, res, next) => {
 //     });
 //   }
 // };
+
+exports.searchEnquirie = async (req, res, next) => {
+  await check("fullName").notEmpty().run(req);
+  await check("corporateEmail").notEmpty().run(req);
+  await check("confirmEmail").notEmpty().run(req);
+  await check("message").notEmpty().run(req);
+  await check("type").notEmpty().run(req);
+
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json({ errors: result.array() });
+  }
+  const name = req.body.fullName;
+  const corporateEmail = req.body.corporateEmail;
+  const confirmEmail = req.body.confirmEmail;
+  const message = req.body.message;
+  const subject = req.body.type;
+  const ref_page = req.body.type;
+  const ip = req.socket.remoteAddress;
+
+  try {
+    const [smtpUser] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpUser'`,
+      "id ASC"
+    );
+    const [smtpPassword] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='smtpPassword'`,
+      "id ASC"
+    );
+
+    const [r] = await Model.findById(
+      "settings",
+      "*",
+      `\`key\`='mailToUser'`,
+      "id ASC"
+    );
+    let mailToUser = r[0].value.split(",");
+    let from = `Value Market Research  <${smtpUser[0].value}>`;
+    let userSubject = `Regarding your inquiry`;
+    let adminSubject = `New Lead Recieved`;
+
+    let transporter = nodemailer.createTransport({
+      service: "Mailgun",
+      port: 587,
+      secure: false,
+      auth: {
+        user: smtpUser[0].value,
+        pass: smtpPassword[0].value,
+      },
+    });
+
+    res.render("user-search-enquirie-email", { name }, function (err, html) {
+      if (err) {
+        return res.status(500).json({
+          error: err.message,
+        });
+      } else {
+        //Setting up Email settings
+        let userMailOptions = {
+          from: from,
+          to: confirmEmail,
+          subject: userSubject,
+          generateTextFromHtml: true,
+          html: html,
+        };
+
+        //Execute this to send the mail
+        transporter.sendMail(userMailOptions, function (error, response) {
+          if (error) {
+            console.log(error);
+            res.send("Mail Error! Try again");
+          } else {
+            res.render(
+              "admin-search-enquirie-email",
+              {
+                name,
+                corporateEmail,
+                subject,
+                message,
+                ip,
+                ref_page,
+              },
+              function (err, html) {
+                if (err) {
+                  return res.status(500).json({
+                    error: err.message,
+                  });
+                } else {
+                  //Setting up Email settings
+                  let adminMailOptions = {
+                    from: from,
+                    to: mailToUser,
+                    subject: adminSubject,
+                    generateTextFromHtml: true,
+                    html: html,
+                  };
+
+                  //Execute this to send the mail
+                  transporter.sendMail(
+                    adminMailOptions,
+                    function (error, response) {
+                      if (error) {
+                        return res.status(500).json({
+                          error: "Mail Error! Try again",
+                        });
+                      } else {
+                        res.status(201).json({
+                          message: "Mail Send successfully",
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          }
+        });
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
