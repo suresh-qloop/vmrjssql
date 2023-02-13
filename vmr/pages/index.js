@@ -36,10 +36,10 @@ export default function Home() {
 
       <section className="carosal">
         <div className="container p-lg-5 p-sm-0">
-          <div className="row ">
-            <div className="col-md-8 col-sm-12 p-5 ">
+          <div className="row">
+            <div className="col-md-8 col-sm-12 p-5">
               <h4 className="text-dark ">
-                <strong> We add value to the business with our</strong>
+                <strong>We add value to the business with our</strong>
               </h4>
               <h1 className="banner_title">
                 Customized and Syndicate Market Research Reports
@@ -66,10 +66,11 @@ export default function Home() {
 
       <section className="bg-white">
         <div className="container py-4">
-          <div className="heading">
-            <h4 className="text-center">
-              Some facts about Value Market Research
-            </h4>
+          <div className="border py-2   blue-background text-light text-center ">
+            <h5 className="m-0">
+              <i className="fas fa-industry mr-2"></i>Some facts about Value
+              Market Research
+            </h5>
           </div>
           <Fact />
           <Client />

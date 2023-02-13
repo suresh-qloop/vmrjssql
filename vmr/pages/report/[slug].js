@@ -263,7 +263,13 @@ const ReportDetails = ({ reportData }) => {
                     style={{ listStyle: "none", margin: 0 }}
                   >
                     <li>
-                      <div className="icheck-primary d-inline">
+                      <div
+                        className="icheck-primary d-inline"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="Single User License allows only one user to access the Report.
+                         The report will be sent electronically to the buyer as a PDF File."
+                      >
                         <input
                           type="radio"
                           value={reportData.price}
@@ -286,7 +292,13 @@ const ReportDetails = ({ reportData }) => {
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div className="icheck-primary d-inline">
+                      <div
+                        className="icheck-primary d-inline"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="Multi-User License allows 2-10 users to access the Report.
+                         The report will be sent electronically to the buyers as a PDF File."
+                      >
                         <input
                           type="radio"
                           value={reportData.upto10}
@@ -308,7 +320,12 @@ const ReportDetails = ({ reportData }) => {
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div className="icheck-primary d-inline ">
+                      <div
+                        className="icheck-primary d-inline "
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="Enterprise User License allows access of the Report across the whole enterprise. The report will be sent electronically as a PDF File."
+                      >
                         <input
                           type="radio"
                           value={reportData.corporate_price}
@@ -330,7 +347,12 @@ const ReportDetails = ({ reportData }) => {
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div className="icheck-primary d-inline ">
+                      <div
+                        className="icheck-primary d-inline "
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="This covers all data tables of the report in the excel format only."
+                      >
                         <input
                           type="radio"
                           value={reportData.data_pack_price}

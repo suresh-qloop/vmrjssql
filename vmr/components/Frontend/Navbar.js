@@ -59,8 +59,8 @@ const Navbar = (props) => {
           <Link className="navbar-brand" href="/">
             <img
               src="/dist/img/logos/vmr-logo.webp"
-              width="176"
-              height="65"
+              width="160"
+              height="66"
               alt="Value Market Research"
             />
           </Link>
@@ -196,7 +196,7 @@ const Navbar = (props) => {
                           setDropDown(true);
                         }
                       }}
-
+                      required
                       // id="dropdownMenuButton1"
                       // data-bs-toggle="dropdown"
                       // aria-expanded="false"

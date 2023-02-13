@@ -169,11 +169,19 @@ body {
 /* ============================= Blog Page ============================= */
 
 .img-box {
-  background-color: #263238;
-  height: 125px;
-  width: 100px;
+  /* background-color: #263238; */
+  height: 147px;
+  width: 115px;
   border: 1px solid #929292;
   border-radius: 2px;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+@media (max-width: 34em) {
+  .img-box {
+    margin-left: 113px;
+    margin-bottom: 20px;
+  }
 }
 .img-box img {
   height: 100%;
@@ -484,7 +492,8 @@ hr.dashed {
 }
 
 .bg-color {
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  background-color: #022b8487;
   min-height: 290px;
 }
 .bg-box {
@@ -538,12 +547,12 @@ hr.dashed {
 #nav-tabContent p {
   font-family: "Nunito", sans-serif !important;
   font-size: 16px !important;
-  text-align: justify !important;
+  /* text-align: justify !important; */
 }
 #nav-tabContent h2 {
   font-family: "Nunito", sans-serif !important;
   font-size: 18px !important;
-  text-align: justify !important;
+  /* text-align: justify !important; */
 }
 #nav-tabContent ul {
   font-family: "Nunito", sans-serif !important;
@@ -553,6 +562,12 @@ hr.dashed {
 #nav-tabContent img {
   width: 80% !important;
   height: 30% !important;
+  margin-left: calc(100% - 743px);
+}
+@media (max-width: 34em) {
+  #nav-tabContent img {
+    margin-left: calc(100% - 280px);
+  }
 }
 
 /* ============================= dangerouslySetInnerHTML display ============================= */
@@ -668,8 +683,9 @@ hr.dashed {
 }
 
 .page-heading {
-  background-color: #c6c6c6;
-  border: 1px solid #a5a5a5;
+  background-color: #005c94;
+  border: 1px solid #005c94;
+  color: white;
   padding: 8px;
   font-size: 14px;
   text-transform: uppercase;

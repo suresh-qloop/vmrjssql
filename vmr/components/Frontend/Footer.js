@@ -14,7 +14,7 @@ const Footer = () => {
       s1.async = true;
       s1.src = "https://embed.tawk.to/5ac844094b401e45400e6c9d/default";
       s1.charset = "UTF-8";
-      s1.setAttribute("crossorigin", "*");
+      s1.setAttribute("Access-Control-Allow-Origin", "*");
       s0.parentNode.insertBefore(s1, s0);
     })();
   }, []);
@@ -161,7 +161,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <p> +1-888-294-1147 </p>
+                <Link href="tel:8882941147">+1-888-294-1147 </Link>
               </li>
             </ul>
           </div>

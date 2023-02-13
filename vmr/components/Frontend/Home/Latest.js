@@ -51,6 +51,7 @@ export default function Latest() {
         console.log(err);
       });
   };
+
   return (
     <section className="bg-light">
       <div className="container py-4">

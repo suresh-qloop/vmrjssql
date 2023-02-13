@@ -85,10 +85,12 @@ const Reports = () => {
             <div className=" col-lg-12 col-md-12 px-4">
               <h3>REPORTS</h3>
               <p className="text-secondary">
-                Here is the database of all the market research reports we have
-                published. The description of each report covers a complete
-                table of contents along with the segmentation and profiles of
-                the market players.
+                <strong>
+                  Here is the database of all the market research reports we
+                  have published. The description of each report covers a
+                  complete table of contents along with the segmentation and
+                  profiles of the market players.
+                </strong>
               </p>
             </div>
             <div className="col-lg-3 col-md-12">

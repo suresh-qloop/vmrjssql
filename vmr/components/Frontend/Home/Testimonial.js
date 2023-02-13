@@ -21,12 +21,14 @@ export default function Testimonial() {
   };
   return (
     <Fragment>
-      <div className="heading">
-        <h4 className="text-center">Clients Testimonials</h4>
+      <div className="border p-2 blue-background text-light text-center ">
+        <h5 className="m-0">
+          <i className="fas fa-users mr-2"></i>Clients Testimonials
+        </h5>
       </div>
       <div
         id="carouselExampleIndicators1"
-        className="carousel slide "
+        className="carousel slide mt-4"
         data-interval="4000"
         data-ride="carousel"
       >

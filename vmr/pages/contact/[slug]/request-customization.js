@@ -88,16 +88,14 @@ const RequestCustomization = () => {
         <meta name="theme-color" content="#000000" />
         <meta name="keywords" content={reportData.meta_keywords} />
         <meta name="description" content={reportData.meta_desc}></meta>
-
         <title>{reportData.meta_name}</title>
       </Head>
       <NavbarTop />
       <Navbar />
-
       <div className=" bg-light py-3">
         <div className="container bg-white p-4 px-2">
           <div className="row">
-            <div className="col-md-6 ">
+            <div className="col-md-6 order-last order-lg-first">
               <div className="card">
                 <div className="card-body">
                   <div className="row ml-0 mb-3">
@@ -512,7 +510,7 @@ const RequestCustomization = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-6">
+            <div className="col-md-6 order-first order-lg-last">
               <h5 className="px-2 mt-3">
                 <i className="fas fa-chart-line text-lg text-success mr-2"></i>{" "}
                 <Link className="text-blue" href={`/report/${reportData.slug}`}>
@@ -527,11 +525,11 @@ const RequestCustomization = () => {
                 }}
               ></p>
 
-              <div className="card mx-md-5 my-md-5">
+              <div className="card mx-md-5 my-md-5 d-lg-block d-none">
                 <h5 className="card-header  text-center py-3">
                   <strong> Why Choose Us</strong>
                 </h5>
-                <div className="card-body ">
+                <div className="card-body">
                   <ul
                     className=" p-0 text-center"
                     style={{ listStyle: "none", margin: 0 }}
@@ -567,7 +565,6 @@ const RequestCustomization = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </Fragment>
   );

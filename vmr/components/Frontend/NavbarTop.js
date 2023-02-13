@@ -7,7 +7,7 @@ const NavbarTop = () => {
     <div className=" blue-background  sticky-top">
       <div className="container">
         <div className="row">
-          <div className="col-md-6 col-xs-7 text-left">
+          <div className="col-md-6 col-xs-7 text-lg-left">
             <div className="nav-link  text-light text-sm">
               <Link className="text-light" href={`mailto:${email}`}>
                 <i className="fas fa-envelope-open-text mr-2 "></i>
@@ -15,12 +15,12 @@ const NavbarTop = () => {
               </Link>
             </div>
           </div>
-          <div className="col-md-6 col-xs-5 text-right">
+          <div className="col-md-6 col-xs-5 text-lg-right">
             <div className="nav-link text-light text-sm">
               {/* <i className="fas fa-phone-alt"></i> &nbsp; +1-888-294-1147 */}
-              <a href="tel:8882941147" className="text-sm text-light">
+              <Link href="tel:8882941147" className="text-sm text-light">
                 <i className="fas fa-phone-alt mr-2"></i>+1-888-294-1147
-              </a>
+              </Link>
             </div>
           </div>
         </div>

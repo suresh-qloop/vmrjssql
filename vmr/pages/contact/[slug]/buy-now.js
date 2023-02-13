@@ -164,11 +164,11 @@ const AskQuestions = () => {
       <NavbarTop />
       <Navbar />
 
-      <div className=" bg-light py-3">
-        <div className="container bg-white p-4 px-2">
+      <div className="bg-white  py-3 shadow  rounded">
+        <div className="container p-4 px-2">
           <div className="row">
             <div className="col-md-12 ">
-              <div className="card">
+              <div className="card bg-light">
                 <div className="card-body">
                   <p className="text-center text-info">
                     <Link href={`/report/${reportData.slug}`}>

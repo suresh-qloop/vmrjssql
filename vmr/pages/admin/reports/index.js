@@ -112,7 +112,7 @@ const ReportList = () => {
       cell: (report) => (
         <Fragment>
           {report.is_active == 1 && (
-            <span className="badge bg-success ">Active</span>
+            <span className="badge bg-success">Active</span>
           )}
           {report.is_active == 2 && (
             <span className="badge  bg-info">ReadyToActive</span>
