@@ -56,18 +56,19 @@ const ContactUs = () => {
       <NavbarTop />
       <Navbar />
       <Breadcrumb name="Contact Us" />
-      <div className=" bg-light py-3 pb-5">
-        <div className="container bg-white p-4 px-2">
+      <div className=" bg-white  pb-5">
+        <div className="container  pb-4 px-2">
+          <h5 className=" form-heading my-3">GET IN TOUCH</h5>
           <div className="row">
             <div className="col-md-6 ">
-              <div className="card">
+              <div className="card form-bg-light">
                 <div className="card-body">
-                  <p className="text-center text-secondary">
-                    Please fill out the form. We will contact you within 24
-                    hours.
+                  <p className=" ">
+                    Contact us today, and get reply within 24 hours!
                   </p>
-                  <h3 className="text-center mb-3">GET IN TOUCH</h3>
-                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
+
+                  <hr />
+                  <form className="mb-5" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group row">
                       <label
                         htmlFor="name"
@@ -245,9 +246,6 @@ const ContactUs = () => {
             </div>
             <div className="col-md-6">
               <div className="border p-3">
-                <h5 className=" ">
-                  <strong>Address</strong>
-                </h5>
                 <p className="text-sm text-secondary mt-3">
                   <i className="fas fa-home mr-2"></i> 401/402, TFM, Nagras
                   Road, Aundh, Pune-7. Maharashtra, INDIA.
@@ -255,7 +253,7 @@ const ContactUs = () => {
                 <p>
                   <a
                     href="mailto:sales@valuemarketresearch.com"
-                    className="text-sm  "
+                    className="text-sm  text-blue"
                   >
                     <i className="far fa-envelope mr-2"></i>
                     sales@valuemarketresearch.com

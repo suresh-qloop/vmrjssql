@@ -144,7 +144,7 @@ const UpcomingReports = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );

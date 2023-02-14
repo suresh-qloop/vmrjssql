@@ -131,6 +131,9 @@ body {
     U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
     U+FEFF, U+FFFD;
 }
+/* .text-blue {
+  color: #0074bd;
+} */
 
 .dark-background {
   background-color: #005c94;
@@ -147,6 +150,47 @@ body {
 
 .text-blue {
   color: #005c94 !important;
+}
+
+.btn-purple {
+  color: #fff;
+  background-color: #a6c;
+  border-color: #a6c;
+  box-shadow: none;
+}
+.btn-purple:hover {
+  color: #fff;
+  background-color: #9029c4;
+  border-color: #9029c4;
+  /* box-shadow: none; */
+}
+.btn-purple {
+  color: #fff;
+  background-color: #a6c;
+  border-color: #a6c;
+  box-shadow: none;
+}
+.btn-yellow {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+  /* box-shadow: none; */
+}
+.btn-yellow:hover {
+  color: #fff;
+  background-color: #efa131;
+  border-color: #efa131;
+  /* box-shadow: none; */
+}
+.btn-red {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+.btn-red:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #c9302c;
 }
 
 /* ============================= btn-back-to-top ============================= */
@@ -493,7 +537,7 @@ hr.dashed {
 
 .bg-color {
   /* background-color: rgba(0, 0, 0, 0.7); */
-  background-color: #022b8487;
+  background-color: #00448d82;
   min-height: 290px;
 }
 .bg-box {
@@ -549,6 +593,12 @@ hr.dashed {
   font-size: 16px !important;
   /* text-align: justify !important; */
 }
+#nav-tabContent a {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px !important;
+  color: #005c94;
+  /* text-align: justify !important; */
+}
 #nav-tabContent h2 {
   font-family: "Nunito", sans-serif !important;
   font-size: 18px !important;
@@ -595,6 +645,7 @@ hr.dashed {
   font-weight: 300 !important;
   color: #5b5b5b !important;
 }
+
 .dangerously span {
   font-family: "Nunito", sans-serif !important;
   font-size: 16px !important;
@@ -633,6 +684,13 @@ hr.dashed {
   text-align: justify !important;
   font-weight: 300 !important;
   color: #5b5b5b !important;
+}
+.dangerously-article a {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 16px !important;
+  text-align: justify !important;
+  font-weight: 300 !important;
+  color: #005c94 !important;
 }
 .dangerously-article span {
   font-family: "Nunito", sans-serif !important;
@@ -695,4 +753,22 @@ hr.dashed {
 .captcha {
   transform: scale(0.8);
   transform-origin: 0 0;
+}
+
+.form-notice {
+  font-size: 13px;
+  font-weight: 800;
+}
+.form-heading {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.form-bg-light {
+  background-color: #e5e5e570;
+}
+.form-hr {
+  color: #e5e5e5;
+  background-color: #e5e5e5;
+  border-top: 1px solid #fffffd;
 }

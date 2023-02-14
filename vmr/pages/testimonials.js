@@ -44,7 +44,7 @@ export default function Testimonials() {
                       {article.testimonial_description}"
                     </p>
                     <hr className="m-2 dashed" />
-                    <h5>
+                    <h5 className="text-blue">
                       <i className="far fa-user-circle text-lg mr-3"></i>
                       {article.testimonial_title}
                     </h5>
@@ -65,7 +65,6 @@ export default function Testimonials() {
         </div>
       </section>
 
-      <BackTop />
       <Footer />
     </div>
   );

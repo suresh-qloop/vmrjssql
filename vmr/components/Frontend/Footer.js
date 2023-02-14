@@ -8,44 +8,24 @@ const Footer = () => {
     let date = new Date().getFullYear();
     setCodate(date);
 
-    (function () {
+    tawkToLoadScripts();
+  }, []);
+
+  const tawkToLoadScripts = async () => {
+    await (function () {
       var s1 = document.createElement("script"),
         s0 = document.getElementsByTagName("script")[0];
       s1.async = true;
-      s1.src = "https://embed.tawk.to/5ac844094b401e45400e6c9d/default";
+      s1.src = `https://embed.tawk.to/5ac844094b401e45400e6c9d/default`;
       s1.charset = "UTF-8";
-      s1.setAttribute("Access-Control-Allow-Origin", "*");
+      s1.setAttribute("crossorigin", "*");
       s0.parentNode.insertBefore(s1, s0);
     })();
-  }, []);
+  };
+
   return (
     <div className="main-footer1 ">
       <div className="container main-footer1-con bottom_border">
-        {/* <div className="social">
-          <ul className="social_footer_ul text-center">
-            <li>
-              <Link
-                href="https://www.facebook.com/valuemarketresearch/"
-                target="_blank"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </Link>
-            </li>
-            <li>
-              <Link href="https://twitter.com/vmr_reports" target="_blank">
-                <i className="fab fa-twitter"></i>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="https://www.linkedin.com/company/value-market-research/"
-                target="_blank"
-              >
-                <i className="fab fa-linkedin"></i>
-              </Link>
-            </li>
-          </ul>
-        </div> */}
         <div className="footerboxriben">
           <ul>
             <li>Follow Us</li>

@@ -54,7 +54,6 @@ export default function Disclaimer() {
         </div>
       </section>
 
-      <BackTop />
       <Footer />
     </div>
   );

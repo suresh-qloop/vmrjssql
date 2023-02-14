@@ -55,11 +55,11 @@ export default function Home() {
       <section className="bg-light">
         <div className="container  py-3">
           <div className="row">
-            <div className="col-md-1"></div>
-            <div className="col-md-10 ">
+            {/* <div className="col-md-1"></div> */}
+            <div className="col-md-12 ">
               <Testimonial />
             </div>
-            <div className="col-md-1"></div>
+            {/* <div className="col-md-1"></div> */}
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default function Home() {
         </div>
       </section>
       <Latest />
-      <BackTop />
+
       <Footer />
     </div>
   );

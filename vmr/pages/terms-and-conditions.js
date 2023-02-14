@@ -335,7 +335,6 @@ export default function Term() {
         </div>
       </section>
 
-      <BackTop />
       <Footer />
     </div>
   );

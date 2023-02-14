@@ -42,7 +42,7 @@ const Testimonials = () => {
                     {article.testimonial_description}"
                   </p>
 
-                  <h5>
+                  <h5 className="text-blue">
                     <i className="far fa-user-circle text-lg mr-3"></i>
                     {article.testimonial_title}
                   </h5>

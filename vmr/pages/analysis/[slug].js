@@ -53,7 +53,7 @@ const AnalysisDetails = ({ articleData }) => {
         <div className="container bg-white p-4">
           <div className="row">
             <div className="col-md-9 ">
-              <h4>{articleData.headline}</h4>
+              <h4 className="text-blue">{articleData.headline}</h4>
               <div className="row">
                 <div className="col-md-12 mt-3">
                   <i className="far fa-calendar-alt mr-2"></i>
@@ -92,7 +92,7 @@ const AnalysisDetails = ({ articleData }) => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </Fragment>
   );

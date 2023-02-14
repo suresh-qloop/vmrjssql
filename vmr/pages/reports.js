@@ -80,17 +80,15 @@ const Reports = () => {
       <Navbar />
       <Breadcrumb name="Reports" />
       <div className=" bg-light pb-5 pt-2">
-        <div className="container bg-white pb-5 pt-4">
+        <div className="container bg-white pb-5 ">
           <div className="row">
-            <div className=" col-lg-12 col-md-12 px-4">
-              <h3>REPORTS</h3>
-              <p className="text-secondary">
-                <strong>
-                  Here is the database of all the market research reports we
-                  have published. The description of each report covers a
-                  complete table of contents along with the segmentation and
-                  profiles of the market players.
-                </strong>
+            <div className=" col-lg-12 col-md-12 bg-light">
+              <h4>REPORTS</h4>
+              <p className="">
+                Here is the database of all the market research reports we have
+                published. The description of each report covers a complete
+                table of contents along with the segmentation and profiles of
+                the market players.
               </p>
             </div>
             <div className="col-lg-3 col-md-12">
@@ -240,7 +238,7 @@ const Reports = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );

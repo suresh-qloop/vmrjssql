@@ -107,7 +107,7 @@ export default function Categories() {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );

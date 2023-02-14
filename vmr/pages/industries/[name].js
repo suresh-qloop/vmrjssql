@@ -112,7 +112,7 @@ const Reports = () => {
       <NavbarTop />
       <Navbar />
       <Breadcrumb name={categoryDetail?.category_name} />
-      <div className=" bg-light pb-5 pt-3">
+      <div className=" bg-light pb-5">
         <div className="container bg-white pb-5 py-3">
           <div className="row">
             <div className="col-md-12 px-4">
@@ -280,7 +280,7 @@ const Reports = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );

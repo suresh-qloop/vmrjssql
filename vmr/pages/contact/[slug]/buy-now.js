@@ -73,7 +73,30 @@ const AskQuestions = () => {
     formState: { errors },
   } = useForm();
 
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+
+      document.body.appendChild(script);
+    });
+  };
+
   const onSubmit = async (data) => {
+    const res = await initializeRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
+
     data.report = reportData.product_name;
     data.publisher_name = reportData.publisher_name;
     data.slug = reportData.slug;

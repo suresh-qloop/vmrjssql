@@ -98,7 +98,7 @@ const ReportDetails = ({ reportData }) => {
                   </div>
                 </div>
                 <div className="col-md-10">
-                  <p>
+                  <p className="text-blue">
                     <strong>{reportData.product_name}</strong>
                   </p>
                   <div className="row text-left">
@@ -125,7 +125,7 @@ const ReportDetails = ({ reportData }) => {
                     <div className="col-lg-4 col-md-6 ">
                       <Link
                         href={`/contact/${reportData.slug}/download-sample`}
-                        className="btn btn-success btn-sm mr-3 mt-3 btn-block"
+                        className="btn  btn-purple  btn-sm mr-3 mt-3 btn-block"
                         target="_blank"
                         // style={{ width: 180 }}
                       >
@@ -145,7 +145,7 @@ const ReportDetails = ({ reportData }) => {
                     <div className="col-lg-4 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/request-customization`}
-                        className="btn btn-warning text-light mr-3 btn-sm  mt-3 btn-block"
+                        className="btn btn-yellow  mr-3 btn-sm  mt-3 btn-block"
                         target="_blank"
                         // style={{ width: 200 }}
                       >
@@ -155,7 +155,7 @@ const ReportDetails = ({ reportData }) => {
                     <div className="col-lg-3 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/request-for-discount`}
-                        className="btn btn-primary btn-sm mr-3  mt-3 btn-block"
+                        className="btn btn-success btn-sm mr-3  mt-3 btn-block"
                         target="_blank"
                         // style={{ width: 150 }}
                       >
@@ -165,7 +165,7 @@ const ReportDetails = ({ reportData }) => {
                     <div className="col-lg-3 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/covid-19-impact`}
-                        className="btn btn-danger btn-sm mr-3  mt-3 btn-block"
+                        className="btn btn-red btn-sm mr-3  mt-3 btn-block"
                         target="_blank"
                         // style={{ width: 150 }}
                       >
@@ -375,7 +375,7 @@ const ReportDetails = ({ reportData }) => {
                     <hr className="mt-2 mb-0 dashed" />
                   </ul>
                   <Link
-                    className="btn btn-danger text-center mt-3  form-control"
+                    className="btn btn-red text-center mt-3  form-control"
                     href={{
                       pathname: `/contact/${reportData.slug}/buy-now`,
                     }}
@@ -398,7 +398,7 @@ const ReportDetails = ({ reportData }) => {
                     {/* <div className="bg-success text-light py-3 border rounded text-center"> */}
                     <Link
                       href={`/contact/${reportData.slug}/download-sample`}
-                      className="btn btn-success btn-block py-2 text-center"
+                      className="btn btn-red btn-block py-2 text-center"
                     >
                       <i className="fas fa-download text-lg mr-2"></i>Download
                       Sample
@@ -413,7 +413,7 @@ const ReportDetails = ({ reportData }) => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </Fragment>
   );

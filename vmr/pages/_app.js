@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { useEffect } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../public/plugins/fontawesome-free/css/all.min.css";
 import "../public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css";
@@ -18,6 +20,7 @@ import { usePreserveScroll } from "../utils/usePreserveScroll";
 
 function MyApp({ Component, pageProps }) {
   usePreserveScroll();
+
   return (
     <>
       <Head>

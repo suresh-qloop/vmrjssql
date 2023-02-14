@@ -20,7 +20,7 @@ const keyQuestion = ({ slug }) => {
           <hr className="m-2 dashed" />
           <Link
             href={`/contact/${slug}/request-free-sample-report`}
-            className="btn btn-primary my-2  btn-block"
+            className="btn btn-red mt-3  btn-block"
           >
             Request Free Sample Report
           </Link>
@@ -43,7 +43,7 @@ const keyQuestion = ({ slug }) => {
           <hr className="m-2 dashed" />
           <Link
             href={`/contact/${slug}/request-customization`}
-            className="btn btn-primary my-2  btn-block"
+            className="btn btn-red mt-3  btn-block"
           >
             Request For Customization
           </Link>

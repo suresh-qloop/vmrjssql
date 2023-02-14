@@ -87,7 +87,6 @@ export default function HowToOrder() {
         </div>
       </section>
 
-      <BackTop />
       <Footer />
     </div>
   );

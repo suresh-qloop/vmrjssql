@@ -527,7 +527,7 @@ const ReportDetails = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </Fragment>
   );

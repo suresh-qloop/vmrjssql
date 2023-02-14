@@ -158,7 +158,6 @@ export default function Privacy() {
         </div>
       </section>
 
-      <BackTop />
       <Footer />
     </div>
   );

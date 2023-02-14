@@ -97,7 +97,7 @@ const DownloadSample = () => {
         <div className="container bg-white p-4 px-2">
           <div className="row">
             <div className="col-md-6 order-last order-lg-first">
-              <div className="card">
+              <div className="card shadow rounded form-bg-light">
                 <div className="card-body">
                   <div className="row ml-0 mb-3">
                     <div className="col-md-12 text-right">
@@ -117,12 +117,14 @@ const DownloadSample = () => {
                     </div>
                   </div>
 
-                  <p className="text-center text-secondary text-sm">
+                  <p className="text-center form-notice text-sm">
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h4 className="text-center mb-3">Download Sample</h4>
-
+                  <h4 className="text-center form-heading mb-3">
+                    Download Sample
+                  </h4>
+                  <hr className="form-hr" />
                   <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className={`row  ${errors.fullName ? "" : "mb-3"}`}>
                       <label
@@ -527,41 +529,50 @@ const DownloadSample = () => {
                   __html: description,
                 }}
               ></p>
-              <div className="card mx-md-5 my-md-5 d-lg-block d-none">
-                <h5 className="card-header  text-center py-3">
-                  <strong> Why Choose Us</strong>
-                </h5>
-                <div className="card-body ">
-                  <ul
-                    className=" p-0 text-center"
-                    style={{ listStyle: "none", margin: 0 }}
-                  >
-                    <li>
-                      <i className="fas fa-user border rounded-circle p-3 mr-3"></i>
-                      <span className=" ">
-                        Client First Policy &nbsp;&nbsp;&nbsp;&nbsp;
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="fas fa-certificate border rounded-circle p-3 mr-3"></i>
-                      <span className=" ">
-                        Excellent Quality &nbsp;&nbsp;&nbsp;&nbsp;
-                      </span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="fas fa-handshake border rounded-circle p-3 mr-3"></i>
-                      <span className=" ">After Sales Support</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                    <li>
-                      <i className="far fa-envelope border rounded-circle p-3 mr-3"></i>
-                      <span className=" ">24/7 Email Support</span>
-                    </li>
-                    <hr className="m-2 dashed" />
-                  </ul>
+              <div className="row">
+                <div className="col-md-1"></div>
+                <div className="col-md-10">
+                  {" "}
+                  <div className="card m-5 d-lg-block d-none">
+                    <h5 className="card-header  text-center p-2 blue-background text-light">
+                      <strong> Why Choose Us</strong>
+                    </h5>
+                    <div className="card-body ">
+                      <ul
+                        className=" p-0 text-center"
+                        style={{ listStyle: "none", margin: 0 }}
+                      >
+                        <li>
+                          <i className="fas fa-user border rounded-circle p-2 mr-3"></i>
+                          <span className="text-blue ">
+                            Client First Policy &nbsp;&nbsp;&nbsp;&nbsp;
+                          </span>
+                        </li>
+                        <hr className="m-2 dashed" />
+                        <li>
+                          <i className="fas fa-certificate border rounded-circle p-2 mr-3"></i>
+                          <span className=" text-blue">
+                            Excellent Quality &nbsp;&nbsp;&nbsp;&nbsp;
+                          </span>
+                        </li>
+                        <hr className="m-2 dashed" />
+                        <li>
+                          <i className="fas fa-handshake border rounded-circle p-2 mr-3"></i>
+                          <span className=" text-blue">
+                            After Sales Support
+                          </span>
+                        </li>
+                        <hr className="m-2 dashed" />
+                        <li>
+                          <i className="far fa-envelope border rounded-circle p-2 mr-3"></i>
+                          <span className=" text-blue">24/7 Email Support</span>
+                        </li>
+                        {/* <hr className="m-2 dashed" /> */}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+                <div className="col-md-1"></div>
               </div>
             </div>
           </div>

@@ -70,11 +70,11 @@ const Analysis = () => {
       <Navbar />
       <Breadcrumb name="Analysis" />
       <div className=" bg-light pb-5 pt-2">
-        <div className="container bg-white pb-5 pt-4">
+        <div className="container bg-white pb-5 ">
           <div className="row">
-            <div className="col-md-12 px-4">
-              <h3>ANALYSIS</h3>
-              <p className="text-secondary">
+            <div className="col-md-12 bg-light">
+              <h4>ANALYSIS</h4>
+              <p>
                 This section highlights the latest development and identifies
                 ongoing latest research in different industries.
               </p>
@@ -118,15 +118,13 @@ const Analysis = () => {
                           <p>
                             <i className="far fa-calendar-alt mr-2"></i>
                             <span>
-                              {moment(article.created).format(
-                                "YYYY-MM-D H:MM:SS"
-                              )}
+                              {moment(article.created).format("MMMM YYYY")}
                             </span>
                           </p>
-                          <h5 className="mb-0 text-primary">
+                          <h5 className="mb-0 text-blue">
                             <Link
                               target="_blank"
-                              className="text-primary"
+                              className="text-blue"
                               href={`/analysis/${article.slug}`}
                             >
                               {article.headline}
@@ -148,7 +146,7 @@ const Analysis = () => {
                 </InfiniteScroll>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 mt-4">
               <WhyChooseUs />
               <Objectives />
               <Clients />
@@ -157,7 +155,7 @@ const Analysis = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );

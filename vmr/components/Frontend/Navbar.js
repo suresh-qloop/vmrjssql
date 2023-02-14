@@ -59,8 +59,8 @@ const Navbar = (props) => {
           <Link className="navbar-brand" href="/">
             <img
               src="/dist/img/logos/vmr-logo.webp"
-              width="160"
-              height="66"
+              width="176"
+              height="65"
               alt="Value Market Research"
             />
           </Link>

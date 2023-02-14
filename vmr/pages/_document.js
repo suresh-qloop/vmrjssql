@@ -72,7 +72,7 @@ class MyDocument extends Document {
           <script
             src={`${process.env.NEXT_PUBLIC_URL}/dist/js/pages/dashboard.js`}
           />
-          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          {/* <script src="https://checkout.razorpay.com/v1/checkout.js"></script> */}
         </body>
       </Html>
     );

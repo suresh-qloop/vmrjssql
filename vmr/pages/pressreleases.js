@@ -69,11 +69,11 @@ const Articles = () => {
       <Navbar />
       <Breadcrumb name="Press Releases" />
       <div className=" bg-light pb-5 pt-2">
-        <div className="container bg-white pb-5 pt-4">
+        <div className="container bg-white pb-5 ">
           <div className="row">
-            <div className="col-md-12 px-4">
-              <h3>PRESS RELEASES</h3>
-              <p className="text-secondary">
+            <div className="col-md-12 bg-light">
+              <h4>PRESS RELEASES</h4>
+              <p>
                 This section is the collection of press releases with detailed
                 information on some of our recently published market research
                 reports.
@@ -118,15 +118,13 @@ const Articles = () => {
                           <p>
                             <i className="far fa-calendar-alt mr-2"></i>
                             <span>
-                              {moment(article.created).format(
-                                "YYYY-MM-D H:MM:SS"
-                              )}
+                              {moment(article.created).format("MMMM YYYY")}
                             </span>
                           </p>
                           <h5 className="mb-0 text-primary">
                             <Link
-                            target="_blank"
-                              className="text-primary"
+                              target="_blank"
+                              className="text-blue"
                               href={`/pressreleases/${article.slug}`}
                             >
                               {article.headline}
@@ -148,7 +146,7 @@ const Articles = () => {
                 </InfiniteScroll>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 mt-4">
               <WhyChooseUs />
               <Objectives />
               <Clients />
@@ -157,7 +155,7 @@ const Articles = () => {
           </div>
         </div>
       </div>
-      <BackTop />
+
       <Footer />
     </div>
   );
