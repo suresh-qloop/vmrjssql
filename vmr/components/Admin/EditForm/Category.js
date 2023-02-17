@@ -130,7 +130,7 @@ const Category = ({ preLoadedValues }) => {
                           htmlFor="long_desc"
                           className="col-sm-4 col-form-label"
                         >
-                          Long Description
+                          Meta Keywords
                         </label>
                         <div className="col-sm-12">
                           <input
@@ -139,7 +139,7 @@ const Category = ({ preLoadedValues }) => {
                               errors.long_desc ? "is-invalid" : ""
                             }`}
                             id="long_desc"
-                            placeholder="Long Description"
+                            placeholder="Meta Keywords"
                             {...register("long_desc", {
                               required: "This field is required",
                             })}
@@ -147,6 +147,32 @@ const Category = ({ preLoadedValues }) => {
                           {errors.long_desc && (
                             <div className="error invalid-feedback">
                               <p>{errors.long_desc.message}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form-group ">
+                        <label
+                          htmlFor="meta_desc"
+                          className="col-sm-4 col-form-label"
+                        >
+                          Meta Description
+                        </label>
+                        <div className="col-sm-12">
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.meta_desc ? "is-invalid" : ""
+                            }`}
+                            id="meta_desc"
+                            placeholder="Meta Description"
+                            {...register("meta_desc", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.meta_desc && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.meta_desc.message}</p>
                             </div>
                           )}
                         </div>

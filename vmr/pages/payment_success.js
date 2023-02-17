@@ -10,12 +10,12 @@ const PaymentSuccess = () => {
       <NavbarTop />
       <Navbar />
 
-      <div className=" bg-light py-3">
-        <div className="container  p-5 success">
-          <div className="row p-5 ">
+      <div className=" bg-light py-3 ">
+        <div className="container  p-5 success my-3">
+          <div className="row p-5">
             <div className="col-lg-12 col-md-12 col-sm-12 text-center">
               <h1>Congratulations ! Your payment is successful.</h1>
-              <p className="mt-3 ">
+              <p className="mt-3">
                 Thanks for placing an order with valuemarketresearch.com .Our
                 team will get in touch with you shortly and take this forward.
                 Alternatively, you could mail us at

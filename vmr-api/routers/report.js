@@ -9,6 +9,11 @@ const upload = multer();
 
 router.get("/", authPage([1, 2]), reportRoute.AllReports);
 router.get("/search", authPage([1, 2]), reportRoute.searchReport);
+router.get(
+  "/dropdownlist",
+  authPage([1, 2]),
+  reportRoute.AllReportsDropDownList
+);
 router.get("/:id", authPage([1, 2]), reportRoute.getReport);
 router.get("/view/:id", authPage([1, 2]), reportRoute.getViewReport);
 router.post("/", upload.none(), authPage([1, 2]), reportRoute.addReport);

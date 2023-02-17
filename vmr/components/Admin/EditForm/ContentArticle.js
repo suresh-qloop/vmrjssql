@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Select from "react-select";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -15,24 +16,56 @@ const ContentArticle = ({ preLoadedValues }) => {
   const router = useRouter();
   const { id } = router.query;
   const [description, setDescription] = useState(null);
-
+  const [reportList, setReportList] = useState([]);
+  const [reportId, setReportId] = useState(preLoadedValues.product_id);
+  const [reportIdError, setReportIdError] = useState(false);
+  console.log(preLoadedValues.product_id);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: preLoadedValues });
+  const getReportData = async () => {
+    if (status === "authenticated") {
+      await axios
+        .get(
+          `${process.env.NEXT_PUBLIC_NEXT_API}/content-report/dropdownlist`,
+          {
+            headers: {
+              Authorization: `Bearer ${data.user.token}`,
+            },
+          }
+        )
+        .then((res) => {
+          setReportList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   useEffect(() => {
     if (!id) {
       return;
     }
     setDescription(preLoadedValues.description);
-
+    getReportData();
     // eslint-disable-next-line
   }, [status, id]);
+  const reportIdHandler = (e) => {
+    console.log(e);
+    setReportId(e.value);
+    setReportIdError(false);
+  };
 
   const onSubmit = (reportData) => {
+    if (!reportId) {
+      setReportIdError(true);
+      return;
+    }
     reportData.description = description;
+    reportData.product_id = reportId;
     axios
       .put(
         `${process.env.NEXT_PUBLIC_NEXT_API}/content-article/${id}`,
@@ -211,6 +244,29 @@ const ContentArticle = ({ preLoadedValues }) => {
                           {errors.meta_keywords && (
                             <div className="error invalid-feedback">
                               <p>{errors.meta_keywords.message}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form-group ">
+                        <label
+                          htmlFor="product_id"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Select Report
+                        </label>
+                        <div className="col-sm-12">
+                          <Select
+                            // value={reportId}
+                            value={reportList.filter(
+                              (option) => option.value === reportId
+                            )}
+                            options={reportList}
+                            onChange={reportIdHandler}
+                          />
+                          {reportIdError && (
+                            <div className="text-danger text-xs mt-1">
+                              <p>This Field is Required</p>
                             </div>
                           )}
                         </div>

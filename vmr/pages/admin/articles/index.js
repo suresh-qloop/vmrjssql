@@ -86,13 +86,23 @@ const ArticleList = () => {
       width: "190px",
       cell: (article) => (
         <div>
-          <Link
-            href={`../pressreleases/${article.slug}`}
-            style={{ marginRight: "5px" }}
-            className="btn btn-sm btn-outline-success mr-2"
-          >
-            View
-          </Link>
+          {article.article_type === "press-releases" ? (
+            <Link
+              href={`../pressreleases/${article.slug}`}
+              style={{ marginRight: "5px" }}
+              className="btn btn-sm btn-outline-success mr-2"
+            >
+              View
+            </Link>
+          ) : (
+            <Link
+              href={`../analysis/${article.slug}`}
+              style={{ marginRight: "5px" }}
+              className="btn btn-sm btn-outline-success mr-2"
+            >
+              View
+            </Link>
+          )}
           <Link
             href={`/admin/articles/edit/${article.id}`}
             style={{ marginRight: "5px" }}
@@ -100,7 +110,6 @@ const ArticleList = () => {
           >
             Edit
           </Link>
-
           <button
             type="button"
             onClick={() => {

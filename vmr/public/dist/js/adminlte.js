@@ -663,7 +663,7 @@
   }),
     i.default(".navbar " + eh).on("click", function (e) {
       e.preventDefault(),
-        !i.default(e.target).parent().hasClass("dropdown-submenu") &&
+        i.default(e.target).parent().hasClass("dropdown-submenu") ||
           setTimeout(function () {
             ep._jQueryInterface.call(i.default(this), "fixPosition");
           }, 1);

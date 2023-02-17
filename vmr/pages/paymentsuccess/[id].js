@@ -5,7 +5,7 @@ import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
 import { useRouter } from "next/router";
 
-// import BackTop from "../../components/common/BackTop";
+//
 
 const PaymentSuccess = () => {
   const router = useRouter();

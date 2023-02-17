@@ -10,6 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import notify from "../components/helpers/Notification";
 import InputMask from "react-input-mask";
+import Head from "next/head";
 
 const ContactUs = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -53,6 +54,27 @@ const ContactUs = () => {
 
   return (
     <Fragment>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/dist/img/favicon.ico"
+        />
+        <meta
+          name="keywords"
+          content="Contact Value Market Research, Contact VMR"
+        />
+        <meta
+          name="description"
+          content="We would be glad to hear your questions, comments and concerns. Mail us at sales@valuemarketresearch.com"
+        ></meta>
+
+        <title>Contact us - Value Market Research</title>
+      </Head>
       <NavbarTop />
       <Navbar />
       <Breadcrumb name="Contact Us" />

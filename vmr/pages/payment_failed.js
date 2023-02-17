@@ -11,7 +11,7 @@ const PaymentFailed = () => {
       <Navbar />
 
       <div className=" bg-light py-3">
-        <div className="container  p-5 danger">
+        <div className="container  p-5 ">
           <div className="row p-5 ">
             <div className="col-lg-12 col-md-12 col-sm-12 text-center">
               <h1>Sorry ! Your payment is failed.</h1>

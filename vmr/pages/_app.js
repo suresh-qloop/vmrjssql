@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect } from "react";
-
+import { appWithTranslation } from "next-i18next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../public/plugins/fontawesome-free/css/all.min.css";
 import "../public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css";
@@ -66,4 +66,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

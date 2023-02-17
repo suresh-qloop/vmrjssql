@@ -1,13 +1,15 @@
 import React from "react";
-
+import { useTranslation } from "next-i18next";
+// import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 const WhyChooseUs = () => {
+  const { t: translate } = useTranslation("home");
   return (
     <div className="bg-color text-white">
       <div className="container pt-3">
         <div className="row">
           <div className="col-md-12 ">
             <div className="heading">
-              <h4 className="text-center">Why Choose Us</h4>
+              <h5 className="text-center"> {translate("wco")}</h5>
             </div>
 
             <div className="row text-center mb-3">
@@ -44,3 +46,11 @@ const WhyChooseUs = () => {
 };
 
 export default WhyChooseUs;
+
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ["home"])),
+//     },
+//   };
+// }

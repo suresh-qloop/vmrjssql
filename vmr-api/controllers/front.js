@@ -935,7 +935,12 @@ exports.getPressReleases = async (req, res, next) => {
   const slug = req.params.id;
 
   try {
-    const [article] = await Model.getOne("articles", "*", `slug='${slug}'`);
+    const [article] = await Model.findById(
+      "articles a,products p",
+      "a.*,p.id,p.slug as product_slug",
+      `a.slug='${slug}' AND a.product_id = p.id`,
+      `p.id DESC`
+    );
     res.status(200).json(article[0]);
   } catch (err) {
     return res.status(500).json({
@@ -988,7 +993,13 @@ exports.AllAnalysis = async (req, res, next) => {
 exports.getAnalysis = async (req, res, next) => {
   const slug = req.params.id;
   try {
-    const [article] = await Model.getOne("articles", "*", `slug='${slug}'`);
+    // const [article] = await Model.getOne("articles", "*", `slug='${slug}'`);
+    const [article] = await Model.findById(
+      "articles a,products p",
+      "a.*,p.id,p.slug as product_slug",
+      `a.slug='${slug}' AND a.product_id = p.id`,
+      `p.id DESC`
+    );
     res.status(200).json(article[0]);
   } catch (err) {
     return res.status(500).json({

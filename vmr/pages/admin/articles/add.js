@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import Select from "react-select";
 import { useForm } from "react-hook-form";
 import Header from "../../../components/Admin/Header";
 import Menu from "../../../components/Admin/Menu";
@@ -12,25 +12,42 @@ import { useRouter } from "next/router";
 import { CKEditor } from "ckeditor4-react";
 
 const AddArticle = () => {
-  const { data } = useSession();
+  const { status, data } = useSession();
   const navigate = useRouter();
 
   const [description, setDescription] = useState("");
 
   const [mounted, setMounted] = useState(false);
+  const [reportList, setReportList] = useState([]);
+  const [reportId, setReportId] = useState();
+  const [reportIdError, setReportIdError] = useState(false);
+
+  const getReportData = async () => {
+    if (status === "authenticated") {
+      await axios
+        .get(`${process.env.NEXT_PUBLIC_NEXT_API}/report/dropdownlist`, {
+          headers: {
+            Authorization: `Bearer ${data.user.token}`,
+          },
+        })
+        .then((res) => {
+          setReportList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  const reportIdHandler = (e) => {
+    setReportId(e.value);
+    setReportIdError(false);
+  };
+  useEffect(() => {
+    getReportData();
+  }, [status]);
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // const handleSetDescription = (value) => {
-  //   setDescription(value);
-
-  //   if (description === "" || description === "<p><br></p>") {
-  //     setDescError(true);
-  //   } else {
-  //     setDescError(false);
-  //   }
-  // };
 
   const {
     register,
@@ -40,8 +57,12 @@ const AddArticle = () => {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = (reportData) => {
-    const finalData = { ...reportData, description };
-
+    if (!reportId) {
+      setReportIdError(true);
+      return;
+    }
+    const finalData = { ...reportData, description, reportId };
+    // console.log(finalData);
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/article/`, finalData, {
         headers: {
@@ -220,6 +241,26 @@ const AddArticle = () => {
                         </div>
                         <div className="form-group ">
                           <label
+                            htmlFor="product_id"
+                            className="col-sm-2 col-form-label"
+                          >
+                            Select Report
+                          </label>
+                          <div className="col-sm-12">
+                            <Select
+                              options={reportList}
+                              onChange={reportIdHandler}
+                            />
+                            {reportIdError && (
+                              <div className="text-danger text-xs mt-1">
+                                <p>This Field is Required</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="form-group ">
+                          <label
                             htmlFor="slug"
                             className="col-sm-2 col-form-label"
                           >
@@ -261,7 +302,7 @@ const AddArticle = () => {
                                 required: "This field is required",
                               })}
                             >
-                              <option value="" selected disabled hidden>
+                              <option defaultValue="" disabled hidden>
                                 Choose here
                               </option>
                               <option value="analysis">analysis</option>

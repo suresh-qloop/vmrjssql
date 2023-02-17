@@ -18,7 +18,9 @@ import Testimonials from "../../components/Frontend/SideBar/Testimonials";
 import ChaptersInfo from "../../components/Frontend/SideBar/ChaptersInfo";
 import Objectives from "../../components/Frontend/SideBar/Objectives";
 import KeyQuestion from "../../components/Frontend/Report/KeyQuestion";
-import BackTop from "../../components/common/BackTop";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 import { urlString } from "../../utils/urlString";
 
 const ReportDetails = ({ reportData }) => {
@@ -42,7 +44,11 @@ const ReportDetails = ({ reportData }) => {
       }));
     }
   }
-
+  const renderTooltip = (title) => (
+    <Tooltip id="button-tooltip" {...title}>
+      {title}
+    </Tooltip>
+  );
   return (
     <Fragment>
       <Head>
@@ -102,13 +108,13 @@ const ReportDetails = ({ reportData }) => {
                     <strong>{reportData.product_name}</strong>
                   </p>
                   <div className="row text-left">
-                    <div className="col-md-3  text-sm">
+                    <div className="col-md-3  ">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span className="report-span">
                         ID:{reportData.product_no}
                       </span>
                     </div>
-                    <div className="col-md-3  text-sm">
+                    <div className="col-md-3  ">
                       <i className="far fa-calendar-alt mr-2"></i>
                       <span className="report-span">
                         {moment(reportData.pub_date).format("MMMM YYYY")}
@@ -116,8 +122,7 @@ const ReportDetails = ({ reportData }) => {
                     </div>
                     <div className="col-md-6 ">
                       <span className="report-span">
-                        <strong> REPORT FORMATS:</strong> ELECTRONIC (PDF), MS
-                        EXCEL
+                        REPORT FORMATS: ELECTRONIC (PDF), MS EXCEL
                       </span>
                     </div>
                   </div>
@@ -127,17 +132,17 @@ const ReportDetails = ({ reportData }) => {
                         href={`/contact/${reportData.slug}/download-sample`}
                         className="btn  btn-purple  btn-sm mr-3 mt-3 btn-block"
                         target="_blank"
-                        // style={{ width: 180 }}
+                        // style={{ width: 200 }}
                       >
                         <i className="fas fa-download"></i> Download Sample
                       </Link>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/ask-questions`}
                         className="btn btn-info btn-sm mr-3  mt-3 btn-block"
-                        // target="_blank"
-                        // style={{ width: 150 }}
+                        target="_blank"
+                        // style={{ width: 200 }}
                       >
                         <i className="fas fa-question-circle"></i> Ask Questions
                       </Link>
@@ -152,22 +157,22 @@ const ReportDetails = ({ reportData }) => {
                         <i className="fas fa-edit "></i> Request Customization
                       </Link>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/request-for-discount`}
                         className="btn btn-success btn-sm mr-3  mt-3 btn-block"
                         target="_blank"
-                        // style={{ width: 150 }}
+                        // style={{ width: 200 }}
                       >
                         <i className="fas fa-edit"></i> Request Discount
                       </Link>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-4 col-md-6">
                       <Link
                         href={`/contact/${reportData.slug}/covid-19-impact`}
                         className="btn btn-red btn-sm mr-3  mt-3 btn-block"
                         target="_blank"
-                        // style={{ width: 150 }}
+                        // style={{ width: 200 }}
                       >
                         COVID-19 Impact
                       </Link>
@@ -263,114 +268,124 @@ const ReportDetails = ({ reportData }) => {
                     style={{ listStyle: "none", margin: 0 }}
                   >
                     <li>
-                      <div
-                        className="icheck-primary d-inline"
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        title="Single User License allows only one user to access the Report.
-                         The report will be sent electronically to the buyer as a PDF File."
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip(
+                          "Single User License allows only one user to access the Report.The report will be sent electronically to the buyer as a PDF File."
+                        )}
                       >
-                        <input
-                          type="radio"
-                          value={reportData.price}
-                          name="price"
-                          id="single"
-                          onChange={(e) => {
-                            setPrice(reportData.price);
-                          }}
-                          defaultChecked={true}
-                        />
-                        <label htmlFor="single" className="text-xs">
-                          Single User License:&nbsp;
-                          <span className="text-xs">
-                            {reportData.price
-                              ? currencyInrFormat(reportData.price)
-                              : ""}
-                          </span>
-                        </label>
-                      </div>
+                        <div className="icheck-primary">
+                          <input
+                            type="radio"
+                            value={reportData.price}
+                            name="price"
+                            id="single"
+                            onChange={(e) => {
+                              setPrice(reportData.price);
+                            }}
+                            defaultChecked={true}
+                          />
+                          <label htmlFor="single" className="text-xs">
+                            Single User License:&nbsp;
+                            <span className="text-xs">
+                              {reportData.price
+                                ? currencyInrFormat(reportData.price)
+                                : ""}
+                            </span>
+                          </label>
+                        </div>
+                      </OverlayTrigger>
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div
-                        className="icheck-primary d-inline"
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        title="Multi-User License allows 2-10 users to access the Report.
-                         The report will be sent electronically to the buyers as a PDF File."
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip(
+                          "Multi-User License allows 2-10 users to access the Report.The report will be sent electronically to the buyers as a PDF File."
+                        )}
                       >
-                        <input
-                          type="radio"
-                          value={reportData.upto10}
-                          name="price"
-                          id="upto10"
-                          onChange={(e) => {
-                            setPrice(reportData.upto10);
-                          }}
-                        />
-                        <label htmlFor="upto10" className="text-xs">
-                          Upto 10 Users License:&nbsp;
-                          <span className="text-xs">
-                            {reportData.upto10
-                              ? currencyInrFormat(reportData.upto10)
-                              : ""}
-                          </span>
-                        </label>
-                      </div>
+                        <div className="icheck-primary">
+                          <input
+                            type="radio"
+                            value={reportData.upto10}
+                            name="price"
+                            id="upto10"
+                            onChange={(e) => {
+                              setPrice(reportData.upto10);
+                            }}
+                          />
+                          <label htmlFor="upto10" className="text-xs">
+                            Upto 10 Users License:&nbsp;
+                            <span className="text-xs">
+                              {reportData.upto10
+                                ? currencyInrFormat(reportData.upto10)
+                                : ""}
+                            </span>
+                          </label>
+                        </div>
+                      </OverlayTrigger>
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div
-                        className="icheck-primary d-inline "
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        title="Enterprise User License allows access of the Report across the whole enterprise. The report will be sent electronically as a PDF File."
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip(
+                          "Enterprise User License allows access of the Report across the whole enterprise. The report will be sent electronically as a PDF File."
+                        )}
                       >
-                        <input
-                          type="radio"
-                          value={reportData.corporate_price}
-                          name="price"
-                          id="corporate_price"
-                          onChange={(e) => {
-                            setPrice(reportData.corporate_price);
-                          }}
-                        />
-                        <label htmlFor="corporate_price" className="text-xs">
-                          Corporate User License:&nbsp;
-                          <span className="text-xs">
-                            {reportData.corporate_price
-                              ? currencyInrFormat(reportData.corporate_price)
-                              : ""}
-                          </span>
-                        </label>
-                      </div>
+                        <div className="icheck-primary">
+                          <input
+                            type="radio"
+                            value={reportData.corporate_price}
+                            name="price"
+                            id="corporate_price"
+                            onChange={(e) => {
+                              setPrice(reportData.corporate_price);
+                            }}
+                          />
+                          <label htmlFor="corporate_price" className="text-xs">
+                            Corporate User License:&nbsp;
+                            <span className="text-xs">
+                              {reportData.corporate_price
+                                ? currencyInrFormat(reportData.corporate_price)
+                                : ""}
+                            </span>
+                          </label>
+                        </div>
+                      </OverlayTrigger>
                     </li>
                     <hr className="m-2 dashed" />
                     <li>
-                      <div
-                        className="icheck-primary d-inline "
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        title="This covers all data tables of the report in the excel format only."
+                      <OverlayTrigger
+                        placement="bottom"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip(
+                          "This covers all data tables of the report in the excel format only."
+                        )}
                       >
-                        <input
-                          type="radio"
-                          value={reportData.data_pack_price}
-                          name="price"
-                          id="data_pack_price"
-                          onChange={(e) => {
-                            setPrice(reportData.data_pack_price);
-                          }}
-                        />
-                        <label htmlFor="data_pack_price" className="text-xs ">
-                          DataPack License:&nbsp;
-                          <span className="text-xs">
-                            {reportData.data_pack_price
-                              ? currencyInrFormat(reportData.data_pack_price)
-                              : ""}
-                          </span>
-                        </label>
-                      </div>
+                        <div className="icheck-primary">
+                          <input
+                            type="radio"
+                            value={reportData.data_pack_price}
+                            name="price"
+                            id="data_pack_price"
+                            onChange={(e) => {
+                              setPrice(reportData.data_pack_price);
+                            }}
+                          />
+                          <label htmlFor="data_pack_price" className="text-xs ">
+                            DataPack License:&nbsp;
+                            <span className="text-xs">
+                              {reportData.data_pack_price
+                                ? currencyInrFormat(reportData.data_pack_price)
+                                : ""}
+                            </span>
+                          </label>
+                        </div>
+                      </OverlayTrigger>
                     </li>
                     <hr className="mt-2 mb-0 dashed" />
                   </ul>

@@ -44,7 +44,7 @@ const FreeSample = () => {
   }, [slug]);
 
   const handleCaptcha = async (value) => {
-    setIsVerified(true);
+    setIsVerified(!isVerified);
   };
 
   const {

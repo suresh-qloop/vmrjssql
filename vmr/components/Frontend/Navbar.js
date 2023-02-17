@@ -224,7 +224,7 @@ const Navbar = (props) => {
                     </ul>
                   </div>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-blue"
                     type="submit"
                     id="search"
                     aria-label="search"

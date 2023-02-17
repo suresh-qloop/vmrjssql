@@ -32,7 +32,7 @@ const AskQuestions = () => {
   // const [datapackPrice, setDataPack] = useState(false);
 
   const handleCaptcha = async (value) => {
-    setIsVerified(true);
+    setIsVerified(!isVerified);
   };
 
   const getReportData = async () => {
@@ -188,19 +188,24 @@ const AskQuestions = () => {
       <Navbar />
 
       <div className="bg-white  py-3 shadow  rounded">
-        <div className="container p-4 px-2">
+        <div className="container  px-2">
           <div className="row">
             <div className="col-md-12 ">
               <div className="card bg-light">
                 <div className="card-body">
-                  <p className="text-center text-info">
-                    <Link href={`/report/${reportData.slug}`}>
-                      {reportData.alias}
-                    </Link>
-                  </p>
-                  <div className="row">
+                  <h2 className="text-center ">
+                    <strong>
+                      <Link
+                        href={`/report/${reportData.slug}`}
+                        className="text-blue"
+                      >
+                        {reportData.alias}
+                      </Link>
+                    </strong>
+                  </h2>
+                  <div className="row mt-4">
                     <div className="col-md-6 ">
-                      <h4 className="text-lg-right text-right mb-3">Buy Now</h4>
+                      <h4 className="text-lg-right text-right">Buy Now</h4>
                     </div>
                     <div className="col-md-6 justify-content-center">
                       {/* <Link
@@ -230,7 +235,7 @@ const AskQuestions = () => {
                   </div>
 
                   <hr />
-                  <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
+                  <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="row text-sm">
                       <div className="col-md-3">
                         <div className="form-group">
@@ -814,7 +819,7 @@ const AskQuestions = () => {
                     <div className="col-md-12 text-center">
                       <button
                         className="btn btn-info justify-content-center mt-3 "
-                        // disabled={!isVerified}
+                        disabled={!isVerified}
                         onClick={() => {
                           if (mobile.length !== 10) {
                             setMobileError(true);

@@ -45,7 +45,7 @@ const Covid19Impact = () => {
   }, [slug]);
 
   const handleCaptcha = async (value) => {
-    setIsVerified(true);
+    setIsVerified(!isVerified);
   };
   const {
     register,
@@ -243,40 +243,6 @@ const Covid19Impact = () => {
                               <i className="fas fa-phone-alt"></i>
                             </span>
                           </div>
-
-                          {/* <Controller
-                          name="mobile"
-                          control={control}
-                          defaultValue=""
-                          {...register("mobile", {
-                            required: "Please enter a card number",
-                          })}
-                          render={({ field: { onChange, value, onBlur } }) => (
-                            <InputMask
-                              mask="99999 99999"
-                              maskChar=" "
-                              value={value}
-                              onChange={onChange}
-                              onBlur={onBlur}
-                            >
-                              {(inputProps) => (
-                                <input
-                                  {...inputProps}
-                                  className={`form-control ${
-                                    errors.mobile ? "is-invalid" : ""
-                                  }`}
-                                  id="mobile"
-                                  placeholder="Mobile"
-                                />
-                              )}
-                            </InputMask>
-                          )}
-                        /> */}
-                          {/* {errors.mobile && (
-                          <div className="error invalid-feedback">
-                            <p>{errors.mobile.message}</p>
-                          </div>
-                        )} */}
                           <input
                             type="text"
                             className={`form-control ${

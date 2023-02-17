@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-import BackTop from "../../components/common/BackTop";
+
 // import { urlString } from "../../utils/urlString";
 import { useForm } from "react-hook-form";
 import Highlighter from "react-highlight-words";

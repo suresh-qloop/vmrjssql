@@ -45,7 +45,7 @@ const RequestForDiscount = () => {
   }, [slug]);
 
   const handleCaptcha = async (value) => {
-    setIsVerified(true);
+    setIsVerified(!isVerified);
   };
 
   const {

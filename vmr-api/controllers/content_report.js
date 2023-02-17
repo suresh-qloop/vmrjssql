@@ -289,3 +289,20 @@ exports.addReportFaqs = async (req, res, next) => {
     });
   }
 };
+
+exports.AllReportsDropDownList = async (req, res, next) => {
+  try {
+    const [reports] = await Report.findById(
+      "products",
+      "id as value,alias as label",
+      "is_deleted = 0 AND is_active = 1 AND is_upcoming = 0",
+      "value DESC"
+    );
+
+    res.status(200).json(reports);
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};

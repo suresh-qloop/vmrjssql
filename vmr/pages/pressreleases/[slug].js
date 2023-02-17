@@ -16,7 +16,6 @@ import Testimonials from "../../components/Frontend/SideBar/Testimonials";
 
 import Objectives from "../../components/Frontend/SideBar/Objectives";
 import Link from "next/link";
-import BackTop from "../../components/common/BackTop";
 
 const ArticleDetails = ({ articleData }) => {
   return (
@@ -59,13 +58,12 @@ const ArticleDetails = ({ articleData }) => {
                 <div className="col-md-12 mt-3">
                   <i className="far fa-calendar-alt mr-2"></i>
                   Posted On: &nbsp;
-                  <span>
-                    {moment(articleData.pub_date).format("YYYY-MM-DD ")}
-                  </span>
+                  <span>{moment(articleData.pub_date).format("MMM YYYY")}</span>
                   <Link
-                    href={`/contact/covid-19-impact/${articleData.id}`}
-                    className="btn btn-danger btn-sm ms-5  "
+                    href={`/contact/${articleData.product_slug}/covid-19-impact/`}
+                    className="btn btn-red btn-sm ms-5  "
                     style={{ width: 150 }}
+                    target="_blank"
                   >
                     COVID-19 Impact
                   </Link>

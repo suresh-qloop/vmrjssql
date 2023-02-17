@@ -92,14 +92,9 @@ export default function Latest() {
               </div>
             ))}
             <div className="card-body d-flex flex-column align-items-start border">
-              <p className="mb-0">
-                <strong>
-                  Checkout all of our
-                  <Link className=" ml-1" href="/reports">
-                    Research Reports
-                  </Link>
-                </strong>
-              </p>
+              <Link className="btn btn-info btn-sm" href="/reports">
+                View More <i className="fas fa-angle-double-right ml-1"></i>
+              </Link>
             </div>
           </div>
           <div className="col-md-4">
@@ -126,14 +121,9 @@ export default function Latest() {
             ))}
 
             <div className="card-body d-flex flex-column align-items-start text-sm border mb-3">
-              <p className="mb-0">
-                <strong>
-                  Checkout all of our
-                  <Link className=" ml-1" href="/pressreleases">
-                    Press Releases
-                  </Link>
-                </strong>
-              </p>
+              <Link className="btn btn-info btn-sm" href="/pressreleases">
+                View More <i className="fas fa-angle-double-right ml-1"></i>
+              </Link>
             </div>
 
             <h5 className="border p-2  blue-background text-light text-center">
@@ -160,14 +150,9 @@ export default function Latest() {
               </div>
             ))}
             <div className="card-body d-flex flex-column align-items-start text-sm border mb-3">
-              <p className="mb-0">
-                <strong>
-                  Checkout all of our
-                  <Link className=" ml-1" href="/analysis">
-                    Analysis
-                  </Link>
-                </strong>
-              </p>
+              <Link className="btn btn-info btn-sm" href="/analysis">
+                View More <i className="fas fa-angle-double-right ml-1"></i>
+              </Link>
             </div>
           </div>
         </div>
