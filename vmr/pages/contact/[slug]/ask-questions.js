@@ -107,30 +107,13 @@ const AskQuestions = () => {
             <div className="col-md-6 order-last order-lg-first">
               <div className="card shadow rounded form-bg-light">
                 <div className="card-body ">
-                  <div className="row ml-0 mb-3">
-                    <div className="col-md-12 text-right">
-                      <div className="enq-btn">
-                        <Link
-                          className="form-btn"
-                          // target="_blank"
-                          href={`/industries/${
-                            reportData.category_name
-                              ? urlString(reportData.category_name)
-                              : ""
-                          }`}
-                        >
-                          View Related Reports
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-center form-notice">
+                  <h4 className="text-center form-heading mb-2">
+                    Ask Questions
+                  </h4>
+                  <p className="text-center form-notice  mb-3">
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h4 className="text-center form-heading mb-3">
-                    Ask Questions
-                  </h4>
                   <hr className="form-hr" />
 
                   <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
@@ -538,10 +521,26 @@ const AskQuestions = () => {
                   __html: description,
                 }}
               ></p>
+              <div className="row ml-0">
+                <div className="col-md-12 text-left">
+                  <div className="enq-btn">
+                    <Link
+                      className="form-btn"
+                      // target="_blank"
+                      href={`/industries/${
+                        reportData.category_name
+                          ? urlString(reportData.category_name)
+                          : ""
+                      }`}
+                    >
+                      View Related Reports
+                    </Link>
+                  </div>
+                </div>
+              </div>
               <div className="row">
                 <div className="col-md-1"></div>
                 <div className="col-md-10">
-                  {" "}
                   <div className="card m-5 d-lg-block d-none">
                     <h5 className="card-header  text-center p-2 blue-background text-light">
                       <strong> Why Choose Us</strong>
@@ -576,7 +575,6 @@ const AskQuestions = () => {
                           <i className="far fa-envelope border rounded-circle p-2 mr-3"></i>
                           <span className=" text-blue">24/7 Email Support</span>
                         </li>
-                        {/* <hr className="m-2 dashed" /> */}
                       </ul>
                     </div>
                   </div>

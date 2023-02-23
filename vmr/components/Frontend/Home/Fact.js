@@ -43,7 +43,7 @@ export default function Fact() {
       <div className="col-md-3  text-center">
         <div className="fact_listing">
           <h3>{settingList?.clientQueries}+</h3>
-          <h4>Client Queries in 2022</h4>
+          <h4>Client Queries in {settingList?.clientQueriesYear}</h4>
         </div>
       </div>
     </div>

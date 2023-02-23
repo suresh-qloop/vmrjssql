@@ -837,18 +837,18 @@ hr.dashed {
   font-size: 14px;
   color: #666;
 }
-.mrkt-info li a {
+.mrkt-info li div {
   color: #363636;
   display: flex;
 }
-.mrkt-info li a span {
+.mrkt-info li div span {
   line-height: 46px;
 }
-.faq-quest ul li a {
+.faq-quest ul li div {
   padding-left: 10px;
 }
 
-.mrkt-info li a i {
+.mrkt-info li div i {
   font-size: 27px;
   border: 1px solid #ccc;
   width: 50px;
@@ -873,7 +873,7 @@ hr.dashed {
   width: 100%;
 }
 @media (max-width: 34em) {
-  .mrkt-info li a i {
+  .mrkt-info li div i {
     font-size: 19px;
     border: 1px solid #ccc;
     width: 70px;
@@ -882,7 +882,7 @@ hr.dashed {
     line-height: 51px;
     margin: 0 10px;
   }
-  .mrkt-info li a span {
+  .mrkt-info li div span {
     line-height: 24px;
   }
 }

@@ -110,10 +110,10 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#" className="py-3">
+              <div style={{ color: "#fff" }}  className="py-3">
                 {/* <span> */}
                 What is the current market size and trends? {/* </span> */}
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -121,9 +121,9 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#" className="py-2">
+              <div style={{ color: "#fff" }}  className="py-2">
                 What will be the market size during the forecast period?
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -131,10 +131,10 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#" className="py-3">
+              <div style={{ color: "#fff" }}  className="py-3">
                 How various market factors such as a driver, restraints, and
                 opportunity impact the market?
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -142,9 +142,9 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#" className="py-2">
+              <div style={{ color: "#fff" }}  className="py-2">
                 What are the dominating segment and region in the market and why
-              </Link>
+              </div>
             </li>
           </ul>
           <div className="pull-left req-free-btn">
@@ -172,10 +172,10 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#">
+              <div style={{ color: "#fff" }} >
                 <i className="fa fa-user"></i>
                 <span>Ask for free product review call with the author</span>
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -183,13 +183,13 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#">
+              <div style={{ color: "#fff" }} >
                 <i className="fa fa-users"></i>
                 <span>
                   Share your specific research requirments for a customized
                   report
                 </span>
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -197,12 +197,12 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#">
+              <div style={{ color: "#fff" }} >
                 <i className="fa fa-share-alt"></i>
                 <span>
                   Request for due diligence and consumer centric studies
                 </span>
-              </Link>
+              </div>
             </li>
             <li
               style={{
@@ -210,10 +210,10 @@ const keyQuestion = ({ slug }) => {
                 backgroundColor: "#0074bd",
               }}
             >
-              <Link style={{ color: "#fff" }} href="#">
+              <div style={{ color: "#fff" }}>
                 <i className="fa fa-recycle"></i>Request for study updates,
                 segment specific and country level reports
-              </Link>
+              </div>
             </li>
           </ul>
           <div className="pull-left req-free-btn">

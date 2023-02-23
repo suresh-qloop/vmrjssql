@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.8",
+    "@next/bundle-analyzer": "^13.1.6",
+    "@tawk.to/tawk-messenger-react": "^2.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

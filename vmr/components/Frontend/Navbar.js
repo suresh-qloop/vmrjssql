@@ -77,7 +77,7 @@ const Navbar = (props) => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ml-auto">
+            <ul className="nav navbar-nav ml-auto">
               <li className="nav-item active">
                 <Link
                   className={`nav-link ${
@@ -89,21 +89,16 @@ const Navbar = (props) => {
                 </Link>
               </li>
 
-              <li className="nav-item dropdown">
+              <li className="dropdown">
                 <Link
                   className={`nav-link dropdown-toggle ${
                     navigate.pathname === "/category-list" ? "active" : ""
                   }`}
                   href="/category-list"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                 >
                   Industries
                 </Link>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div className="dropdown-menu">
                   {categoryList?.map((curElem, i) => {
                     return (
                       <Fragment key={i + 1}>
@@ -114,17 +109,6 @@ const Navbar = (props) => {
                         >
                           {curElem.name}
                         </Link>
-                        {/* {curElem.children.map((Elem) => {
-                          return (
-                            <Link
-                              key={Elem.id}
-                              className="dropdown-item"
-                              href="/"
-                            >
-                              {Elem.category_name}
-                            </Link>
-                          );
-                        })} */}
                       </Fragment>
                     );
                   })}

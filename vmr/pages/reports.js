@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -10,55 +10,54 @@ import Footer from "../components/Frontend/Footer";
 // import { currencyInrFormat } from "../utils/currencyInrFormat";
 import moment from "moment/moment";
 import { Fragment } from "react";
-import BackTop from "../components/common/BackTop";
+
 // import { useRouter } from "next/router";
 import { urlString } from "../utils/urlString";
 import Head from "next/head";
 //
 // import { useSession } from "next-auth/react";
 
-const Reports = () => {
+const Reports = ({ data }) => {
   // const router = useRouter();
-  const [categoryList, setCategoryList] = useState();
+  const [categoryList, setCategoryList] = useState(data.catData);
 
-  const [reportList, setReportList] = useState([]);
-  const [count, setCount] = useState(null);
+  const [reportList, setReportList] = useState(data.reportsData);
+  const [count, setCount] = useState(data.count);
   const [hasMore, setHasMore] = useState(true);
 
   // const [categoryId, setCategoryId] = useState();
 
-  useEffect(() => {
-    getReportList();
-    getCategoryList();
+  // useEffect(() => {
+  // getReportList();
+  // getCategoryList();
+  // eslint-disable-next-line
+  // }, []);
+  // useEffect(() => {
+  //   setHasMore(count > reportList.length ? true : false);
+  // }, [reportList]);
 
-    // eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    setHasMore(count > reportList.length ? true : false);
-  }, [reportList]);
+  // const getCategoryList = async () => {
+  //   await axios
+  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
+  //     .then((res) => {
+  //       setCategoryList(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-  const getCategoryList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
-      .then((res) => {
-        setCategoryList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getReportList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=0&limit=10`)
-      .then((res) => {
-        setReportList(res.data.reports);
-        setCount(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getReportList = async () => {
+  //   await axios
+  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=0&limit=10`)
+  //     .then((res) => {
+  //       setReportList(res.data.reports);
+  //       setCount(res.data.count);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const getMoreReport = async () => {
     await axios
@@ -173,6 +172,13 @@ const Reports = () => {
               </div>
 
               <div className="col-lg-9 col-md-12 col-sm-12">
+                {reportList?.length === 0 && (
+                  <div className="text-center m-5 p-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">No More Records Found</span>
+                    </div>
+                  </div>
+                )}
                 <InfiniteScroll
                   dataLength={reportList.length} //This is important field to render the next data
                   next={getMoreReport}
@@ -220,14 +226,14 @@ const Reports = () => {
                           {report.product_name}
                         </Link>
 
-                        <p
+                        <div
                           className="card-text text-secondary mb-0 dangerously"
                           dangerouslySetInnerHTML={{
                             __html: report.product_description,
                           }}
                         >
                           {/* {report.name.slice(0, 150)}... */}
-                        </p>
+                        </div>
                         <div className="d-flax ">
                           <Link
                             href={`/contact/${report.slug}/download-sample`}
@@ -241,7 +247,7 @@ const Reports = () => {
                           <Link
                             href={`/contact/${report.slug}/ask-questions`}
                             className="btn btn-info btn-sm mt-3"
-                            style={{ width: 150 }}
+                            style={{ width: 180 }}
                             target="_blank"
                           >
                             <i className="fas fa-question-circle"></i> Ask
@@ -278,3 +284,21 @@ export default Reports;
 //     props: {}, // will be passed to the page component as props
 //   };
 // }
+
+Reports.getInitialProps = async (ctx) => {
+  const reportsData = await axios.get(
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/reports?start=0&limit=10`
+  );
+
+  const catData = await axios.get(
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`
+  );
+
+  return {
+    data: {
+      reportsData: reportsData.data.reports,
+      count: reportsData.data.count,
+      catData: catData.data,
+    },
+  };
+};

@@ -97,8 +97,6 @@ const ReportDetails = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-
     axios
       .post(`${process.env.NEXT_PUBLIC_NEXT_API}/front/search-enquirie`, data)
       // .then((res) => {

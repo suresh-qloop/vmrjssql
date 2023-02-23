@@ -98,30 +98,14 @@ const Covid19Impact = () => {
             <div className="col-md-6 order-last order-lg-first">
               <div className="card shadow rounded form-bg-light">
                 <div className="card-body ">
-                  <div className="row ml-0 mb-3">
-                    <div className="col-md-12 text-right">
-                      <div className="enq-btn">
-                        <Link
-                          className="form-btn"
-                          // target="_blank"
-                          href={`/industries/${
-                            reportData.category_name
-                              ? urlString(reportData.category_name)
-                              : ""
-                          }`}
-                        >
-                          View Related Reports
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-center form-notice text-sm">
+                  <h4 className="text-center form-heading mb-2">
+                    REQUEST FOR COVID19 IMPACT ANALYSIS
+                  </h4>
+                  <p className="text-center form-notice  mb-3">
                     Please fill out the form. We will contact you within 24
                     hours.
                   </p>
-                  <h4 className="text-center form-heading mb-3">
-                    REQUEST FOR COVID19 IMPACT ANALYSIS
-                  </h4>
+
                   <hr className="form-hr" />
                   <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className={`row  ${errors.fullName ? "" : "mb-3"}`}>
@@ -465,7 +449,7 @@ const Covid19Impact = () => {
                     </div>
                     <div className="col-md-12 text-center">
                       <button
-                        className="btn btn-info justify-content-center mt-3"
+                        className="btn btn-info justify-content-center mt-2"
                         disabled={!isVerified}
                         onClick={() => {
                           if (mobile.length !== 10) {
@@ -494,7 +478,23 @@ const Covid19Impact = () => {
                   __html: description,
                 }}
               ></p>
-
+              <div className="row ml-0">
+                <div className="col-md-12 text-left">
+                  <div className="enq-btn">
+                    <Link
+                      className="form-btn"
+                      // target="_blank"
+                      href={`/industries/${
+                        reportData.category_name
+                          ? urlString(reportData.category_name)
+                          : ""
+                      }`}
+                    >
+                      View Related Reports
+                    </Link>
+                  </div>
+                </div>
+              </div>
               <h4 className="mt-4">
                 Important : Covid-19 Pandemic Market Impact
               </h4>

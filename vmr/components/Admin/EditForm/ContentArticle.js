@@ -19,7 +19,6 @@ const ContentArticle = ({ preLoadedValues }) => {
   const [reportList, setReportList] = useState([]);
   const [reportId, setReportId] = useState(preLoadedValues.product_id);
   const [reportIdError, setReportIdError] = useState(false);
-  console.log(preLoadedValues.product_id);
   const {
     register,
     handleSubmit,
@@ -54,7 +53,6 @@ const ContentArticle = ({ preLoadedValues }) => {
     // eslint-disable-next-line
   }, [status, id]);
   const reportIdHandler = (e) => {
-    console.log(e);
     setReportId(e.value);
     setReportIdError(false);
   };

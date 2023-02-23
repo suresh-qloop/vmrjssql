@@ -24,7 +24,6 @@ const Report = ({ preLoadedValues }) => {
     preLoadedValues.product_description
   );
   const [is_active, setIsActive] = useState(preLoadedValues.is_active);
-  console.log(preLoadedValues.is_active);
 
   const {
     register,

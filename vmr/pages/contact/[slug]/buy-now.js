@@ -108,14 +108,13 @@ const AskQuestions = () => {
       ...data,
       mobile,
     };
-    console.log(finalData);
     const {
       data: { order },
     } = await axios.post(
       `${process.env.NEXT_PUBLIC_NEXT_API}/payment/`,
       finalData
     );
-    console.log(order);
+
     const options = {
       key: process.env.NEXT_PUBLIC_RAZOR_API_KEY, // Enter the Key ID generated from the Dashboard
       amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise

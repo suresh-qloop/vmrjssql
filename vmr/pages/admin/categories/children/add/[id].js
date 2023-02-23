@@ -127,7 +127,33 @@ const AddChidCategory = () => {
                           )}
                         </div>
                       </div>
-                      <div className="form-group ">
+                      <div className="form-group">
+                        <label
+                          htmlFor="meta_name"
+                          className="col-sm-4 col-form-label"
+                        >
+                          Meta Title
+                        </label>
+                        <div className="col-sm-12">
+                          <input
+                            type="text"
+                            className={`form-control ${
+                              errors.meta_name ? "is-invalid" : ""
+                            }`}
+                            id="meta_name"
+                            placeholder="Meta Title"
+                            {...register("meta_name", {
+                              required: "This field is required",
+                            })}
+                          />
+                          {errors.meta_name && (
+                            <div className="error invalid-feedback">
+                              <p>{errors.meta_name.message}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="form-group">
                         <label
                           htmlFor="long_desc"
                           className="col-sm-4 col-form-label"
@@ -153,7 +179,7 @@ const AddChidCategory = () => {
                           )}
                         </div>
                       </div>
-                      <div className="form-group ">
+                      <div className="form-group">
                         <label
                           htmlFor="meta_desc"
                           className="col-sm-4 col-form-label"

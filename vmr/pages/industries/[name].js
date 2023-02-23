@@ -18,40 +18,43 @@ import Head from "next/head";
 
 // import { useSession } from "next-auth/react";
 
-const Reports = () => {
+const Reports = ({ data }) => {
   const router = useRouter();
   const catName = router.query.name;
 
-  const [categoryList, setCategoryList] = useState();
-  const [categoryDetail, setCategoryDetail] = useState();
-
-  const [reportList, setReportList] = useState([]);
-  const [count, setCount] = useState(null);
+  // const [catName, setCatName] = useState(data.catName);
+  const [categoryList, setCategoryList] = useState(data.catData);
+  const [categoryDetail, setCategoryDetail] = useState(data.catDetails);
+  const [reportList, setReportList] = useState(data.reportsData);
+  const [count, setCount] = useState(data.count);
   const [hasMore, setHasMore] = useState(true);
+  console.log(hasMore, "InfiniteScroll");
   // const [categoryId, setCategoryId] = useState();
 
   useEffect(() => {
     if (catName) {
       getCategoryDetail();
-      getCategoryList();
+      // getCategoryList();
       getReportList();
     }
     // eslint-disable-next-line
   }, [catName]);
-  useEffect(() => {
-    setHasMore(count > reportList.length ? true : false);
-  }, [reportList]);
 
-  const getCategoryList = async () => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
-      .then((res) => {
-        setCategoryList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // useEffect(() => {
+  //   setHasMore(count > reportList.length ? true : false);
+  //   // eslint-disable-next-lines
+  // }, [reportList]);
+
+  // const getCategoryList = async () => {
+  //   await axios
+  //     .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`)
+  //     .then((res) => {
+  //       setCategoryList(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   const getCategoryDetail = async () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_NEXT_API}/front/cat/${catName}`)
@@ -64,13 +67,15 @@ const Reports = () => {
   };
 
   const getReportList = async () => {
+    console.log("R");
     await axios
       .get(
         `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catName}?start=0&limit=10`
       )
       .then((res) => {
         setReportList(res.data.reports);
-        setCount(res.data.count);
+        // setReportList((reportList) => [...res.data.reports]);
+        // setCount(res.data.count);
       })
       .catch((err) => {
         console.log(err);
@@ -93,19 +98,19 @@ const Reports = () => {
   // };
 
   const getMoreReport = async () => {
-    if (catName) {
-      await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catName}?start=${reportList.length}&limit=10`
-        )
-        .then((res) => {
-          const reports = res.data.reports;
-          setReportList((reportList) => [...reportList, ...reports]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    console.log("w");
+    console.log(reportList.length);
+    await axios
+      .get(
+        `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${catName}?start=${reportList.length}&limit=10`
+      )
+      .then((res) => {
+        const reports = res.data.reports;
+        setReportList((reportList) => [...reportList, ...reports]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -120,25 +125,23 @@ const Reports = () => {
           sizes="16x16"
           href="/dist/img/favicon.ico"
         />
-        <meta name="keywords" content={categoryDetail?.long_desc} />
-        <meta name="description" content={categoryDetail?.meta_desc}></meta>
+        <meta name="keywords" content={categoryDetail.long_desc} />
+        <meta name="description" content={categoryDetail.meta_desc}></meta>
 
-        <title>
-          Explore All Category Wise Industrial Market Research Reports
-        </title>
+        <title>{categoryDetail.meta_name}</title>
       </Head>
       <div className="wrapper">
         <NavbarTop />
         <Navbar />
-        <Breadcrumb name={categoryDetail?.category_name} />
+        <Breadcrumb name={categoryDetail.category_name} />
         <div className="bg-light pb-5">
           <div className="container bg-white pb-5 py-3">
             <div className="row">
               <div className="col-md-12 px-4">
-                <h3>{categoryDetail?.category_name}</h3>
+                <h3>{categoryDetail.category_name}</h3>
                 <hr className="m-2 dashed" />
                 <p className="text-secondary text-sm justify-content-center">
-                  {categoryDetail?.short_desc}
+                  {categoryDetail.short_desc}
                 </p>
               </div>
               <div className="col-md-3">
@@ -216,24 +219,27 @@ const Reports = () => {
                         className="spinner-border text-primary"
                         role="status"
                       >
-                        <span className="sr-only">Loading...</span>
+                        <span className="sr-only">Loading</span>
                       </div>
                     </div>
                   )}
                   <InfiniteScroll
                     dataLength={reportList.length} //This is important field to render the next data
-                    next={getMoreReport}
+                    next={() => {
+                      console.log("OPOPOPOP");
+                      getMoreReport();
+                    }}
                     hasMore={hasMore}
-                    loader={
-                      <div className="text-center m-5 p-5">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    }
+                    // loader={
+                    //   <div className="text-center m-5 p-5">
+                    //     <div
+                    //       className="spinner-border text-primary"
+                    //       role="status"
+                    //     >
+                    //       <span className="sr-only">Loading...</span>
+                    //     </div>
+                    //   </div>
+                    // }
                     endMessage={
                       <p className="mt-2" style={{ textAlign: "center" }}>
                         <b>No More Records Found</b>
@@ -263,14 +269,12 @@ const Reports = () => {
                               </Link>
                             </p>
 
-                            <p
+                            <div
                               className="card-text text-secondary mb-auto my-3 dangerously"
                               dangerouslySetInnerHTML={{
                                 __html: report.product_description,
                               }}
-                            >
-                              {/* {report.name.slice(0, 150)}... */}
-                            </p>
+                            ></div>
                             <div className="d-flax ">
                               <Link
                                 href={`/contact/${report.slug}/download-sample`}
@@ -302,7 +306,6 @@ const Reports = () => {
             </div>
           </div>
         </div>
-
         <Footer />
       </div>
     </>
@@ -316,3 +319,27 @@ export default Reports;
 //     props: {}, // will be passed to the page component as props
 //   };
 // }
+
+Reports.getInitialProps = async (ctx) => {
+  const { query } = ctx;
+  const catName = query.name;
+  const reportsData = await axios.get(
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/category/${query.name}?start=0&limit=10`
+  );
+  const catDetails = await axios.get(
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/cat/${query.name}`
+  );
+  const catData = await axios.get(
+    `${process.env.NEXT_PUBLIC_NEXT_API}/front/categories`
+  );
+
+  return {
+    data: {
+      reportsData: reportsData.data.reports,
+      count: reportsData.data.count,
+      catDetails: catDetails.data,
+      catData: catData.data,
+      catName,
+    },
+  };
+};

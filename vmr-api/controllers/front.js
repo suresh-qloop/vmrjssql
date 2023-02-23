@@ -1012,16 +1012,17 @@ exports.getSettings = async (req, res, next) => {
     const [settings] = await Model.findById(
       "settings",
       "*",
-      `\`key\`='clientQueries' OR \`key\`='reports' OR \`key\`='categories' OR \`key\`='articles' OR \`key\`='clients'`,
+      `\`key\`='clientQueries' OR \`key\`='reports' OR \`key\`='categories' OR \`key\`='analysts' OR \`key\`='clients' OR \`key\`='clientQueriesYear'`,
       `id DESC`
     );
 
     const data = {
-      clients: settings[0].value,
-      clientQueries: settings[1].value,
-      articles: settings[2].value,
-      categories: settings[3].value,
-      reports: settings[4].value,
+      clientQueriesYear: settings[0].value,
+      clients: settings[1].value,
+      clientQueries: settings[2].value,
+      articles: settings[3].value,
+      categories: settings[4].value,
+      reports: settings[5].value,
     };
 
     res.status(200).json(data);
