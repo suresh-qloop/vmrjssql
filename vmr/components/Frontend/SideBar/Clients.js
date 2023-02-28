@@ -1,4 +1,5 @@
 import axios from "axios";
+import Image from "next/image";
 // import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
@@ -40,10 +41,12 @@ const Clients = () => {
                 key={i}
               >
                 {/* <Link href={client.link} target="_blank"> */}
-                <img
+                <Image
                   className="d-block w-100 "
                   src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
-                  alt=""
+                  alt="client_image"
+                  width={110}
+                  height={69}
                 />
                 {/* </Link> */}
               </div>

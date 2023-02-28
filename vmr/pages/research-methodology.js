@@ -59,7 +59,7 @@ export default function Research() {
               threat from substitute products and the threat from new entrants.
             </p>
             <img
-              src="/dist/img/TDA-BUA.webp"
+              src="/dist/img/TDA-BUA.jpg"
               alt=""
               className="research-img my-2"
             />

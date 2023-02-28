@@ -1,4 +1,5 @@
 import axios from "axios";
+import Image from "next/image";
 // import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
@@ -35,14 +36,13 @@ export default function Fact() {
     <div className="row mt-5 justify-content-center">
       {clientList?.map((client, i) => (
         <div className="col-md-2 border text-center" key={i + 1}>
-          {/* <Link href={client.link} target="_blank"> */}
-          <img
-            rel="preload"
+          <Image
             src={`${process.env.NEXT_PUBLIC_NEXT_API}/uploads/logos/${client.logo}`}
-            className="client_image"
+            // className="client_image"
             alt="client_image"
+            width={110}
+            height={69}
           />
-          {/* </Link> */}
         </div>
       ))}
 

@@ -121,7 +121,7 @@ const AskQuestions = () => {
       currency: "USD",
       name: "Value Market Research",
       description: "Market Research Report as per agreement over the email",
-      image: "/dist/img/logos/vmr-logo.webp",
+      image: "/dist/img/logos/vmr-logo.jpg",
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       // callback_url: `${process.env.NEXT_PUBLIC_NEXT_API}/payment/payment-verification`,
       prefill: {

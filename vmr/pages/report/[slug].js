@@ -4,13 +4,13 @@ import Link from "next/link";
 import Navbar from "../../components/Frontend/Navbar";
 import NavbarTop from "../../components/Frontend/NavbarTop";
 import Footer from "../../components/Frontend/Footer";
-import Breadcrumb from "../../components/Frontend/Breadcrumb";
+// import Breadcrumb from "../../components/Frontend/Breadcrumb";
 // import { useRouter } from "next/router";
 import moment from "moment/moment";
 import axios from "axios";
 // import { currencyInrFormat } from "../../utils/utils";
 import { currencyInrFormat } from "../../utils/currencyInrFormat";
-import Accordion from "react-bootstrap/Accordion";
+// import Accordion from "react-bootstrap/Accordion";
 import Head from "next/head";
 import WhyChooseUs from "../../components/Frontend/SideBar/WhyChooseUs";
 import Clients from "../../components/Frontend/SideBar/Clients";
@@ -96,9 +96,8 @@ const ReportDetails = ({ reportData }) => {
                 <div className="col-md-2">
                   <div className="img-box">
                     <img
-                      className=" "
                       alt=""
-                      src="/dist/img/reports/report1.webp"
+                      src="/dist/img/reports/report1.jpg"
                       //   style={{ width: 500 }}
                     />
                   </div>
@@ -233,12 +232,12 @@ const ReportDetails = ({ reportData }) => {
                       ></div>
                     </div>
                   </div>
-                  {reportData.faqs?.length > 0 && (
-                    <h4 className="my-4 text-secondary">
+                  {output?.length > 0 && (
+                    <h5 className="my-4 text-secondary">
                       Frequently Asked Questions (FAQs) about this Report
-                    </h4>
+                    </h5>
                   )}
-                  {output?.map((faq, i) => (
+                  {/* {output?.map((faq, i) => (
                     <Accordion
                       key={i + 1}
                       defaultActiveKey="0"
@@ -253,6 +252,34 @@ const ReportDetails = ({ reportData }) => {
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
+                  ))} */}
+                  {output?.map((faq, i) => (
+                    <div id="accordion">
+                      <div className="card">
+                        <div className="card-header" id={`heading${i + 1}`}>
+                          <h5 className="mb-0">
+                            <button
+                              className="btn btn-link text-blue"
+                              data-toggle="collapse"
+                              data-target={`#collapse${i + 1}`}
+                              aria-expanded="true"
+                              aria-controls={`collapse${i + 1}`}
+                            >
+                              {faq.question}
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div
+                          id={`collapse${i + 1}`}
+                          className={`collapse ${i + 1 == 1 ? "show" : ""}`}
+                          aria-labelledby={`heading${i + 1}`}
+                          data-parent="#accordion"
+                        >
+                          <div className="card-body">{faq.answer}</div>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

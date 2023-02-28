@@ -4,7 +4,7 @@ import { appWithTranslation } from "next-i18next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../public/plugins/fontawesome-free/css/all.min.css";
 // import "../public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css";
-// import "../public/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
+import "../public/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
 // import "../public/plugins/jqvmap/jqvmap.min.css";
 import "../public/dist/css/adminlte.min.css";
 // import "../public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
@@ -27,12 +27,12 @@ function MyApp({ Component, pageProps }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <link
+        {/* <link
           rel="icon"
           type="image/png"
           sizes="16x16"
           href="/dist/img/favicon.ico"
-        />
+        /> */}
         <meta
           name="keywords"
           content="Market Research Reports, Business Research, Industry Analysis, Market Insights, Syndicate Research Reports, Customized Research Reports, Business Consulting, VMR, VMR Reports, Industry Reports, Best market Research Company, Market Research Reports Provider, Research Reports company, Market Report Company"
